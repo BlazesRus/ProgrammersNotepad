@@ -75,7 +75,7 @@
     <ClCompile>
       <AdditionalOptions>/Zm240 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>TabbingFramework; DockingFramework; Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>TabbingFramework;DockingFramework;Scintilla\include;$(_ZVcpkgCurrentInstalledDir)include/wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;STRICT;SCI_NAMESPACE;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -130,7 +130,7 @@
       <AdditionalOptions>/Zm240 $(SVNREV) %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>TabbingFramework; DockingFramework; Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>TabbingFramework;DockingFramework;Scintilla\include;$(_ZVcpkgCurrentInstalledDir)include/wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;STRICT;UNICODE;SCI_NAMESPACE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

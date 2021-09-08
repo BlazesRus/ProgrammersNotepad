@@ -243,6 +243,12 @@ typedef struct _TASKDIALOGCONFIG
 #include <poppack.h>
 #endif // _WIN32
 
+#else
+
+#define TDT_WARNING_ICON         MAKEINTRESOURCE(-1)
+#define TDT_INFORMATION_ICON     MAKEINTRESOURCE(-3)
+
+
 #endif // _WIN32_WINNT
 
 #if _WIN32_WINNT < 0x0600

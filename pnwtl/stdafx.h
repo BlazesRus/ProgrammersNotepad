@@ -20,10 +20,11 @@
 #endif
 
 // Change these values to use different versions
-#define WINVER			0x0500	// Changed to allow CDotNetTabCtrl to compile with COLOR_HOTLIGHT
+#define WINVER			0x0A00	// Changed to allow CDotNetTabCtrl to compile with COLOR_HOTLIGHT
 #define _WIN32_WINNT	0x0600
-#define _WIN32_IE		0x0600
-#define _RICHEDIT_VER	0x0100
+#define _WIN32_IE		0x0A00
+#define _RICHEDIT_VER	0x0300
+#define NTDDI_VERSION 0x0A000000
 
 // Disable the "unreferenced formal parameter" warning. I see no reason for it.
 #pragma warning( disable: 4100 )

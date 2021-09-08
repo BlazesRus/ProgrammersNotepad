@@ -16,8 +16,8 @@
 #pragma warning(disable: 4996) // see MSDN on hash_map
 
 #if (_ATL_VER >= 0x0700)
-	#include <hash_map>
-	class IniKeyMap : public stdext::hash_map<tstring, tstring>{};
+	#include <unordered_map>
+	class IniKeyMap : public std::unordered_map<tstring, tstring>{};
 #else
 	#include <map>
 	class IniKeyMap : public std::map<tstring, tstring>{};

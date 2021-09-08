@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 #if (_MSC_VER >= 1300)
 	#pragma warning( push )
 	#pragma warning(disable: 4996) // see MSDN on hash_map
-	#include <hash_map>
+	#include <unordered_map>
 #else
 	#include <map>
 #endif
@@ -1336,7 +1336,7 @@ void Workspace::parse()
 //////////////////////////////////////////////////////////////////////////////
 
 #if (_ATL_VER >= 0x0700)
-	class ProjectViewState::ExpandCache : public stdext::hash_map<tstring, bool>{};
+	class ProjectViewState::ExpandCache : public std::unordered_map<tstring, bool>{};
 #else
 	class ProjectViewState::ExpandCache : public std::map<tstring, bool>{};
 #endif

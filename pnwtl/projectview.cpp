@@ -653,7 +653,7 @@ void CProjectTreeCtrl::handleRemove()
 				{
 					CT2CW name(pProject->GetName());
 					CStringW msg;
-					msg.Format(IDS_QSAVEPROJBEFOREREMOVE, name);
+					msg.Format(IDS_QSAVEPROJBEFOREREMOVE, (LPCWSTR)name);
 
 					std::wstring title(L10N::StringLoader::GetW(IDR_MAINFRAME));
 					std::wstring saveAndRemove(L10N::StringLoader::GetW(IDS_SAVEANDREMOVE));

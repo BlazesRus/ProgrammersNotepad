@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 #if (_MSC_VER >= 1300)
 	#pragma warning( push )
 	#pragma warning(disable: 4996) // see MSDN on hash_map
-	#include <hash_map>
+	#include <unordered_map>
 #else
 	#include <map>
 #endif
@@ -231,7 +231,7 @@ bool MagicFolder::RenameFolder(LPCTSTR newName)
 // MagicFolderCache::FolderMap
 //////////////////////////////////////////////////////////////////////////////
 
-class MagicFolderCache::FolderMap : public stdext::hash_map<tstring, Folder*>
+class MagicFolderCache::FolderMap : public std::unordered_map<tstring, Folder*>
 {
 	public:
 		typedef MagicFolderCache::FolderMap thisClass;

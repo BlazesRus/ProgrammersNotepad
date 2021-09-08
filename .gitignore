@@ -3,6 +3,8 @@
 *.swp
 *~.nib
 local.properties
+.vs/
+.vscode/
 
 #################
 ## Visual Studio

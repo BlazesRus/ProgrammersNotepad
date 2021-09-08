@@ -1475,7 +1475,7 @@ LRESULT CChildFrame::OnGoToDef(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
     {
 		CString Msg;
 		CA2CT selconv(sel.c_str());
-		Msg.Format(_T("Definition of '%s' not found"), selconv);
+		Msg.Format(_T("Definition of '%s' not found"), (LPCTSTR)selconv);
 		g_Context.m_frame->SetStatusText(Msg);
 
         return 0;

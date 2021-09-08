@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(PythonInclude);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonInclude);$(_ZVcpkgCurrentInstalledDir)include/python3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PYPN_EXPORTS;SCI_NOLOAD;SCI_NAMESPACE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -66,9 +66,7 @@
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>boost_python-vc$(VSNum)-mt-gd-$(BoostFileVer).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)pypn.dll</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\boost-python-$(BoostPythonTag);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>pypn.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)pypn.pdb</ProgramDatabaseFile>
@@ -80,13 +78,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)\lib\boost-python-$(BoostPythonTag)\boost_python-vc$(VSNum)-mt-gd-$(BoostFileVer).dll $(TargetDir)
-if "$(PythonMagorVer)"=="3" (
-copy scripts3k\init.py $(TargetDir)
-) else (
-copy scripts\init.py $(TargetDir)
-)
-
+      <Command>copy scripts3k\init.py $(TargetDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -98,7 +90,7 @@ copy scripts\init.py $(TargetDir)
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>$(PythonInclude);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonInclude);$(_ZVcpkgCurrentInstalledDir)include/python3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PYPN_EXPORTS;SCI_NOLOAD;SCI_NAMESPACE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -107,9 +99,7 @@ copy scripts\init.py $(TargetDir)
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>boost_python-vc$(VSNum)-mt-$(BoostFileVer).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)pypn.dll</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\boost-python-$(BoostPythonTag);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>pypn.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -122,12 +112,7 @@ copy scripts\init.py $(TargetDir)
       <TargetMachine>NotSet</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)\lib\boost-python-$(BoostPythonTag)\boost_python-vc$(VSNum)-mt-$(BoostFileVer).dll $(TargetDir)
-if "$(PythonMagorVer)"=="3" (
-copy scripts3k\init.py $(TargetDir)
-) else (
-copy scripts\init.py $(TargetDir)
-)
+      <Command>copy scripts3k\init.py $(TargetDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
