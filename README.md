@@ -15,8 +15,6 @@ Clone the tree, then see the [Build Instructions](http://pnotepad.org/docs/dev/h
 
 ## Build in VS 2019
 
-### Install VS 2019 and vcpkg
-
 - download and install VS 2019, following [this link](https://visualstudio.microsoft.com/downloads/)
 - download / install [git](https://git-scm.com/) and install `vcpkg` on `D` disk
 ```

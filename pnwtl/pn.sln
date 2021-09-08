@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pn", "pn.vcxproj", "{09E60CEB-F210-4524-89CC-D73EBCA224A1}"
 EndProject
@@ -44,6 +44,7 @@ Global
 		{8802C83D-8F91-4AED-A4E5-BEAEC65B97EF}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8802C83D-8F91-4AED-A4E5-BEAEC65B97EF}.Debug|Win32.Build.0 = Debug|Win32
 		{8802C83D-8F91-4AED-A4E5-BEAEC65B97EF}.Release|Win32.ActiveCfg = Release|Win32
+		{8802C83D-8F91-4AED-A4E5-BEAEC65B97EF}.Release|Win32.Build.0 = Release|Win32
 		{188B3F1D-5109-49FD-9DAF-9802AE63763B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{188B3F1D-5109-49FD-9DAF-9802AE63763B}.Debug|Win32.Build.0 = Debug|Win32
 		{188B3F1D-5109-49FD-9DAF-9802AE63763B}.Release|Win32.ActiveCfg = Release|Win32
@@ -63,5 +64,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD0E1FE7-03A9-4965-A6D7-E297FBDFF862}
 	EndGlobalSection
 EndGlobal
