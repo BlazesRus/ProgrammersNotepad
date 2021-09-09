@@ -451,7 +451,7 @@ void CScintillaImpl::ToggleFold()
 
 void CScintillaImpl::FoldAll()
 {
-	SPerform(SCI_COLOURISE, 0, -1);
+	SPerform(SCI_COLOURISE, 0, (LPARAM)-1);
 	int maxLine = SPerform(SCI_GETLINECOUNT);
 	for (int line = 0; line < maxLine; line++)
 	{
@@ -459,7 +459,7 @@ void CScintillaImpl::FoldAll()
 		if ((level & SC_FOLDLEVELHEADERFLAG) &&
 		        (SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK)))
 		{
-			int lineMaxSubord = SPerform(SCI_GETLASTCHILD, line, -1);
+			int lineMaxSubord = SPerform(SCI_GETLASTCHILD, line, (LPARAM)-1);
 			SPerform(SCI_SETFOLDEXPANDED, line, 0);
 			if (lineMaxSubord > line)
 				SPerform(SCI_HIDELINES, line + 1, lineMaxSubord);

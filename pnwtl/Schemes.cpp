@@ -375,20 +375,20 @@ void Scheme::Load(CScintilla& sc, bool allSettings, LPCTSTR filename)
 						switch(Txt.TextType)
 						{
 							case ttFontName : 
-								sc.SPerform(SCI_STYLESETFONT, Txt.wParam, (long)&buf[0]);
+								sc.SPerform(SCI_STYLESETFONT, Txt.wParam, (LPARAM)&buf[0]);
 								break;
 							case ttKeywords : 
 								sc.SetKeyWords(Txt.wParam, &buf[0]);
 								break;
 							case ttLexerLanguage : 
 								{
-									sc.SPerform(SCI_SETLEXERLANGUAGE, 0, (long)&buf[0]);
+									sc.SPerform(SCI_SETLEXERLANGUAGE, 0, (LPARAM)&buf[0]);
 									m_Lexer = &buf[0];
 								}
 								break;
 							case ttWordChars :
 								{
-									sc.SPerform(SCI_SETWORDCHARS, 0, (long)&buf[0]);
+									sc.SPerform(SCI_SETWORDCHARS, 0, (LPARAM)&buf[0]);
 								}
 								break;
 						}
@@ -404,7 +404,7 @@ void Scheme::Load(CScintilla& sc, bool allSettings, LPCTSTR filename)
 					std::vector<char> buf2(Prp.ValueLength + 1);
 					cfile.Read(&buf2[0], Prp.ValueLength * sizeof(char));
 					buf2[Prp.ValueLength] = '\0';
-					sc.SPerform(SCI_SETPROPERTY, (long)&buf[0], (long)&buf2[0]);
+					sc.SPerform(SCI_SETPROPERTY, (WPARAM)&buf[0], (LPARAM)&buf2[0]);
 				}
 				break;
 				case nrCommentRec:

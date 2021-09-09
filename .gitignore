@@ -92,7 +92,7 @@ Desktop.ini
 _revision.txt
 
 dlldata.c
-pnse.h
+pnse_h.h
 pnse_i.c
 pnse_p.c
 pnse.lib

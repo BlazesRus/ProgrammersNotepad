@@ -1074,7 +1074,4 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="pn.exe.manifest" />
-  </ItemGroup>
 </Project>

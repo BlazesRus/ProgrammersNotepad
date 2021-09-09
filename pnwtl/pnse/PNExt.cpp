@@ -54,7 +54,7 @@ HRESULT CPNExt::Initialize( LPCITEMIDLIST pidlFolder, LPDATAOBJECT pDataObj, HKE
         return E_INVALIDARG;
 	}
 
-	// Sanity check – make sure there is at least one filename.
+	// Sanity check ?make sure there is at least one filename.
 	UINT uNumFiles = ::DragQueryFile( hDrop, 0xFFFFFFFF, NULL, 0 );
 
     if ( 0 == uNumFiles )
@@ -108,7 +108,7 @@ HRESULT CPNExt::QueryContextMenu(
  * extension and also provide a command verb.
  */
 HRESULT CPNExt::GetCommandString (
-    UINT idCmd,			// 0 based index of our command (always 0 for this one)
+    UINT_PTR idCmd,			// 0 based index of our command (always 0 for this one)
     UINT uFlags,		// Flags
     UINT *pwReserved,	// reserved.
     LPSTR pszName,		// Where we store the text

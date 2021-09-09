@@ -58,6 +58,8 @@ CScintilla::CScintilla()
 	StoredPerform = NULL;
 	m_TabWidth = 4;
 	m_SelLength = 0;
+	m_Pointer = NULL;
+	m_scihWnd = NULL;
 
 	// initialise numbered bookmarks...
 	for(int i = 0; i < 10; i++)
@@ -142,7 +144,7 @@ bool CScintilla::OpenFile(LPCTSTR filename)
 		int lenFile = fread(data, 1, sizeof(data), fp);
 		while (lenFile > 0) 
 		{
-			SPerform(SCI_ADDTEXT, lenFile, (long)data);
+			SPerform(SCI_ADDTEXT, (WPARAM)lenFile, (LPARAM)data);
 			lenFile = fread(data, 1, sizeof(data), fp);
 		}
 		fclose(fp);
@@ -161,7 +163,7 @@ void CScintilla::GetRange(int start, int end, char *text)
 	tr.chrg.cpMin = start;
 	tr.chrg.cpMax = end;
 	tr.lpstrText = text;
-	SPerform(SCI_GETTEXTRANGE, 0, reinterpret_cast<long>(&tr));
+	SPerform(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&tr));
 }
 
 bool CScintilla::SaveFile(LPCTSTR filename)
@@ -700,17 +702,17 @@ void CScintilla::FoldChanged(int line, int levelNow, int levelPrev)
 //++FuncImp
 void CScintilla::AddText(int length, const char* text)
 {
-	SPerform(SCI_ADDTEXT, (long)length, (long)text);
+	SPerform(SCI_ADDTEXT, (WPARAM)length, (LPARAM)text);
 }
 
 void CScintilla::AddStyledText(int length, char* c)
 {
-	SPerform(SCI_ADDSTYLEDTEXT, (long)length, (long)c);
+	SPerform(SCI_ADDSTYLEDTEXT, (WPARAM)length, (LPARAM)c);
 }
 
 void CScintilla::InsertText(long pos, const char* text)
 {
-	SPerform(SCI_INSERTTEXT, pos, (long)text);
+	SPerform(SCI_INSERTTEXT, pos, (LPARAM)text);
 }
 
 void CScintilla::ClearAll()
@@ -755,7 +757,7 @@ void CScintilla::Redo()
 
 void CScintilla::SetUndoCollection(bool collectUndo)
 {
-	SPerform(SCI_SETUNDOCOLLECTION, (long)collectUndo, 0);
+	SPerform(SCI_SETUNDOCOLLECTION, (WPARAM)collectUndo, 0);
 }
 
 void CScintilla::SelectAll()
@@ -770,7 +772,7 @@ void CScintilla::SetSavePoint()
 
 int CScintilla::GetStyledText(Scintilla::TextRange* tr)
 {
-	return (int)SPerform(SCI_GETSTYLEDTEXT, 0, (long)tr);
+	return (int)SPerform(SCI_GETSTYLEDTEXT, 0, (LPARAM)tr);
 }
 
 bool CScintilla::CanRedo()
@@ -780,12 +782,12 @@ bool CScintilla::CanRedo()
 
 int CScintilla::MarkerLineFromHandle(int handle)
 {
-	return (int)SPerform(SCI_MARKERLINEFROMHANDLE, (long)handle, 0);
+	return (int)SPerform(SCI_MARKERLINEFROMHANDLE, (WPARAM)handle, 0);
 }
 
 void CScintilla::MarkerDeleteHandle(int handle)
 {
-	SPerform(SCI_MARKERDELETEHANDLE, (long)handle, 0);
+	SPerform(SCI_MARKERDELETEHANDLE, (WPARAM)handle, 0);
 }
 
 bool CScintilla::GetUndoCollection()
@@ -800,22 +802,22 @@ int CScintilla::GetViewWS()
 
 void CScintilla::SetViewWS(int viewWS)
 {
-	SPerform(SCI_SETVIEWWS, (long)viewWS, 0);
+	SPerform(SCI_SETVIEWWS, (WPARAM)viewWS, 0);
 }
 
 long CScintilla::PositionFromPoint(int x, int y)
 {
-	return SPerform(SCI_POSITIONFROMPOINT, (long)x, (long)y);
+	return SPerform(SCI_POSITIONFROMPOINT, (WPARAM)x, (LPARAM)y);
 }
 
 long CScintilla::PositionFromPointClose(int x, int y)
 {
-	return SPerform(SCI_POSITIONFROMPOINTCLOSE, (long)x, (long)y);
+	return SPerform(SCI_POSITIONFROMPOINTCLOSE, (WPARAM)x, (LPARAM)y);
 }
 
 void CScintilla::GotoLine(int line)
 {
-	SPerform(SCI_GOTOLINE, (long)line, 0);
+	SPerform(SCI_GOTOLINE, (WPARAM)line, 0);
 }
 
 void CScintilla::GotoPos(long pos)
@@ -830,7 +832,7 @@ void CScintilla::SetAnchor(long posAnchor)
 
 int CScintilla::GetCurLine(int length, char* text)
 {
-	return (int)SPerform(SCI_GETCURLINE, (long)length, (long)text);
+	return (int)SPerform(SCI_GETCURLINE, (WPARAM)length, (LPARAM)text);
 }
 
 long CScintilla::GetEndStyled()
@@ -840,7 +842,7 @@ long CScintilla::GetEndStyled()
 
 void CScintilla::ConvertEOLs(int eolMode)
 {
-	SPerform(SCI_CONVERTEOLS, (long)eolMode, 0);
+	SPerform(SCI_CONVERTEOLS, (WPARAM)eolMode, 0);
 }
 
 int CScintilla::GetEOLMode()
@@ -850,17 +852,17 @@ int CScintilla::GetEOLMode()
 
 void CScintilla::SetEOLMode(int eolMode)
 {
-	SPerform(SCI_SETEOLMODE, (long)eolMode, 0);
+	SPerform(SCI_SETEOLMODE, (WPARAM)eolMode, 0);
 }
 
 void CScintilla::StartStyling(long pos, int mask)
 {
-	SPerform(SCI_STARTSTYLING, pos, (long)mask);
+	SPerform(SCI_STARTSTYLING, pos, (LPARAM)mask);
 }
 
 void CScintilla::SetStyling(int length, int style)
 {
-	SPerform(SCI_SETSTYLING, (long)length, (long)style);
+	SPerform(SCI_SETSTYLING, (WPARAM)length, (LPARAM)style);
 }
 
 bool CScintilla::GetBufferedDraw()
@@ -870,12 +872,12 @@ bool CScintilla::GetBufferedDraw()
 
 void CScintilla::SetBufferedDraw(bool buffered)
 {
-	SPerform(SCI_SETBUFFEREDDRAW, (long)buffered, 0);
+	SPerform(SCI_SETBUFFEREDDRAW, (WPARAM)buffered, 0);
 }
 
 void CScintilla::SetTabWidth(int tabWidth)
 {
-	SPerform(SCI_SETTABWIDTH, (long)tabWidth, 0);
+	SPerform(SCI_SETTABWIDTH, (WPARAM)tabWidth, 0);
 }
 
 int CScintilla::GetTabWidth()
@@ -885,102 +887,102 @@ int CScintilla::GetTabWidth()
 
 void CScintilla::SetCodePage(int codePage)
 {
-	SPerform(SCI_SETCODEPAGE, (long)codePage, 0);
+	SPerform(SCI_SETCODEPAGE, (WPARAM)codePage, 0);
 }
 
 void CScintilla::SetUsePalette(bool usePalette)
 {
-	SPerform(SCI_SETUSEPALETTE, (long)usePalette, 0);
+	SPerform(SCI_SETUSEPALETTE, (WPARAM)usePalette, 0);
 }
 
 void CScintilla::MarkerDefine(int markerNumber, int markerSymbol)
 {
-	SPerform(SCI_MARKERDEFINE, (long)markerNumber, (long)markerSymbol);
+	SPerform(SCI_MARKERDEFINE, (WPARAM)markerNumber, (LPARAM)markerSymbol);
 }
 
 void CScintilla::MarkerSetFore(int markerNumber, COLORREF fore)
 {
-	SPerform(SCI_MARKERSETFORE, (long)markerNumber, (long)fore);
+	SPerform(SCI_MARKERSETFORE, (WPARAM)markerNumber, (LPARAM)fore);
 }
 
 void CScintilla::MarkerSetBack(int markerNumber, COLORREF back)
 {
-	SPerform(SCI_MARKERSETBACK, (long)markerNumber, (long)back);
+	SPerform(SCI_MARKERSETBACK, (WPARAM)markerNumber, (LPARAM)back);
 }
 
 int CScintilla::MarkerAdd(int line, int markerNumber)
 {
-	return (int)SPerform(SCI_MARKERADD, (long)line, (long)markerNumber);
+	return (int)SPerform(SCI_MARKERADD, (WPARAM)line, (LPARAM)markerNumber);
 }
 
 void CScintilla::MarkerDelete(int line, int markerNumber)
 {
-	SPerform(SCI_MARKERDELETE, (long)line, (long)markerNumber);
+	SPerform(SCI_MARKERDELETE, (WPARAM)line, (LPARAM)markerNumber);
 }
 
 void CScintilla::MarkerDeleteAll(int markerNumber)
 {
-	SPerform(SCI_MARKERDELETEALL, (long)markerNumber, 0);
+	SPerform(SCI_MARKERDELETEALL, (WPARAM)markerNumber, 0);
 }
 
 int CScintilla::MarkerGet(int line)
 {
-	return (int)SPerform(SCI_MARKERGET, (long)line, 0);
+	return (int)SPerform(SCI_MARKERGET, (WPARAM)line, 0);
 }
 
 int CScintilla::MarkerNext(int lineStart, int markerMask)
 {
-	return (int)SPerform(SCI_MARKERNEXT, (long)lineStart, (long)markerMask);
+	return (int)SPerform(SCI_MARKERNEXT, (WPARAM)lineStart, (LPARAM)markerMask);
 }
 
 int CScintilla::MarkerPrevious(int lineStart, int markerMask)
 {
-	return (int)SPerform(SCI_MARKERPREVIOUS, (long)lineStart, (long)markerMask);
+	return (int)SPerform(SCI_MARKERPREVIOUS, (WPARAM)lineStart, (LPARAM)markerMask);
 }
 
 void CScintilla::MarkerDefinePixmap(int markerNumber, const char* pixmap)
 {
-	SPerform(SCI_MARKERDEFINEPIXMAP, (long)markerNumber, (long)pixmap);
+	SPerform(SCI_MARKERDEFINEPIXMAP, (WPARAM)markerNumber, (LPARAM)pixmap);
 }
 
 void CScintilla::SetMarginTypeN(int margin, int marginType)
 {
-	SPerform(SCI_SETMARGINTYPEN, (long)margin, (long)marginType);
+	SPerform(SCI_SETMARGINTYPEN, (WPARAM)margin, (LPARAM)marginType);
 }
 
 int CScintilla::GetMarginTypeN(int margin)
 {
-	return (int)SPerform(SCI_GETMARGINTYPEN, (long)margin, 0);
+	return (int)SPerform(SCI_GETMARGINTYPEN, (WPARAM)margin, 0);
 }
 
 void CScintilla::SetMarginWidthN(int margin, int pixelWidth)
 {
-	SPerform(SCI_SETMARGINWIDTHN, (long)margin, (long)pixelWidth);
+	SPerform(SCI_SETMARGINWIDTHN, (WPARAM)margin, (LPARAM)pixelWidth);
 }
 
 int CScintilla::GetMarginWidthN(int margin)
 {
-	return (int)SPerform(SCI_GETMARGINWIDTHN, (long)margin, 0);
+	return (int)SPerform(SCI_GETMARGINWIDTHN, (WPARAM)margin, 0);
 }
 
 void CScintilla::SetMarginMaskN(int margin, int mask)
 {
-	SPerform(SCI_SETMARGINMASKN, (long)margin, (long)mask);
+	SPerform(SCI_SETMARGINMASKN, (WPARAM)margin, (LPARAM)mask);
 }
 
 int CScintilla::GetMarginMaskN(int margin)
 {
-	return (int)SPerform(SCI_GETMARGINMASKN, (long)margin, 0);
+	return (int)SPerform(SCI_GETMARGINMASKN, (WPARAM)margin, 0);
 }
 
 void CScintilla::SetMarginSensitiveN(int margin, bool sensitive)
 {
-	SPerform(SCI_SETMARGINSENSITIVEN, (long)margin, (long)sensitive);
+	SPerform(SCI_SETMARGINSENSITIVEN, (WPARAM)margin, (LPARAM)sensitive);
 }
 
 bool CScintilla::GetMarginSensitiveN(int margin)
 {
-	return SPerform(SCI_GETMARGINSENSITIVEN, (long)margin, 0) != 0;
+	return SPerform(SCI_GETMARGINSENSITIVEN, (WPARAM)margin, 0) != 0;
 }
 
 void CScintilla::StyleClearAll()
@@ -990,37 +992,37 @@ void CScintilla::StyleClearAll()
 
 void CScintilla::StyleSetFore(int style, COLORREF fore)
 {
-	SPerform(SCI_STYLESETFORE, (long)style, (long)fore);
+	SPerform(SCI_STYLESETFORE, (WPARAM)style, (LPARAM)fore);
 }
 
 void CScintilla::StyleSetBack(int style, COLORREF back)
 {
-	SPerform(SCI_STYLESETBACK, (long)style, (long)back);
+	SPerform(SCI_STYLESETBACK, (WPARAM)style, (LPARAM)back);
 }
 
 void CScintilla::StyleSetBold(int style, bool bold)
 {
-	SPerform(SCI_STYLESETBOLD, (long)style, (long)bold);
+	SPerform(SCI_STYLESETBOLD, (WPARAM)style, (LPARAM)bold);
 }
 
 void CScintilla::StyleSetItalic(int style, bool italic)
 {
-	SPerform(SCI_STYLESETITALIC, (long)style, (long)italic);
+	SPerform(SCI_STYLESETITALIC, (WPARAM)style, (LPARAM)italic);
 }
 
 void CScintilla::StyleSetSize(int style, int sizePoints)
 {
-	SPerform(SCI_STYLESETSIZE, (long)style, (long)sizePoints);
+	SPerform(SCI_STYLESETSIZE, (WPARAM)style, (LPARAM)sizePoints);
 }
 
 void CScintilla::StyleSetFont(int style, const char* fontName)
 {
-	SPerform(SCI_STYLESETFONT, (long)style, (long)fontName);
+	SPerform(SCI_STYLESETFONT, (WPARAM)style, (LPARAM)fontName);
 }
 
 void CScintilla::StyleSetEOLFilled(int style, bool filled)
 {
-	SPerform(SCI_STYLESETEOLFILLED, (long)style, (long)filled);
+	SPerform(SCI_STYLESETEOLFILLED, (WPARAM)style, (LPARAM)filled);
 }
 
 void CScintilla::StyleResetDefault()
@@ -1030,47 +1032,47 @@ void CScintilla::StyleResetDefault()
 
 void CScintilla::StyleSetUnderline(int style, bool underline)
 {
-	SPerform(SCI_STYLESETUNDERLINE, (long)style, (long)underline);
+	SPerform(SCI_STYLESETUNDERLINE, (WPARAM)style, (LPARAM)underline);
 }
 
 void CScintilla::StyleSetCase(int style, int caseForce)
 {
-	SPerform(SCI_STYLESETCASE, (long)style, (long)caseForce);
+	SPerform(SCI_STYLESETCASE, (WPARAM)style, (LPARAM)caseForce);
 }
 
 void CScintilla::StyleSetCharacterSet(int style, int characterSet)
 {
-	SPerform(SCI_STYLESETCHARACTERSET, (long)style, (long)characterSet);
+	SPerform(SCI_STYLESETCHARACTERSET, (WPARAM)style, (LPARAM)characterSet);
 }
 
 void CScintilla::StyleSetHotSpot(int style, bool hotspot)
 {
-	SPerform(SCI_STYLESETHOTSPOT, (long)style, (long)hotspot);
+	SPerform(SCI_STYLESETHOTSPOT, (WPARAM)style, (LPARAM)hotspot);
 }
 
 void CScintilla::SetSelFore(bool useSetting, COLORREF fore)
 {
-	SPerform(SCI_SETSELFORE, (long)useSetting, (long)fore);
+	SPerform(SCI_SETSELFORE, (WPARAM)useSetting, (LPARAM)fore);
 }
 
 void CScintilla::SetSelBack(bool useSetting, COLORREF back)
 {
-	SPerform(SCI_SETSELBACK, (long)useSetting, (long)back);
+	SPerform(SCI_SETSELBACK, (WPARAM)useSetting, (LPARAM)back);
 }
 
 void CScintilla::SetCaretFore(COLORREF fore)
 {
-	SPerform(SCI_SETCARETFORE, (long)fore, 0);
+	SPerform(SCI_SETCARETFORE, (WPARAM)fore, 0);
 }
 
 void CScintilla::AssignCmdKey(DWORD km, int msg)
 {
-	SPerform(SCI_ASSIGNCMDKEY, (long)km, (long)msg);
+	SPerform(SCI_ASSIGNCMDKEY, (WPARAM)km, (LPARAM)msg);
 }
 
 void CScintilla::ClearCmdKey(DWORD km)
 {
-	SPerform(SCI_CLEARCMDKEY, (long)km, 0);
+	SPerform(SCI_CLEARCMDKEY, (WPARAM)km, 0);
 }
 
 void CScintilla::ClearAllCmdKeys()
@@ -1080,12 +1082,12 @@ void CScintilla::ClearAllCmdKeys()
 
 void CScintilla::SetStylingEx(int length, const char* styles)
 {
-	SPerform(SCI_SETSTYLINGEX, (long)length, (long)styles);
+	SPerform(SCI_SETSTYLINGEX, (WPARAM)length, (LPARAM)styles);
 }
 
 void CScintilla::StyleSetVisible(int style, bool visible)
 {
-	SPerform(SCI_STYLESETVISIBLE, (long)style, (long)visible);
+	SPerform(SCI_STYLESETVISIBLE, (WPARAM)style, (LPARAM)visible);
 }
 
 int CScintilla::GetCaretPeriod()
@@ -1095,12 +1097,12 @@ int CScintilla::GetCaretPeriod()
 
 void CScintilla::SetCaretPeriod(int periodMilliseconds)
 {
-	SPerform(SCI_SETCARETPERIOD, (long)periodMilliseconds, 0);
+	SPerform(SCI_SETCARETPERIOD, (WPARAM)periodMilliseconds, 0);
 }
 
 void CScintilla::SetWordChars(const char* characters)
 {
-	SPerform(SCI_SETWORDCHARS, 0, (long)characters);
+	SPerform(SCI_SETWORDCHARS, 0, (LPARAM)characters);
 }
 
 void CScintilla::BeginUndoAction()
@@ -1115,37 +1117,37 @@ void CScintilla::EndUndoAction()
 
 void CScintilla::IndicSetStyle(int indic, int style)
 {
-	SPerform(SCI_INDICSETSTYLE, (long)indic, (long)style);
+	SPerform(SCI_INDICSETSTYLE, (WPARAM)indic, (LPARAM)style);
 }
 
 int CScintilla::IndicGetStyle(int indic)
 {
-	return (int)SPerform(SCI_INDICGETSTYLE, (long)indic, 0);
+	return (int)SPerform(SCI_INDICGETSTYLE, (WPARAM)indic, 0);
 }
 
 void CScintilla::IndicSetFore(int indic, COLORREF fore)
 {
-	SPerform(SCI_INDICSETFORE, (long)indic, (long)fore);
+	SPerform(SCI_INDICSETFORE, (WPARAM)indic, (LPARAM)fore);
 }
 
 COLORREF CScintilla::IndicGetFore(int indic)
 {
-	return (COLORREF)SPerform(SCI_INDICGETFORE, (long)indic, 0);
+	return (COLORREF)SPerform(SCI_INDICGETFORE, (WPARAM)indic, 0);
 }
 
 void CScintilla::SetWhitespaceFore(bool useSetting, COLORREF fore)
 {
-	SPerform(SCI_SETWHITESPACEFORE, (long)useSetting, (long)fore);
+	SPerform(SCI_SETWHITESPACEFORE, (WPARAM)useSetting, (LPARAM)fore);
 }
 
 void CScintilla::SetWhitespaceBack(bool useSetting, COLORREF back)
 {
-	SPerform(SCI_SETWHITESPACEBACK, (long)useSetting, (long)back);
+	SPerform(SCI_SETWHITESPACEBACK, (WPARAM)useSetting, (LPARAM)back);
 }
 
 void CScintilla::SetStyleBits(int bits)
 {
-	SPerform(SCI_SETSTYLEBITS, (long)bits, 0);
+	SPerform(SCI_SETSTYLEBITS, (WPARAM)bits, 0);
 }
 
 int CScintilla::GetStyleBits()
@@ -1155,12 +1157,12 @@ int CScintilla::GetStyleBits()
 
 void CScintilla::SetLineState(int line, int state)
 {
-	SPerform(SCI_SETLINESTATE, (long)line, (long)state);
+	SPerform(SCI_SETLINESTATE, (WPARAM)line, (LPARAM)state);
 }
 
 int CScintilla::GetLineState(int line)
 {
-	return (int)SPerform(SCI_GETLINESTATE, (long)line, 0);
+	return (int)SPerform(SCI_GETLINESTATE, (WPARAM)line, 0);
 }
 
 int CScintilla::GetMaxLineState()
@@ -1175,7 +1177,7 @@ bool CScintilla::GetCaretLineVisible()
 
 void CScintilla::SetCaretLineVisible(bool show)
 {
-	SPerform(SCI_SETCARETLINEVISIBLE, (long)show, 0);
+	SPerform(SCI_SETCARETLINEVISIBLE, (WPARAM)show, 0);
 }
 
 COLORREF CScintilla::GetCaretLineBack()
@@ -1185,17 +1187,17 @@ COLORREF CScintilla::GetCaretLineBack()
 
 void CScintilla::SetCaretLineBack(COLORREF back)
 {
-	SPerform(SCI_SETCARETLINEBACK, (long)back, 0);
+	SPerform(SCI_SETCARETLINEBACK, (WPARAM)back, 0);
 }
 
 void CScintilla::StyleSetChangeable(int style, bool changeable)
 {
-	SPerform(SCI_STYLESETCHANGEABLE, (long)style, (long)changeable);
+	SPerform(SCI_STYLESETCHANGEABLE, (WPARAM)style, (LPARAM)changeable);
 }
 
 void CScintilla::AutoCShow(int lenEntered, const char* itemList)
 {
-	SPerform(SCI_AUTOCSHOW, (long)lenEntered, (long)itemList);
+	SPerform(SCI_AUTOCSHOW, (WPARAM)lenEntered, (LPARAM)itemList);
 }
 
 void CScintilla::AutoCCancel()
@@ -1220,12 +1222,12 @@ void CScintilla::AutoCComplete()
 
 void CScintilla::AutoCStops(const char* characterSet)
 {
-	SPerform(SCI_AUTOCSTOPS, 0, (long)characterSet);
+	SPerform(SCI_AUTOCSTOPS, 0, (LPARAM)characterSet);
 }
 
 void CScintilla::AutoCSetSeparator(int separatorCharacter)
 {
-	SPerform(SCI_AUTOCSETSEPARATOR, (long)separatorCharacter, 0);
+	SPerform(SCI_AUTOCSETSEPARATOR, (WPARAM)separatorCharacter, 0);
 }
 
 int CScintilla::AutoCGetSeparator()
@@ -1235,12 +1237,12 @@ int CScintilla::AutoCGetSeparator()
 
 void CScintilla::AutoCSelect(const char* text)
 {
-	SPerform(SCI_AUTOCSELECT, 0, (long)text);
+	SPerform(SCI_AUTOCSELECT, 0, (LPARAM)text);
 }
 
 void CScintilla::AutoCSetCancelAtStart(bool cancel)
 {
-	SPerform(SCI_AUTOCSETCANCELATSTART, (long)cancel, 0);
+	SPerform(SCI_AUTOCSETCANCELATSTART, (WPARAM)cancel, 0);
 }
 
 bool CScintilla::AutoCGetCancelAtStart()
@@ -1250,12 +1252,12 @@ bool CScintilla::AutoCGetCancelAtStart()
 
 void CScintilla::AutoCSetFillUps(const char* characterSet)
 {
-	SPerform(SCI_AUTOCSETFILLUPS, 0, (long)characterSet);
+	SPerform(SCI_AUTOCSETFILLUPS, 0, (LPARAM)characterSet);
 }
 
 void CScintilla::AutoCSetChooseSingle(bool chooseSingle)
 {
-	SPerform(SCI_AUTOCSETCHOOSESINGLE, (long)chooseSingle, 0);
+	SPerform(SCI_AUTOCSETCHOOSESINGLE, (WPARAM)chooseSingle, 0);
 }
 
 bool CScintilla::AutoCGetChooseSingle()
@@ -1265,7 +1267,7 @@ bool CScintilla::AutoCGetChooseSingle()
 
 void CScintilla::AutoCSetIgnoreCase(bool ignoreCase)
 {
-	SPerform(SCI_AUTOCSETIGNORECASE, (long)ignoreCase, 0);
+	SPerform(SCI_AUTOCSETIGNORECASE, (WPARAM)ignoreCase, 0);
 }
 
 bool CScintilla::AutoCGetIgnoreCase()
@@ -1275,12 +1277,12 @@ bool CScintilla::AutoCGetIgnoreCase()
 
 void CScintilla::UserListShow(int listType, const char* itemList)
 {
-	SPerform(SCI_USERLISTSHOW, (long)listType, (long)itemList);
+	SPerform(SCI_USERLISTSHOW, (WPARAM)listType, (LPARAM)itemList);
 }
 
 void CScintilla::AutoCSetAutoHide(bool autoHide)
 {
-	SPerform(SCI_AUTOCSETAUTOHIDE, (long)autoHide, 0);
+	SPerform(SCI_AUTOCSETAUTOHIDE, (WPARAM)autoHide, 0);
 }
 
 bool CScintilla::AutoCGetAutoHide()
@@ -1290,7 +1292,7 @@ bool CScintilla::AutoCGetAutoHide()
 
 void CScintilla::AutoCSetDropRestOfWord(bool dropRestOfWord)
 {
-	SPerform(SCI_AUTOCSETDROPRESTOFWORD, (long)dropRestOfWord, 0);
+	SPerform(SCI_AUTOCSETDROPRESTOFWORD, (WPARAM)dropRestOfWord, 0);
 }
 
 bool CScintilla::AutoCGetDropRestOfWord()
@@ -1300,7 +1302,7 @@ bool CScintilla::AutoCGetDropRestOfWord()
 
 void CScintilla::RegisterImage(int type, const char* xpmData)
 {
-	SPerform(SCI_REGISTERIMAGE, (long)type, (long)xpmData);
+	SPerform(SCI_REGISTERIMAGE, (WPARAM)type, (LPARAM)xpmData);
 }
 
 void CScintilla::ClearRegisteredImages()
@@ -1315,12 +1317,12 @@ int CScintilla::AutoCGetTypeSeparator()
 
 void CScintilla::AutoCSetTypeSeparator(int separatorCharacter)
 {
-	SPerform(SCI_AUTOCSETTYPESEPARATOR, (long)separatorCharacter, 0);
+	SPerform(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)separatorCharacter, 0);
 }
 
 void CScintilla::SetIndent(int indentSize)
 {
-	SPerform(SCI_SETINDENT, (long)indentSize, 0);
+	SPerform(SCI_SETINDENT, (WPARAM)indentSize, 0);
 }
 
 int CScintilla::GetIndent()
@@ -1330,7 +1332,7 @@ int CScintilla::GetIndent()
 
 void CScintilla::SetUseTabs(bool useTabs)
 {
-	SPerform(SCI_SETUSETABS, (long)useTabs, 0);
+	SPerform(SCI_SETUSETABS, (WPARAM)useTabs, 0);
 }
 
 bool CScintilla::GetUseTabs()
@@ -1340,17 +1342,17 @@ bool CScintilla::GetUseTabs()
 
 void CScintilla::SetLineIndentation(int line, int indentSize)
 {
-	SPerform(SCI_SETLINEINDENTATION, (long)line, (long)indentSize);
+	SPerform(SCI_SETLINEINDENTATION, (WPARAM)line, (LPARAM)indentSize);
 }
 
 int CScintilla::GetLineIndentation(int line)
 {
-	return (int)SPerform(SCI_GETLINEINDENTATION, (long)line, 0);
+	return (int)SPerform(SCI_GETLINEINDENTATION, (WPARAM)line, 0);
 }
 
 long CScintilla::GetLineIndentPosition(int line)
 {
-	return SPerform(SCI_GETLINEINDENTPOSITION, (long)line, 0);
+	return SPerform(SCI_GETLINEINDENTPOSITION, (WPARAM)line, 0);
 }
 
 int CScintilla::GetColumn(long pos)
@@ -1360,7 +1362,7 @@ int CScintilla::GetColumn(long pos)
 
 void CScintilla::SetHScrollBar(bool show)
 {
-	SPerform(SCI_SETHSCROLLBAR, (long)show, 0);
+	SPerform(SCI_SETHSCROLLBAR, (WPARAM)show, 0);
 }
 
 bool CScintilla::GetHScrollBar()
@@ -1370,7 +1372,7 @@ bool CScintilla::GetHScrollBar()
 
 void CScintilla::SetIndentationGuides(bool show)
 {
-	SPerform(SCI_SETINDENTATIONGUIDES, (long)show, 0);
+	SPerform(SCI_SETINDENTATIONGUIDES, (WPARAM)show, 0);
 }
 
 bool CScintilla::GetIndentationGuides()
@@ -1380,7 +1382,7 @@ bool CScintilla::GetIndentationGuides()
 
 void CScintilla::SetHighlightGuide(int column)
 {
-	SPerform(SCI_SETHIGHLIGHTGUIDE, (long)column, 0);
+	SPerform(SCI_SETHIGHLIGHTGUIDE, (WPARAM)column, 0);
 }
 
 int CScintilla::GetHighlightGuide()
@@ -1390,7 +1392,7 @@ int CScintilla::GetHighlightGuide()
 
 int CScintilla::GetLineEndPosition(int line)
 {
-	return (int)SPerform(SCI_GETLINEENDPOSITION, (long)line, 0);
+	return (int)SPerform(SCI_GETLINEENDPOSITION, (WPARAM)line, 0);
 }
 
 int CScintilla::GetCodePage()
@@ -1440,7 +1442,7 @@ long CScintilla::GetSelectionEnd()
 
 void CScintilla::SetPrintMagnification(int magnification)
 {
-	SPerform(SCI_SETPRINTMAGNIFICATION, (long)magnification, 0);
+	SPerform(SCI_SETPRINTMAGNIFICATION, (WPARAM)magnification, 0);
 }
 
 int CScintilla::GetPrintMagnification()
@@ -1450,7 +1452,7 @@ int CScintilla::GetPrintMagnification()
 
 void CScintilla::SetPrintColourMode(int mode)
 {
-	SPerform(SCI_SETPRINTCOLOURMODE, (long)mode, 0);
+	SPerform(SCI_SETPRINTCOLOURMODE, (WPARAM)mode, 0);
 }
 
 int CScintilla::GetPrintColourMode()
@@ -1460,12 +1462,12 @@ int CScintilla::GetPrintColourMode()
 
 long CScintilla::FindText(int flags, Scintilla::TextToFind* ft)
 {
-	return SPerform(SCI_FINDTEXT, (long)flags, (long)ft);
+	return SPerform(SCI_FINDTEXT, (WPARAM)flags, (LPARAM)ft);
 }
 
 long CScintilla::FormatRange(bool draw, long fr)
 {
-	return SPerform(SCI_FORMATRANGE, (long)draw, fr);
+	return SPerform(SCI_FORMATRANGE, (WPARAM)draw, (LPARAM)fr);
 }
 
 int CScintilla::GetFirstVisibleLine()
@@ -1475,7 +1477,7 @@ int CScintilla::GetFirstVisibleLine()
 
 int CScintilla::GetLine(int line, char* text)
 {
-	return (int)SPerform(SCI_GETLINE, (long)line, (long)text);
+	return (int)SPerform(SCI_GETLINE, (WPARAM)line, (LPARAM)text);
 }
 
 int CScintilla::GetLineCount()
@@ -1485,7 +1487,7 @@ int CScintilla::GetLineCount()
 
 void CScintilla::SetMarginLeft(int pixelWidth)
 {
-	SPerform(SCI_SETMARGINLEFT, 0, (long)pixelWidth);
+	SPerform(SCI_SETMARGINLEFT, 0, (LPARAM)pixelWidth);
 }
 
 int CScintilla::GetMarginLeft()
@@ -1495,7 +1497,7 @@ int CScintilla::GetMarginLeft()
 
 void CScintilla::SetMarginRight(int pixelWidth)
 {
-	SPerform(SCI_SETMARGINRIGHT, 0, (long)pixelWidth);
+	SPerform(SCI_SETMARGINRIGHT, 0, (LPARAM)pixelWidth);
 }
 
 int CScintilla::GetMarginRight()
@@ -1515,7 +1517,7 @@ void CScintilla::SetSel(long start, long end)
 
 int CScintilla::GetSelText(char* text)
 {
-	return (int)SPerform(SCI_GETSELTEXT, 0, (long)text);
+	return (int)SPerform(SCI_GETSELTEXT, 0, (LPARAM)text);
 }
 
 std::string CScintilla::GetSelText()
@@ -1548,7 +1550,7 @@ std::string CScintilla::GetSelText()
 
 int CScintilla::GetTextRange(Scintilla::TextRange* tr)
 {
-	return (int)SPerform(SCI_GETTEXTRANGE, 0, (long)tr);
+	return (int)SPerform(SCI_GETTEXTRANGE, 0, (LPARAM)tr);
 }
 
 std::string CScintilla::GetTextRange(int start, int end)
@@ -1573,7 +1575,7 @@ std::string CScintilla::GetTextRange(int start, int end)
 
 void CScintilla::HideSelection(bool normal)
 {
-	SPerform(SCI_HIDESELECTION, (long)normal, 0);
+	SPerform(SCI_HIDESELECTION, (WPARAM)normal, 0);
 }
 
 int CScintilla::PointXFromPosition(long pos)
@@ -1593,12 +1595,12 @@ int CScintilla::LineFromPosition(long pos)
 
 long CScintilla::PositionFromLine(int line)
 {
-	return SPerform(SCI_POSITIONFROMLINE, (long)line, 0);
+	return SPerform(SCI_POSITIONFROMLINE, (WPARAM)line, 0);
 }
 
 void CScintilla::LineScroll(int columns, int lines)
 {
-	SPerform(SCI_LINESCROLL, (long)columns, (long)lines);
+	SPerform(SCI_LINESCROLL, (WPARAM)columns, (LPARAM)lines);
 }
 
 void CScintilla::ScrollCaret()
@@ -1608,12 +1610,12 @@ void CScintilla::ScrollCaret()
 
 void CScintilla::ReplaceSel(const char* text)
 {
-	SPerform(SCI_REPLACESEL, 0, (long)text);
+	SPerform(SCI_REPLACESEL, 0, (LPARAM)text);
 }
 
 void CScintilla::SetReadOnly(bool readOnly)
 {
-	SPerform(SCI_SETREADONLY, (long)readOnly, 0);
+	SPerform(SCI_SETREADONLY, (WPARAM)readOnly, 0);
 }
 
 void CScintilla::Null()
@@ -1663,12 +1665,12 @@ void CScintilla::Clear()
 
 void CScintilla::SetText(const char* text)
 {
-	SPerform(SCI_SETTEXT, 0, (long)text);
+	SPerform(SCI_SETTEXT, 0, (LPARAM)text);
 }
 
 int CScintilla::GetText(int length, char* text)
 {
-	return (int)SPerform(SCI_GETTEXT, (long)length, (long)text);
+	return (int)SPerform(SCI_GETTEXT, (WPARAM)length, (LPARAM)text);
 }
 
 int CScintilla::GetTextLength()
@@ -1688,7 +1690,7 @@ int CScintilla::GetDirectPointer()
 
 void CScintilla::SetOvertype(bool overtype)
 {
-	SPerform(SCI_SETOVERTYPE, (long)overtype, 0);
+	SPerform(SCI_SETOVERTYPE, (WPARAM)overtype, 0);
 }
 
 bool CScintilla::GetOvertype()
@@ -1698,7 +1700,7 @@ bool CScintilla::GetOvertype()
 
 void CScintilla::SetCaretWidth(int pixelWidth)
 {
-	SPerform(SCI_SETCARETWIDTH, (long)pixelWidth, 0);
+	SPerform(SCI_SETCARETWIDTH, (WPARAM)pixelWidth, 0);
 }
 
 int CScintilla::GetCaretWidth()
@@ -1728,22 +1730,22 @@ long CScintilla::GetTargetEnd()
 
 int CScintilla::ReplaceTarget(int length, const char* text)
 {
-	return (int)SPerform(SCI_REPLACETARGET, (long)length, (long)text);
+	return (int)SPerform(SCI_REPLACETARGET, (WPARAM)length, (LPARAM)text);
 }
 
 int CScintilla::ReplaceTargetRE(int length, const char* text)
 {
-	return (int)SPerform(SCI_REPLACETARGETRE, (long)length, (long)text);
+	return (int)SPerform(SCI_REPLACETARGETRE, (WPARAM)length, (LPARAM)text);
 }
 
 int CScintilla::SearchInTarget(int length, const char* text)
 {
-	return (int)SPerform(SCI_SEARCHINTARGET, (long)length, (long)text);
+	return (int)SPerform(SCI_SEARCHINTARGET, (WPARAM)length, (LPARAM)text);
 }
 
 void CScintilla::SetSearchFlags(int flags)
 {
-	SPerform(SCI_SETSEARCHFLAGS, (long)flags, 0);
+	SPerform(SCI_SETSEARCHFLAGS, (WPARAM)flags, 0);
 }
 
 int CScintilla::GetSearchFlags()
@@ -1753,7 +1755,7 @@ int CScintilla::GetSearchFlags()
 
 void CScintilla::CallTipShow(long pos, const char* definition)
 {
-	SPerform(SCI_CALLTIPSHOW, pos, (long)definition);
+	SPerform(SCI_CALLTIPSHOW, pos, (LPARAM)definition);
 }
 
 void CScintilla::CallTipCancel()
@@ -1773,102 +1775,102 @@ long CScintilla::CallTipPosStart()
 
 void CScintilla::CallTipSetHlt(int start, int end)
 {
-	SPerform(SCI_CALLTIPSETHLT, (long)start, (long)end);
+	SPerform(SCI_CALLTIPSETHLT, (WPARAM)start, (LPARAM)end);
 }
 
 void CScintilla::CallTipSetBack(COLORREF back)
 {
-	SPerform(SCI_CALLTIPSETBACK, (long)back, 0);
+	SPerform(SCI_CALLTIPSETBACK, (WPARAM)back, 0);
 }
 
 void CScintilla::CallTipSetFore(COLORREF fore)
 {
-	SPerform(SCI_CALLTIPSETFORE, (long)fore, 0);
+	SPerform(SCI_CALLTIPSETFORE, (WPARAM)fore, 0);
 }
 
 void CScintilla::CallTipSetForeHlt(COLORREF fore)
 {
-	SPerform(SCI_CALLTIPSETFOREHLT, (long)fore, 0);
+	SPerform(SCI_CALLTIPSETFOREHLT, (WPARAM)fore, 0);
 }
 
 int CScintilla::VisibleFromDocLine(int line)
 {
-	return (int)SPerform(SCI_VISIBLEFROMDOCLINE, (long)line, 0);
+	return (int)SPerform(SCI_VISIBLEFROMDOCLINE, (WPARAM)line, 0);
 }
 
 int CScintilla::DocLineFromVisible(int lineDisplay)
 {
-	return (int)SPerform(SCI_DOCLINEFROMVISIBLE, (long)lineDisplay, 0);
+	return (int)SPerform(SCI_DOCLINEFROMVISIBLE, (WPARAM)lineDisplay, 0);
 }
 
 void CScintilla::SetFoldLevel(int line, int level)
 {
-	SPerform(SCI_SETFOLDLEVEL, (long)line, (long)level);
+	SPerform(SCI_SETFOLDLEVEL, (WPARAM)line, (LPARAM)level);
 }
 
 int CScintilla::GetFoldLevel(int line)
 {
-	return (int)SPerform(SCI_GETFOLDLEVEL, (long)line, 0);
+	return (int)SPerform(SCI_GETFOLDLEVEL, (WPARAM)line, 0);
 }
 
 int CScintilla::GetLastChild(int line, int level)
 {
-	return (int)SPerform(SCI_GETLASTCHILD, (long)line, (long)level);
+	return (int)SPerform(SCI_GETLASTCHILD, (WPARAM)line, (LPARAM)level);
 }
 
 int CScintilla::GetFoldParent(int line)
 {
-	return (int)SPerform(SCI_GETFOLDPARENT, (long)line, 0);
+	return (int)SPerform(SCI_GETFOLDPARENT, (WPARAM)line, 0);
 }
 
 void CScintilla::ShowLines(int lineStart, int lineEnd)
 {
-	SPerform(SCI_SHOWLINES, (long)lineStart, (long)lineEnd);
+	SPerform(SCI_SHOWLINES, (WPARAM)lineStart, (LPARAM)lineEnd);
 }
 
 void CScintilla::HideLines(int lineStart, int lineEnd)
 {
-	SPerform(SCI_HIDELINES, (long)lineStart, (long)lineEnd);
+	SPerform(SCI_HIDELINES, (WPARAM)lineStart, (LPARAM)lineEnd);
 }
 
 bool CScintilla::GetLineVisible(int line)
 {
-	return SPerform(SCI_GETLINEVISIBLE, (long)line, 0) != 0;
+	return SPerform(SCI_GETLINEVISIBLE, (WPARAM)line, 0) != 0;
 }
 
 void CScintilla::SetFoldExpanded(int line, bool expanded)
 {
-	SPerform(SCI_SETFOLDEXPANDED, (long)line, (long)expanded);
+	SPerform(SCI_SETFOLDEXPANDED, (WPARAM)line, (LPARAM)expanded);
 }
 
 bool CScintilla::GetFoldExpanded(int line)
 {
-	return SPerform(SCI_GETFOLDEXPANDED, (long)line, 0) != 0;
+	return SPerform(SCI_GETFOLDEXPANDED, (WPARAM)line, 0) != 0;
 }
 
 void CScintilla::ToggleFold(int line)
 {
-	SPerform(SCI_TOGGLEFOLD, (long)line, 0);
+	SPerform(SCI_TOGGLEFOLD, (WPARAM)line, 0);
 }
 
 void CScintilla::EnsureVisible(int line)
 {
-	SPerform(SCI_ENSUREVISIBLE, (long)line, 0);
+	SPerform(SCI_ENSUREVISIBLE, (WPARAM)line, 0);
 }
 
 void CScintilla::SetFoldFlags(int flags)
 {
-	SPerform(SCI_SETFOLDFLAGS, (long)flags, 0);
+	SPerform(SCI_SETFOLDFLAGS, (WPARAM)flags, 0);
 }
 
 void CScintilla::EnsureVisibleEnforcePolicy(int line)
 {
-	SPerform(SCI_ENSUREVISIBLEENFORCEPOLICY, (long)line, 0);
+	SPerform(SCI_ENSUREVISIBLEENFORCEPOLICY, (WPARAM)line, 0);
 }
 
 void CScintilla::SetTabIndents(bool tabIndents)
 {
-	SPerform(SCI_SETTABINDENTS, (long)tabIndents, 0);
+	SPerform(SCI_SETTABINDENTS, (WPARAM)tabIndents, 0);
 }
 
 bool CScintilla::GetTabIndents()
@@ -1878,7 +1880,7 @@ bool CScintilla::GetTabIndents()
 
 void CScintilla::SetBackSpaceUnIndents(bool bsUnIndents)
 {
-	SPerform(SCI_SETBACKSPACEUNINDENTS, (long)bsUnIndents, 0);
+	SPerform(SCI_SETBACKSPACEUNINDENTS, (WPARAM)bsUnIndents, 0);
 }
 
 bool CScintilla::GetBackSpaceUnIndents()
@@ -1888,7 +1890,7 @@ bool CScintilla::GetBackSpaceUnIndents()
 
 void CScintilla::SetMouseDwellTime(int periodMilliseconds)
 {
-	SPerform(SCI_SETMOUSEDWELLTIME, (long)periodMilliseconds, 0);
+	SPerform(SCI_SETMOUSEDWELLTIME, (WPARAM)periodMilliseconds, 0);
 }
 
 int CScintilla::GetMouseDwellTime()
@@ -1898,17 +1900,17 @@ int CScintilla::GetMouseDwellTime()
 
 int CScintilla::WordStartPosition(long pos, bool onlyWordCharacters)
 {
-	return (int)SPerform(SCI_WORDSTARTPOSITION, pos, (long)onlyWordCharacters);
+	return (int)SPerform(SCI_WORDSTARTPOSITION, pos, (LPARAM)onlyWordCharacters);
 }
 
 int CScintilla::WordEndPosition(long pos, bool onlyWordCharacters)
 {
-	return (int)SPerform(SCI_WORDENDPOSITION, pos, (long)onlyWordCharacters);
+	return (int)SPerform(SCI_WORDENDPOSITION, pos, (LPARAM)onlyWordCharacters);
 }
 
 void CScintilla::SetWrapMode(int mode)
 {
-	SPerform(SCI_SETWRAPMODE, (long)mode, 0);
+	SPerform(SCI_SETWRAPMODE, (WPARAM)mode, 0);
 }
 
 int CScintilla::GetWrapMode()
@@ -1918,7 +1920,7 @@ int CScintilla::GetWrapMode()
 
 void CScintilla::SetLayoutCache(int mode)
 {
-	SPerform(SCI_SETLAYOUTCACHE, (long)mode, 0);
+	SPerform(SCI_SETLAYOUTCACHE, (WPARAM)mode, 0);
 }
 
 int CScintilla::GetLayoutCache()
@@ -1928,7 +1930,7 @@ int CScintilla::GetLayoutCache()
 
 void CScintilla::SetScrollWidth(int pixelWidth)
 {
-	SPerform(SCI_SETSCROLLWIDTH, (long)pixelWidth, 0);
+	SPerform(SCI_SETSCROLLWIDTH, (WPARAM)pixelWidth, 0);
 }
 
 int CScintilla::GetScrollWidth()
@@ -1938,12 +1940,12 @@ int CScintilla::GetScrollWidth()
 
 int CScintilla::TextWidth(int style, const char* text)
 {
-	return (int)SPerform(SCI_TEXTWIDTH, (long)style, (long)text);
+	return (int)SPerform(SCI_TEXTWIDTH, (WPARAM)style, (LPARAM)text);
 }
 
 void CScintilla::SetEndAtLastLine(bool endAtLastLine)
 {
-	SPerform(SCI_SETENDATLASTLINE, (long)endAtLastLine, 0);
+	SPerform(SCI_SETENDATLASTLINE, (WPARAM)endAtLastLine, 0);
 }
 
 int CScintilla::GetEndAtLastLine()
@@ -1953,12 +1955,12 @@ int CScintilla::GetEndAtLastLine()
 
 int CScintilla::TextHeight(int line)
 {
-	return (int)SPerform(SCI_TEXTHEIGHT, (long)line, 0);
+	return (int)SPerform(SCI_TEXTHEIGHT, (WPARAM)line, 0);
 }
 
 void CScintilla::SetVScrollBar(bool show)
 {
-	SPerform(SCI_SETVSCROLLBAR, (long)show, 0);
+	SPerform(SCI_SETVSCROLLBAR, (WPARAM)show, 0);
 }
 
 bool CScintilla::GetVScrollBar()
@@ -1968,7 +1970,7 @@ bool CScintilla::GetVScrollBar()
 
 void CScintilla::AppendText(int length, const char* text)
 {
-	SPerform(SCI_APPENDTEXT, (long)length, (long)text);
+	SPerform(SCI_APPENDTEXT, (WPARAM)length, (LPARAM)text);
 }
 
 bool CScintilla::GetTwoPhaseDraw()
@@ -1978,7 +1980,7 @@ bool CScintilla::GetTwoPhaseDraw()
 
 void CScintilla::SetTwoPhaseDraw(bool twoPhase)
 {
-	SPerform(SCI_SETTWOPHASEDRAW, (long)twoPhase, 0);
+	SPerform(SCI_SETTWOPHASEDRAW, (WPARAM)twoPhase, 0);
 }
 
 void CScintilla::TargetFromSelection()
@@ -1993,17 +1995,17 @@ void CScintilla::LinesJoin()
 
 void CScintilla::LinesSplit(int pixelWidth)
 {
-	SPerform(SCI_LINESSPLIT, (long)pixelWidth, 0);
+	SPerform(SCI_LINESSPLIT, (WPARAM)pixelWidth, 0);
 }
 
 void CScintilla::SetFoldMarginColour(bool useSetting, COLORREF back)
 {
-	SPerform(SCI_SETFOLDMARGINCOLOUR, (long)useSetting, (long)back);
+	SPerform(SCI_SETFOLDMARGINCOLOUR, (WPARAM)useSetting, (LPARAM)back);
 }
 
 void CScintilla::SetFoldMarginHiColour(bool useSetting, COLORREF fore)
 {
-	SPerform(SCI_SETFOLDMARGINHICOLOUR, (long)useSetting, (long)fore);
+	SPerform(SCI_SETFOLDMARGINHICOLOUR, (WPARAM)useSetting, (LPARAM)fore);
 }
 
 void CScintilla::LineDown()
@@ -2298,7 +2300,7 @@ void CScintilla::MoveCaretInsideView()
 
 int CScintilla::LineLength(int line)
 {
-	return (int)SPerform(SCI_LINELENGTH, (long)line, 0);
+	return (int)SPerform(SCI_LINELENGTH, (WPARAM)line, 0);
 }
 
 void CScintilla::BraceHighlight(long pos1, long pos2)
@@ -2323,7 +2325,7 @@ bool CScintilla::GetViewEOL()
 
 void CScintilla::SetViewEOL(bool visible)
 {
-	SPerform(SCI_SETVIEWEOL, (long)visible, 0);
+	SPerform(SCI_SETVIEWEOL, (WPARAM)visible, 0);
 }
 
 int CScintilla::GetDocPointer()
@@ -2333,12 +2335,12 @@ int CScintilla::GetDocPointer()
 
 void CScintilla::SetDocPointer(int pointer)
 {
-	SPerform(SCI_SETDOCPOINTER, 0, (long)pointer);
+	SPerform(SCI_SETDOCPOINTER, 0, (LPARAM)pointer);
 }
 
 void CScintilla::SetModEventMask(int mask)
 {
-	SPerform(SCI_SETMODEVENTMASK, (long)mask, 0);
+	SPerform(SCI_SETMODEVENTMASK, (WPARAM)mask, 0);
 }
 
 int CScintilla::GetEdgeColumn()
@@ -2348,7 +2350,7 @@ int CScintilla::GetEdgeColumn()
 
 void CScintilla::SetEdgeColumn(int column)
 {
-	SPerform(SCI_SETEDGECOLUMN, (long)column, 0);
+	SPerform(SCI_SETEDGECOLUMN, (WPARAM)column, 0);
 }
 
 int CScintilla::GetEdgeMode()
@@ -2358,7 +2360,7 @@ int CScintilla::GetEdgeMode()
 
 void CScintilla::SetEdgeMode(int mode)
 {
-	SPerform(SCI_SETEDGEMODE, (long)mode, 0);
+	SPerform(SCI_SETEDGEMODE, (WPARAM)mode, 0);
 }
 
 COLORREF CScintilla::GetEdgeColour()
@@ -2368,7 +2370,7 @@ COLORREF CScintilla::GetEdgeColour()
 
 void CScintilla::SetEdgeColour(COLORREF edgeColour)
 {
-	SPerform(SCI_SETEDGECOLOUR, (long)edgeColour, 0);
+	SPerform(SCI_SETEDGECOLOUR, (WPARAM)edgeColour, 0);
 }
 
 void CScintilla::SearchAnchor()
@@ -2378,12 +2380,12 @@ void CScintilla::SearchAnchor()
 
 int CScintilla::SearchNext(int flags, const char* text)
 {
-	return (int)SPerform(SCI_SEARCHNEXT, (long)flags, (long)text);
+	return (int)SPerform(SCI_SEARCHNEXT, (WPARAM)flags, (LPARAM)text);
 }
 
 int CScintilla::SearchPrev(int flags, const char* text)
 {
-	return (int)SPerform(SCI_SEARCHPREV, (long)flags, (long)text);
+	return (int)SPerform(SCI_SEARCHPREV, (WPARAM)flags, (LPARAM)text);
 }
 
 int CScintilla::LinesOnScreen()
@@ -2393,7 +2395,7 @@ int CScintilla::LinesOnScreen()
 
 void CScintilla::UsePopUp(bool allowPopUp)
 {
-	SPerform(SCI_USEPOPUP, (long)allowPopUp, 0);
+	SPerform(SCI_USEPOPUP, (WPARAM)allowPopUp, 0);
 }
 
 bool CScintilla::SelectionIsRectangle()
@@ -2403,7 +2405,7 @@ bool CScintilla::SelectionIsRectangle()
 
 void CScintilla::SetZoom(int zoom)
 {
-	SPerform(SCI_SETZOOM, (long)zoom, 0);
+	SPerform(SCI_SETZOOM, (WPARAM)zoom, 0);
 }
 
 int CScintilla::GetZoom()
@@ -2418,12 +2420,12 @@ int CScintilla::CreateDocument()
 
 void CScintilla::AddRefDocument(int doc)
 {
-	SPerform(SCI_ADDREFDOCUMENT, 0, (long)doc);
+	SPerform(SCI_ADDREFDOCUMENT, 0, (LPARAM)doc);
 }
 
 void CScintilla::ReleaseDocument(int doc)
 {
-	SPerform(SCI_RELEASEDOCUMENT, 0, (long)doc);
+	SPerform(SCI_RELEASEDOCUMENT, 0, (LPARAM)doc);
 }
 
 int CScintilla::GetModEventMask()
@@ -2433,7 +2435,7 @@ int CScintilla::GetModEventMask()
 
 void CScintilla::SetEditorFocus(bool focus)
 {
-	SPerform(SCI_SETFOCUS, (long)focus, 0);
+	SPerform(SCI_SETFOCUS, (WPARAM)focus, 0);
 }
 
 bool CScintilla::GetFocus()
@@ -2443,7 +2445,7 @@ bool CScintilla::GetFocus()
 
 void CScintilla::SetStatus(int statusCode)
 {
-	SPerform(SCI_SETSTATUS, (long)statusCode, 0);
+	SPerform(SCI_SETSTATUS, (WPARAM)statusCode, 0);
 }
 
 int CScintilla::GetStatus()
@@ -2453,7 +2455,7 @@ int CScintilla::GetStatus()
 
 void CScintilla::SetMouseDownCaptures(bool captures)
 {
-	SPerform(SCI_SETMOUSEDOWNCAPTURES, (long)captures, 0);
+	SPerform(SCI_SETMOUSEDOWNCAPTURES, (WPARAM)captures, 0);
 }
 
 bool CScintilla::GetMouseDownCaptures()
@@ -2463,7 +2465,7 @@ bool CScintilla::GetMouseDownCaptures()
 
 void CScintilla::SetCursor(int cursorType)
 {
-	SPerform(SCI_SETCURSOR, (long)cursorType, 0);
+	SPerform(SCI_SETCURSOR, (WPARAM)cursorType, 0);
 }
 
 int CScintilla::GetCursor()
@@ -2473,7 +2475,7 @@ int CScintilla::GetCursor()
 
 void CScintilla::SetControlCharSymbol(int symbol)
 {
-	SPerform(SCI_SETCONTROLCHARSYMBOL, (long)symbol, 0);
+	SPerform(SCI_SETCONTROLCHARSYMBOL, (WPARAM)symbol, 0);
 }
 
 int CScintilla::GetControlCharSymbol()
@@ -2503,7 +2505,7 @@ void CScintilla::WordPartRightExtend()
 
 void CScintilla::SetVisiblePolicy(int visiblePolicy, int visibleSlop)
 {
-	SPerform(SCI_SETVISIBLEPOLICY, (long)visiblePolicy, (long)visibleSlop);
+	SPerform(SCI_SETVISIBLEPOLICY, (WPARAM)visiblePolicy, (LPARAM)visibleSlop);
 }
 
 void CScintilla::DelLineLeft()
@@ -2518,7 +2520,7 @@ void CScintilla::DelLineRight()
 
 void CScintilla::SetXOffset(int newOffset)
 {
-	SPerform(SCI_SETXOFFSET, (long)newOffset, 0);
+	SPerform(SCI_SETXOFFSET, (WPARAM)newOffset, 0);
 }
 
 int CScintilla::GetXOffset()
@@ -2538,17 +2540,17 @@ void CScintilla::GrabFocus()
 
 void CScintilla::SetXCaretPolicy(int caretPolicy, int caretSlop)
 {
-	SPerform(SCI_SETXCARETPOLICY, (long)caretPolicy, (long)caretSlop);
+	SPerform(SCI_SETXCARETPOLICY, (WPARAM)caretPolicy, (LPARAM)caretSlop);
 }
 
 void CScintilla::SetYCaretPolicy(int caretPolicy, int caretSlop)
 {
-	SPerform(SCI_SETYCARETPOLICY, (long)caretPolicy, (long)caretSlop);
+	SPerform(SCI_SETYCARETPOLICY, (WPARAM)caretPolicy, (LPARAM)caretSlop);
 }
 
 void CScintilla::SetPrintWrapMode(int mode)
 {
-	SPerform(SCI_SETPRINTWRAPMODE, (long)mode, 0);
+	SPerform(SCI_SETPRINTWRAPMODE, (WPARAM)mode, 0);
 }
 
 int CScintilla::GetPrintWrapMode()
@@ -2558,22 +2560,22 @@ int CScintilla::GetPrintWrapMode()
 
 void CScintilla::SetHotspotActiveFore(bool useSetting, COLORREF fore)
 {
-	SPerform(SCI_SETHOTSPOTACTIVEFORE, (long)useSetting, (long)fore);
+	SPerform(SCI_SETHOTSPOTACTIVEFORE, (WPARAM)useSetting, (LPARAM)fore);
 }
 
 void CScintilla::SetHotspotActiveBack(bool useSetting, COLORREF back)
 {
-	SPerform(SCI_SETHOTSPOTACTIVEBACK, (long)useSetting, (long)back);
+	SPerform(SCI_SETHOTSPOTACTIVEBACK, (WPARAM)useSetting, (LPARAM)back);
 }
 
 void CScintilla::SetHotspotActiveUnderline(bool underline)
 {
-	SPerform(SCI_SETHOTSPOTACTIVEUNDERLINE, (long)underline, 0);
+	SPerform(SCI_SETHOTSPOTACTIVEUNDERLINE, (WPARAM)underline, 0);
 }
 
 void CScintilla::SetHotspotSingleLine(bool singleLine)
 {
-	SPerform(SCI_SETHOTSPOTSINGLELINE, (long)singleLine, 0);
+	SPerform(SCI_SETHOTSPOTSINGLELINE, (WPARAM)singleLine, 0);
 }
 
 void CScintilla::ParaDown()
@@ -2613,12 +2615,12 @@ void CScintilla::CopyRange(long start, long end)
 
 void CScintilla::CopyText(int length, const char* text)
 {
-	SPerform(SCI_COPYTEXT, (long)length, (long)text);
+	SPerform(SCI_COPYTEXT, (WPARAM)length, (LPARAM)text);
 }
 
 void CScintilla::SetSelectionMode(int mode)
 {
-	SPerform(SCI_SETSELECTIONMODE, (long)mode, 0);
+	SPerform(SCI_SETSELECTIONMODE, (WPARAM)mode, 0);
 }
 
 int CScintilla::GetSelectionMode()
@@ -2628,12 +2630,12 @@ int CScintilla::GetSelectionMode()
 
 long CScintilla::GetLineSelStartPosition(int line)
 {
-	return SPerform(SCI_GETLINESELSTARTPOSITION, (long)line, 0);
+	return SPerform(SCI_GETLINESELSTARTPOSITION, (WPARAM)line, 0);
 }
 
 long CScintilla::GetLineSelEndPosition(int line)
 {
-	return SPerform(SCI_GETLINESELENDPOSITION, (long)line, 0);
+	return SPerform(SCI_GETLINESELENDPOSITION, (WPARAM)line, 0);
 }
 
 void CScintilla::LineDownRectExtend()
@@ -2723,7 +2725,7 @@ void CScintilla::WordRightEndExtend()
 
 void CScintilla::SetWhitespaceChars(const char* characters)
 {
-	SPerform(SCI_SETWHITESPACECHARS, 0, (long)characters);
+	SPerform(SCI_SETWHITESPACECHARS, 0, (LPARAM)characters);
 }
 
 void CScintilla::SetCharsDefault()
@@ -2738,7 +2740,7 @@ int CScintilla::AutoCGetCurrent()
 
 void CScintilla::Allocate(int bytes)
 {
-	SPerform(SCI_ALLOCATE, (long)bytes, 0);
+	SPerform(SCI_ALLOCATE, (WPARAM)bytes, 0);
 }
 
 void CScintilla::StartRecord()
@@ -2753,7 +2755,7 @@ void CScintilla::StopRecord()
 
 void CScintilla::SetLexer(int lexer)
 {
-	SPerform(SCI_SETLEXER, (long)lexer, 0);
+	SPerform(SCI_SETLEXER, (WPARAM)lexer, 0);
 }
 
 int CScintilla::GetLexer()
@@ -2768,27 +2770,27 @@ void CScintilla::Colourise(long start, long end)
 
 void CScintilla::SetProperty(const char* key, const char* value)
 {
-	SPerform(SCI_SETPROPERTY, (long)key, (long)value);
+	SPerform(SCI_SETPROPERTY, (WPARAM)key, (LPARAM)value);
 }
 
 void CScintilla::SetKeyWords(int keywordSet, const char* keyWords)
 {
-	SPerform(SCI_SETKEYWORDS, (long)keywordSet, (long)keyWords);
+	SPerform(SCI_SETKEYWORDS, (WPARAM)keywordSet, (LPARAM)keyWords);
 }
 
 void CScintilla::SetLexerLanguage(const char* language)
 {
-	SPerform(SCI_SETLEXERLANGUAGE, 0, (long)language);
+	SPerform(SCI_SETLEXERLANGUAGE, 0, (LPARAM)language);
 }
 
 void CScintilla::LoadLexerLibrary(const char* path)
 {
-	SPerform(SCI_LOADLEXERLIBRARY, 0, (long)path);
+	SPerform(SCI_LOADLEXERLIBRARY, 0, (LPARAM)path);
 }
 
 void CScintilla::SetPasteConvertEndings(bool convert)
 {
-	SPerform(SCI_SETPASTECONVERTENDINGS, (long)convert, 0);
+	SPerform(SCI_SETPASTECONVERTENDINGS, (WPARAM)convert, 0);
 }
 
 bool CScintilla::GetPasteConvertEndings()

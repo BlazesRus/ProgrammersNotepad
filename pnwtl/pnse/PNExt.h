@@ -3,7 +3,7 @@
 #pragma once
 
 #include "resource.h"       // main symbols
-#include "pnse.h"
+#include "pnse_h.h"
 
 // CPNExt
 
@@ -47,7 +47,7 @@ public:
 
 // IContextMenu
 public:
-    STDMETHOD(GetCommandString)(UINT, UINT, UINT*, LPSTR, UINT);
+    STDMETHOD(GetCommandString)(UINT_PTR, UINT, UINT*, LPSTR, UINT);
     STDMETHOD(InvokeCommand)(LPCMINVOKECOMMANDINFO);
     STDMETHOD(QueryContextMenu)(HMENU, UINT, UINT, UINT, UINT);
 

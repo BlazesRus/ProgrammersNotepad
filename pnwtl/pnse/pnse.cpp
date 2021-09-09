@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "pnse.h"
+#include "pnse_h.h"
 #include "module.h"
 
 CpnseModule _AtlModule;
