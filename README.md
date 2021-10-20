@@ -27,6 +27,7 @@ cd d:/vcpkg
 ./vcpkg integrate install
 
 ./vcpkg install wtl:x86-windows wtl:x64-windows
+./vcpkg install expat:x86-windows expat:x64-windows
 ./vcpkg install boost-config[core]:x86-windows boost-config[core]:x64-windows
 ./vcpkg install boost-foreach[core]:x86-windows boost-foreach[core]:x64-windows
 ./vcpkg install boost-function[core]:x86-windows boost-function[core]:x64-windows
