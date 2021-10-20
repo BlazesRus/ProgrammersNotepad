@@ -28,12 +28,13 @@ cd d:/vcpkg
 
 ./vcpkg install wtl:x86-windows wtl:x64-windows
 ./vcpkg install expat:x86-windows expat:x64-windows
+./vcpkg install python3:x86-windows python3:x64-windows
 ./vcpkg install boost-config[core]:x86-windows boost-config[core]:x64-windows
 ./vcpkg install boost-foreach[core]:x86-windows boost-foreach[core]:x64-windows
 ./vcpkg install boost-function[core]:x86-windows boost-function[core]:x64-windows
 ./vcpkg install boost-xpressive[core]:x86-windows boost-xpressive[core]:x64-windows
 ./vcpkg install boost-phoenix[core]:x86-windows boost-phoenix[core]:x64-windows
-./vcpkg install boost-python[core]:x86-windows boost-python[core]:x64-windows
+./vcpkg install boost-python:x86-windows boost-python:x64-windows
 ./vcpkg install boost-test[core]:x86-windows boost-test[core]:x64-windows
 ```
 - clone `pn` source code

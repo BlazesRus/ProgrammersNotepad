@@ -64,6 +64,9 @@
       <Command>copy scripts3k\init.py $(TargetDir)
 </Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy $(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib\python$(PythonVer)_d.lib $(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib\python$(PythonVer).lib</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>

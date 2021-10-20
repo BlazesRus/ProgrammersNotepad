@@ -11,7 +11,7 @@
     <BoostPythonTag>$(PythonMagorVer).$(PythonMinorVer)</BoostPythonTag>
     <PythonFolder>C:\Python$(PythonVer)</PythonFolder>
     <PythonInclude>$(PythonFolder)\include</PythonInclude>
-    <VcpkgPythonInclude>include/python$(PythonMagorVer).$(PythonMinorVer)</VcpkgPythonInclude>
+    <VcpkgPythonInclude>include/python$(BoostPythonTag)</VcpkgPythonInclude>
     <ThirdPartyLibs>$(SolutionDir)..\..\lib</ThirdPartyLibs>
     <WTLFolder>$(ThirdPartyLibs)\wtl\WTL90_4140_Final</WTLFolder>
     <WTLSvnFolder>$(ThirdPartyLibs)\wtl\wtl-code\wtl</WTLSvnFolder>
