@@ -15,12 +15,8 @@ jobs:
 
     steps:
 
-    - name: Set ACTIONS_ALLOW_UNSECURE_COMMANDS
-      run: |
-        set ACTIONS_ALLOW_UNSECURE_COMMANDS=true
-        
     - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
+      uses: microsoft/setup-msbuild@v1.0.3
       
     - name: Checkout
       uses: actions/checkout@v1
