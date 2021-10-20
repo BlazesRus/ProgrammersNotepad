@@ -39,9 +39,9 @@ jobs:
     - name: Build Solution Release
       run: |
         cd ${{ github.workspace }}/pnwtl
-        MSBuild.exe pn.sln -p:Configuration=Release
+        devenv pn.sln /build release
 
     - name: Build Solution Debug
       run: |
         cd ${{ github.workspace }}/pnwtl
-        MSBuild.exe pn.sln -p:Configuration=Debug
+        devenv pn.sln /build debug
