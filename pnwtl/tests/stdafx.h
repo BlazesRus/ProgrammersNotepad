@@ -46,9 +46,9 @@
 	#define DEBUG_NEW  new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
 #endif // #ifdef _DEBUG
 
-#include "../allocator.h"
-#include "../pnextstring.h"
-#include "../xmlparser.h"
+#include "../pn/allocator.h"
+#include "../pn/pnextstring.h"
+#include "../pn/xmlparser.h"
 
 #include <vector>
 #include <list>
@@ -77,12 +77,12 @@ namespace boost { namespace xpressive {
 }} // namespace boost::xpressive
 
 // PN Stuff:
-#include "../scintillaif.h"
-#include "../pnstrings.h"
-#include "../extiface.h"
-#include "../pntypes.h"
-#include "../files.h"
-#include "../filename.h"
+#include "../pn/scintillaif.h"
+#include "../pn/pnstrings.h"
+#include "../pn/extiface.h"
+#include "../pn/pntypes.h"
+#include "../pn/files.h"
+#include "../pn/filename.h"
 #include "mocks/mockoptions.h"
 
 extern IOptionsWithString* g_Options;

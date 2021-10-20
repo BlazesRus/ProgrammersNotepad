@@ -1,8 +1,8 @@
 #ifndef MOCKOPTIONS_H__INCLUDED
 #define MOCKOPTIONS_H__INCLUDED
 
-#include "../../IOptions.h"
-#include "../../extiface.h"
+#include "../../pn/IOptions.h"
+#include "../../pn/extiface.h"
 
 #pragma once
 

@@ -2,8 +2,8 @@
 
 #include <utility>
 #include <boost/test/unit_test.hpp>
-#include "../textclips.h"
-#include "../textclips/chunkparser.h"
+#include "../pn/textclips.h"
+#include "../pn/textclips/chunkparser.h"
 #include "mocks/mockscriptrunner.h"
 
 BOOST_AUTO_TEST_SUITE( snippet_parse_tests );

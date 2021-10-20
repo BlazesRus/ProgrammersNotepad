@@ -13,7 +13,7 @@
 #include "utils.h"
 #include "wrapscintilla.h"
 #include "recorder.h"
-#include "../include/encoding.h"
+#include "../pn/include/encoding.h"
 
 /*#if defined (_DEBUG)
 	#define new DEBUG_NEW

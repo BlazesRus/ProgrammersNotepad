@@ -50,9 +50,9 @@ extern std::wstring g_SchemesPath;
 #include <boost/function.hpp>
 
 // PN:
-#include "../allocator.h"
-#include "../pnextstring.h"
-#include "../extiface.h"
+#include "../pn/allocator.h"
+#include "../pn/pnextstring.h"
+#include "../pn/extiface.h"
 
 // Scintilla:
 #include "../third_party/scintilla/include/Scintilla.h"

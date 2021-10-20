@@ -6,11 +6,12 @@
     <VSNum>120</VSNum>
     <BoostVer>1_57_0</BoostVer>
     <PythonMagorVer>3</PythonMagorVer>
-    <PythonMinorVer>4</PythonMinorVer>
+    <PythonMinorVer>10</PythonMinorVer>
     <PythonVer>$(PythonMagorVer)$(PythonMinorVer)</PythonVer>
     <BoostPythonTag>$(PythonMagorVer).$(PythonMinorVer)</BoostPythonTag>
     <PythonFolder>C:\Python$(PythonVer)</PythonFolder>
     <PythonInclude>$(PythonFolder)\include</PythonInclude>
+    <VcpkgPythonInclude>include/python$(PythonMagorVer).$(PythonMinorVer)</VcpkgPythonInclude>
     <ThirdPartyLibs>$(SolutionDir)..\..\lib</ThirdPartyLibs>
     <WTLFolder>$(ThirdPartyLibs)\wtl\WTL90_4140_Final</WTLFolder>
     <WTLSvnFolder>$(ThirdPartyLibs)\wtl\wtl-code\wtl</WTLSvnFolder>

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "../third_party/genx/genx.h"
+#include "../../third_party/genx/genx.h"
 #include "../include/pngenx.h"
 
 namespace TextClips {

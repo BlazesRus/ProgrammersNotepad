@@ -9,7 +9,7 @@
  */
 
 #include "stdafx.h"
-#include "..\singleinstance.h"
+#include "..\pn\singleinstance.h"
 #include "PNExt.h"
 #include "module.h"
 

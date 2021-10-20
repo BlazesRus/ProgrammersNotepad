@@ -87,36 +87,36 @@
     </ClCompile>
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="userdatatests.cpp" />
-    <ClCompile Include="..\autocomplete.cpp" />
+    <ClCompile Include="..\pn\autocomplete.cpp" />
     <ClCompile Include="..\third_party\genx\charProps.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\textclips\chunk.cpp" />
-    <ClCompile Include="..\textclips\chunkparser.cpp" />
-    <ClCompile Include="..\textclips\clip.cpp" />
-    <ClCompile Include="..\textclips\clipmanager.cpp" />
-    <ClCompile Include="..\textclips\clipparser.cpp" />
-    <ClCompile Include="..\filename.cpp" />
-    <ClCompile Include="..\Files.cpp" />
+    <ClCompile Include="..\pn\textclips\chunk.cpp" />
+    <ClCompile Include="..\pn\textclips\chunkparser.cpp" />
+    <ClCompile Include="..\pn\textclips\clip.cpp" />
+    <ClCompile Include="..\pn\textclips\clipmanager.cpp" />
+    <ClCompile Include="..\pn\textclips\clipparser.cpp" />
+    <ClCompile Include="..\pn\filename.cpp" />
+    <ClCompile Include="..\pn\Files.cpp" />
     <ClCompile Include="..\third_party\genx\genx.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\projectmeta.cpp" />
-    <ClCompile Include="..\ScintillaIF.cpp" />
-    <ClCompile Include="..\textclips.cpp" />
-    <ClCompile Include="..\include\Utf8_16.cpp" />
-    <ClCompile Include="..\xmlparser.cpp" />
+    <ClCompile Include="..\pn\projectmeta.cpp" />
+    <ClCompile Include="..\pn\ScintillaIF.cpp" />
+    <ClCompile Include="..\pn\textclips.cpp" />
+    <ClCompile Include="..\pn\include\Utf8_16.cpp" />
+    <ClCompile Include="..\pn\xmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\autocomplete.h" />
-    <ClInclude Include="..\textclips\chunkparser.h" />
+    <ClInclude Include="..\pn\autocomplete.h" />
+    <ClInclude Include="..\pn\textclips\chunkparser.h" />
     <ClInclude Include="mocks\mockoptions.h" />
     <ClInclude Include="mocks\mockscriptrunner.h" />
   </ItemGroup>

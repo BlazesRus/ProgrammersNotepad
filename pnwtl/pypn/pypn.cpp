@@ -13,7 +13,7 @@
 #include "app.h"
 #include "modules.h"
 #include "utils.h"
-#include "../include/encoding.h"
+#include "../pn/include/encoding.h"
 
 using namespace boost::python;
 

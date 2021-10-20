@@ -27,6 +27,6 @@
 
 #define PNASSERT assert
 
-#include "../../allocator.h"
-#include "../../pnextstring.h"
-#include "../../extiface.h"
+#include "../../pn/allocator.h"
+#include "../../pn/pnextstring.h"
+#include "../../pn/extiface.h"

@@ -10,7 +10,7 @@
 #ifndef recorder_h__included
 #define recorder_h__included
 
-#include "../extiface.h"
+#include "../pn/extiface.h"
 
 class App;
 

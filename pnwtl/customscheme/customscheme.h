@@ -8,7 +8,7 @@
  * the conditions under which this source may be modified / distributed.
  */
 #include "schemelexer.h"
-#include "../xmlparser.h"
+#include "../pn/xmlparser.h"
 
 class CustomLexerFactory : public XMLParseState
 {

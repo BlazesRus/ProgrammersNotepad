@@ -20,7 +20,7 @@
 #define CPPNAVIGATOR_API __declspec(dllimport) __stdcall
 #endif
 
-#include "../../jumptointerface.h"
+#include "../../pn/jumptointerface.h"
 
 #include <string>
 

@@ -9,7 +9,7 @@
  */
 #include "stdafx.h"
 #include "CustomScheme.h"
-#include "../include/encoding.h"
+#include "../pn/include/encoding.h"
 
 #define STATE_DEFAULT		0
 #define STATE_INSCHEME		1

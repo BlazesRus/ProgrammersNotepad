@@ -33,6 +33,7 @@ cd d:/vcpkg
 ./vcpkg install boost-xpressive[core]:x86-windows boost-xpressive[core]:x64-windows
 ./vcpkg install boost-phoenix[core]:x86-windows boost-phoenix[core]:x64-windows
 ./vcpkg install boost-python[core]:x86-windows boost-python[core]:x64-windows
+./vcpkg install boost-test[core]:x86-windows boost-test[core]:x64-windows
 ```
 - clone `pn` source code
 ```

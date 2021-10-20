@@ -2,7 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../filename.h"
+#include "../pn/filename.h"
 
 BOOST_AUTO_TEST_SUITE( filename_tests );
 

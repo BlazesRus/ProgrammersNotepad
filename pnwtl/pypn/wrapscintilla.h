@@ -14,7 +14,7 @@
 	#pragma once
 #endif
 
-#include "../scintillaif.h"
+#include "../pn/scintillaif.h"
 
 #define PN_OVERWRITETARGET	(WM_APP+19)
 #define PN_INSERTCLIPTEXT   (WM_APP+23)

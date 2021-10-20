@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <boost/test/unit_test.hpp>
-#include "../include/liquidmetal.h"
+#include "../pn/include/liquidmetal.h"
 
 using namespace LiquidMetal;
 

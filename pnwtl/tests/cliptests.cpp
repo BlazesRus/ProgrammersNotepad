@@ -6,9 +6,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../textclips.h"
-#include "../textclips/clipmanager.h"
-#include "../scintillaif.h"
+#include "../pn/textclips.h"
+#include "../pn/textclips/clipmanager.h"
+#include "../pn/scintillaif.h"
 #include "mocks/mockoptions.h"
 
 static MockOptions options;

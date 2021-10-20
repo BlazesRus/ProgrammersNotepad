@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pn", "pn.vcxproj", "{09E60CEB-F210-4524-89CC-D73EBCA224A1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pn", "pn\pn.vcxproj", "{09E60CEB-F210-4524-89CC-D73EBCA224A1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomScheme", "CustomScheme\CustomScheme.vcxproj", "{A7E621BE-65CC-446A-A5A1-4C20D117D344}"
 EndProject

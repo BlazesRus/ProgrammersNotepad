@@ -191,12 +191,6 @@
     <ClCompile Include="StylesUserSettings.cpp">
       <Filter>Source Files\Schemes</Filter>
     </ClCompile>
-    <ClCompile Include="third_party\genx\charProps.c">
-      <Filter>third_party</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\genx\genx.c">
-      <Filter>third_party</Filter>
-    </ClCompile>
     <ClCompile Include="include\Utf8_16.cpp">
       <Filter>third_party</Filter>
     </ClCompile>
@@ -400,6 +394,12 @@
     </ClCompile>
     <ClCompile Include="scriptview.cpp">
       <Filter>Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\genx\charProps.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\genx\genx.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

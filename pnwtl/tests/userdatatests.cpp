@@ -2,8 +2,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../filename.h"
-#include "../projectmeta.h"
+#include "../pn/filename.h"
+#include "../pn/projectmeta.h"
 
 BOOST_AUTO_TEST_SUITE( userdata_tests );
 

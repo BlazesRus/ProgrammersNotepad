@@ -123,8 +123,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="charset.cpp" />
-    <ClCompile Include="..\Files.cpp" />
-    <ClCompile Include="..\xmlparser.cpp" />
+    <ClCompile Include="..\pn\Files.cpp" />
+    <ClCompile Include="..\pn\xmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomScheme.def" />
@@ -135,9 +135,9 @@
     <ClInclude Include="schemelexer.h" />
     <ClInclude Include="scilexerdll.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\expat.h" />
-    <ClInclude Include="..\Files.h" />
-    <ClInclude Include="..\xmlparser.h" />
+    <ClInclude Include="..\pn\expat.h" />
+    <ClInclude Include="..\pn\Files.h" />
+    <ClInclude Include="..\pn\xmlparser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

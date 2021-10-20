@@ -53,7 +53,7 @@ using namespace ATL;
 #define PNASSERT(x) (void(0))
 typedef std::basic_string<TCHAR> tstring;
 
-#include "../include/sscontainers.h"
+#include "../pn/include/sscontainers.h"
 
 /// Multiple instance manager will read it's version information from here.
 typedef struct tagContext

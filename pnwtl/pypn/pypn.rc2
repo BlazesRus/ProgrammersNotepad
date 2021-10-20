@@ -1,4 +1,4 @@
-#include "../version.h"
+#include "../pn/version.h"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -26,7 +26,7 @@ BEGIN
             VALUE "FileDescription", "Python Extension for Programmer's Notepad"
             VALUE "FileVersion", PN_VERSION
             VALUE "InternalName", "PNWTL"
-            VALUE "LegalCopyright", "Copyright © 2002-2013 Simon Steele (Echo Software)"
+            VALUE "LegalCopyright", "Copyright  2002-2013 Simon Steele (Echo Software)"
             VALUE "OriginalFilename", "pn.exe"
             VALUE "ProductName", "Programmer's Notepad"
             VALUE "ProductVersion", PN_VERSION_FULL

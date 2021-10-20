@@ -27,10 +27,10 @@ typedef std::basic_string<TCHAR> tstring;
 
 #include <atlstr.h>
 
-#include "../allocator.h"
-#include "../pnextstring.h"
-#include "../extiface.h"
-#include "../pnstrings.h"
-#include "../searchoptions.h"
+#include "../pn/allocator.h"
+#include "../pn/pnextstring.h"
+#include "../pn/extiface.h"
+#include "../pn/pnstrings.h"
+#include "../pn/searchoptions.h"
 
 extern std::string getPythonErrorString();

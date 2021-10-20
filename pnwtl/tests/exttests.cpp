@@ -2,8 +2,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../allocator.h"
-#include "../pnextstring.h"
+#include "../pn/allocator.h"
+#include "../pn/pnextstring.h"
 
 using namespace PN;
 

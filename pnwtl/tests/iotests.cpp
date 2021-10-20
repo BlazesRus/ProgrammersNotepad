@@ -2,7 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../include/Utf8_16.h"
+#include "../pn/include/Utf8_16.h"
 
 BOOST_AUTO_TEST_SUITE( io_tests );
 
