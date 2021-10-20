@@ -33,12 +33,6 @@
     <ClCompile Include="charset.cpp">
       <Filter>include</Filter>
     </ClCompile>
-    <ClCompile Include="..\Files.cpp">
-      <Filter>include</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xmlparser.cpp">
-      <Filter>include</Filter>
-    </ClCompile>
     <ClCompile Include="CustomLexerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +66,12 @@
     <ClCompile Include="plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\pn\Files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\xmlparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomScheme.def">
@@ -91,16 +91,13 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\expat.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Files.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xmlparser.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="lexerconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pn\Files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pn\xmlparser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

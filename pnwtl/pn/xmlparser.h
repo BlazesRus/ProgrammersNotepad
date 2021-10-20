@@ -21,7 +21,7 @@
 	#define XML_CSTR LPCSTR
 #endif
 
-#include "expat.h"
+#include <expat.h>
 
 static const TCHAR* tszXMLParserDefaultException = _T("Exception while parsing XML.");
 

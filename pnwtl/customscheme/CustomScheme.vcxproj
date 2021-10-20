@@ -135,7 +135,6 @@
     <ClInclude Include="schemelexer.h" />
     <ClInclude Include="scilexerdll.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\pn\expat.h" />
     <ClInclude Include="..\pn\Files.h" />
     <ClInclude Include="..\pn\xmlparser.h" />
   </ItemGroup>
