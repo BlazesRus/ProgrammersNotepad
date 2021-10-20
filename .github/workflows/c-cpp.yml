@@ -1,0 +1,47 @@
+# ref: https://www.codeproject.com/Articles/5265628/Writing-CI-Pipeline-using-GitHub-Actions-to-Build
+
+name: windows-build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Windows:
+    name: build-windows
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+          submodules: recursive
+
+    - name: Installing vcpkg (windows)
+      run: |
+        cd ..
+        git clone https://github.com/Microsoft/vcpkg.git
+        cd vcpkg
+        .\bootstrap-vcpkg.bat
+        .\vcpkg integrate install
+
+        .\vcpkg install wtl:x86-windows wtl:x64-windows
+        .\vcpkg install boost-config[core]:x86-windows boost-config[core]:x64-windows
+        .\vcpkg install boost-foreach[core]:x86-windows boost-foreach[core]:x64-windows
+        .\vcpkg install boost-function[core]:x86-windows boost-function[core]:x64-windows
+        .\vcpkg install boost-xpressive[core]:x86-windows boost-xpressive[core]:x64-windows
+        .\vcpkg install boost-phoenix[core]:x86-windows boost-phoenix[core]:x64-windows
+        .\vcpkg install boost-python[core]:x86-windows boost-python[core]:x64-windows
+        .\vcpkg install boost-test[core]:x86-windows boost-test[core]:x64-windows
+
+    - name: Build Solution Release
+      run: |
+        cd ${{ github.workspace }}/pnwtl
+        MSBuild.exe pn.sln -p:Configuration=Release
+
+    - name: Build Solution Debug
+      run: |
+        cd ${{ github.workspace }}/pnwtl
+        MSBuild.exe pn.sln -p:Configuration=Debug
