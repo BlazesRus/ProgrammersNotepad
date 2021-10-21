@@ -9,10 +9,6 @@ It is primarily written in C++ and extensible using Python, and is built on the 
   - [WTL](http://sourceforge.net/projects/wtl/)
   - [Boost](http://www.boost.org/)
 
-## Getting Started
-
-Clone the tree, then see the [Build Instructions](http://pnotepad.org/docs/dev/how_to_compile_pn/)
-
 ## Build in VS 2019
 
 - download and install VS 2019, following [this link](https://visualstudio.microsoft.com/downloads/)
