@@ -51,52 +51,52 @@
     <ClCompile Include="userdatatests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\autocomplete.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
     <ClCompile Include="..\third_party\genx\charProps.c">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips\chunk.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips\chunkparser.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips\clip.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips\clipmanager.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips\clipparser.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\filename.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Files.cpp">
       <Filter>Imported PN</Filter>
     </ClCompile>
     <ClCompile Include="..\third_party\genx\genx.c">
       <Filter>Imported PN</Filter>
     </ClCompile>
-    <ClCompile Include="..\projectmeta.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ScintillaIF.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textclips.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\Utf8_16.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xmlparser.cpp">
-      <Filter>Imported PN</Filter>
-    </ClCompile>
     <ClCompile Include="quicksilver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\autocomplete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips\chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips\chunkparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips\clip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips\clipmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips\clipparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\filename.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\Files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\projectmeta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\ScintillaIF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\textclips.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\include\Utf8_16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\xmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,17 +104,17 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\autocomplete.h">
-      <Filter>Imported PN</Filter>
-    </ClInclude>
-    <ClInclude Include="..\textclips\chunkparser.h">
-      <Filter>Imported PN</Filter>
-    </ClInclude>
     <ClInclude Include="mocks\mockoptions.h">
       <Filter>Mocks</Filter>
     </ClInclude>
     <ClInclude Include="mocks\mockscriptrunner.h">
       <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pn\autocomplete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pn\textclips\chunkparser.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -54,7 +54,6 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>customscheme.def</ModuleDefinitionFile>
       <RandomizedBaseAddress>
       </RandomizedBaseAddress>
