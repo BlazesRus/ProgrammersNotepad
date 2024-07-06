@@ -25,14 +25,14 @@
     <ClCompile Include="pnse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\singleinstance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pnse_i.c">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pn\singleinstance.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
