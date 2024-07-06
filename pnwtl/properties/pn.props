@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
-    <BoostFileVer>1_57</BoostFileVer>
-    <VSVer>VS2013</VSVer>
-    <VSNum>120</VSNum>
-    <BoostVer>1_57_0</BoostVer>
+    <BoostFileVer>1_85</BoostFileVer>
+    <VSVer>VS2022</VSVer>
+    <VSNum>v143</VSNum>
+    <BoostVer>1_85_0</BoostVer>
     <PythonMagorVer>3</PythonMagorVer>
     <PythonMinorVer>10</PythonMinorVer>
     <PythonVer>$(PythonMagorVer)$(PythonMinorVer)</PythonVer>
     <BoostPythonTag>$(PythonMagorVer).$(PythonMinorVer)</BoostPythonTag>
-    <PythonFolder>C:\Python$(PythonVer)</PythonFolder>
+    <PythonFolder>C:\PLanguages\Python$(PythonVer)</PythonFolder>
     <PythonInclude>$(PythonFolder)\include</PythonInclude>
     <VcpkgPythonInclude>include/python$(BoostPythonTag)</VcpkgPythonInclude>
-    <ThirdPartyLibs>$(SolutionDir)..\..\lib</ThirdPartyLibs>
-    <WTLFolder>$(ThirdPartyLibs)\wtl\WTL90_4140_Final</WTLFolder>
-    <WTLSvnFolder>$(ThirdPartyLibs)\wtl\wtl-code\wtl</WTLSvnFolder>
+    <ThirdPartyLibs>$(SolutionDir)..\..\..\Github</ThirdPartyLibs>
+    <WTLFolder>$(ThirdPartyLibs)\wtl</WTLFolder>
+    <WTLSvnFolder>$(ThirdPartyLibs)\wtl</WTLSvnFolder>
     <BoostFolder>$(ThirdPartyLibs)\boost\boost-$(BoostVer)</BoostFolder>
-    <BoostInclude>$(BoostFolder)</BoostInclude>
   </PropertyGroup>
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <_ProjectFileVersion>BlazesRus</_ProjectFileVersion>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(WTLFolder)\include;$(BoostInclude);$(_ZVcpkgCurrentInstalledDir)include/wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WTLFolder)\include;$(BoostFolder);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_BIND_TO_CURRENT_CRT_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(WTLFolder)\include;$(_ZVcpkgCurrentInstalledDir)include/wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WTLFolder)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -39,7 +38,7 @@
     </BuildMacro>
   </ItemGroup>
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Globals">
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
