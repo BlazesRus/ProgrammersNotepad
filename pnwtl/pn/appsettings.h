@@ -14,13 +14,13 @@
 class ExtDetails
 {
 public:
-	ExtDetails(LPCTSTR path, LPCTSTR basePath);
+    ExtDetails(LPCTSTR path, LPCTSTR basePath);
 
-	bool Disabled;
-	tstring Path;
-	tstring FullPath;
+    bool Disabled;
+    tstring Path;
+    tstring FullPath;
 
-	bool Exists() const;
+    bool Exists() const;
 };
 
 typedef std::list<ExtDetails> extlist;
@@ -30,41 +30,41 @@ class FileFinderData;
 class AppSettings : public XMLParseState
 {
 public:
-	AppSettings();
+    AppSettings();
 
-	OptionsFactory::EOptionsType GetOptionsType() const;
-	LPCTSTR GetUserPath() const;
-	bool HaveUserPath() const;
-	const extlist& GetExtensions() const;
+    OptionsFactory::EOptionsType GetOptionsType() const;
+    LPCTSTR GetUserPath() const;
+    bool HaveUserPath() const;
+    const extlist& GetExtensions() const;
 
-	Options* MakeOptions() const;
+    Options* MakeOptions() const;
 
-	void FindExtensions();
+    void FindExtensions();
 
-	void Save();
+    void Save();
 
 // XMLParseState
 public:
-	virtual void startElement(XML_CSTR name, const XMLAttributes& atts);
-	virtual void endElement(XML_CSTR name);
-	virtual void characterData(XML_CSTR data, int len);
+    virtual void startElement(XML_CSTR name, const XMLAttributes& atts);
+    virtual void endElement(XML_CSTR name);
+    virtual void characterData(XML_CSTR data, int len);
 
 protected:
-	void findExtensionHandler(LPCTSTR path, FileFinderData& data, bool& /*shouldContinue*/);
-	void load();
-	void load(const TCHAR* filename);
-	void save();
-	void onUserSettingsPath(const XMLAttributes& atts);
-	void onStoreType(const XMLAttributes& atts);
-	void onExtension(const XMLAttributes& atts);
+    void findExtensionHandler(LPCTSTR path, FileFinderData& data, bool& /*shouldContinue*/);
+    void load();
+    void load(const TCHAR* filename);
+    void save();
+    void onUserSettingsPath(const XMLAttributes& atts);
+    void onStoreType(const XMLAttributes& atts);
+    void onExtension(const XMLAttributes& atts);
 
 protected:
-	bool			m_bUseIni;
-	bool			m_bAppSettingsPathSpecified;
-	int				m_parseState;
-	tstring			m_pnpath;
-	tstring			m_userPath;
-	extlist			m_extensions;
+    bool			m_bUseIni;
+    bool			m_bAppSettingsPathSpecified;
+    int				m_parseState;
+    tstring			m_pnpath;
+    tstring			m_userPath;
+    extlist			m_extensions;
 };
 
 #endif // #ifndef appsettings_h__included_DF1DF359_1F19_495a_B4B6_BFECC531AB30

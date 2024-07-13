@@ -14,7 +14,7 @@
 #include "../textclips.h"
 
 namespace extensions {
-	class IScriptRunner;
+    class IScriptRunner;
 }
 
 namespace TextClips {
@@ -30,16 +30,16 @@ struct snippet;
 class ChunkParser
 {
 public:
-	explicit ChunkParser();
-	~ChunkParser();
+    explicit ChunkParser();
+    ~ChunkParser();
 
-	bool Parse(const std::string& clip, std::vector<Chunk>& chunks);
+    bool Parse(const std::string& clip, std::vector<Chunk>& chunks);
 
-	void SetVariableProvider(IVariableProvider* variables);
-	void SetScriptRunner(extensions::IScriptRunner* runner);
+    void SetVariableProvider(IVariableProvider* variables);
+    void SetScriptRunner(extensions::IScriptRunner* runner);
 
 private:
-	Internal::snippet<std::string::const_iterator>* m_grammar;
+    Internal::snippet<std::string::const_iterator>* m_grammar;
 };
 
 } // namespace TextClips

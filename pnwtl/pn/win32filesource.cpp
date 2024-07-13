@@ -17,10 +17,10 @@ Win32FileSource::~Win32FileSource()
 
 IFilePtr Win32FileSource::OpenWrite(const wchar_t* filename)
 {
-	return Win32File::Create(filename);
+    return Win32File::Create(filename);
 }
 
 IFilePtr Win32FileSource::OpenRead(const wchar_t* filename)
 {
-	return Win32File::Open(filename);
+    return Win32File::Open(filename);
 }

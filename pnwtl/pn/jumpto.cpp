@@ -35,7 +35,7 @@ JumpToHandler::JumpToHandler()
  */
 JumpToHandler::~JumpToHandler()
 {
-	handlers.clear();
+    handlers.clear();
 }
 
 /**
@@ -43,16 +43,16 @@ JumpToHandler::~JumpToHandler()
  */
 void JumpToHandler::AddSource(extensions::ITagSource* source)
 {
-	char* schemesstr = _strdup(source->GetSchemesSupported());
-	char* p = strtok(schemesstr, ";");
-	
-	while(p)
-	{
-		handlers.insert( HANDLERS_MAP::value_type(std::string(p), source) );
-		p = strtok(NULL, ";");
-	}
+    char* schemesstr = _strdup(source->GetSchemesSupported());
+    char* p = strtok(schemesstr, ";");
+    
+    while(p)
+    {
+        handlers.insert( HANDLERS_MAP::value_type(std::string(p), source) );
+        p = strtok(NULL, ";");
+    }
 
-	free(schemesstr);
+    free(schemesstr);
 }
 
 /**
@@ -60,65 +60,65 @@ void JumpToHandler::AddSource(extensions::ITagSource* source)
  */
 void JumpToHandler::FindTags(CChildFrame* pChildFrame, ITagSink* pNotifySink)
 {
-	USES_CONVERSION;
-	MASKSTRUCT		tagMaskAll={~0,~0};
+    USES_CONVERSION;
+    MASKSTRUCT		tagMaskAll={~0,~0};
 
-	// First let's find out what scheme it is...
-	Scheme* pScheme = pChildFrame->GetTextView()->GetCurrentScheme();
-	std::string schemeName = pScheme->GetName();
-	
-	extensions::ITagSource* pSource = NULL;
+    // First let's find out what scheme it is...
+    Scheme* pScheme = pChildFrame->GetTextView()->GetCurrentScheme();
+    std::string schemeName = pScheme->GetName();
+    
+    extensions::ITagSource* pSource = NULL;
 
-	HANDLERS_MAP::iterator iHandler = handlers.find(schemeName);
-	if(iHandler != handlers.end())
-	{
-		pSource = (*iHandler).second;
-	}
+    HANDLERS_MAP::iterator iHandler = handlers.find(schemeName);
+    if(iHandler != handlers.end())
+    {
+        pSource = (*iHandler).second;
+    }
 
-	if(!pSource)
-	{
-		return;
-	}
+    if(!pSource)
+    {
+        return;
+    }
 
-	TempFileName* tfn = NULL;
+    TempFileName* tfn = NULL;
 
-	std::wstring fnstr;
+    std::wstring fnstr;
 
-	if(pChildFrame->GetModified() || !pChildFrame->CanSave())
-	{
-		if(pChildFrame->CanSave())
-		{
-			tfn = new TempFileName(pChildFrame->GetFileName().c_str(), NULL, true, true);
-			fnstr = tfn->w_str();
-		}
-		else
-		{
-			tfn = new TempFileName(NULL, _T(".tmp"), true);
-			fnstr = tfn->w_str();
-		}
+    if(pChildFrame->GetModified() || !pChildFrame->CanSave())
+    {
+        if(pChildFrame->CanSave())
+        {
+            tfn = new TempFileName(pChildFrame->GetFileName().c_str(), NULL, true, true);
+            fnstr = tfn->w_str();
+        }
+        else
+        {
+            tfn = new TempFileName(NULL, _T(".tmp"), true);
+            fnstr = tfn->w_str();
+        }
 
-		try
-		{
-			IFilePtr file(Win32FileSource().OpenWrite(tfn->t_str()));
-			pChildFrame->GetTextView()->SaveFile(file, false);
-		}
-		catch (FileSourceException&)
-		{
-		}
-	}
-	else
-	{
-		fnstr = CT2CW(pChildFrame->GetFileName().c_str());
-	}
-	
-	if(!pSource->FindTags(pNotifySink, fnstr.c_str(), static_cast<void*>(pChildFrame), tagMaskAll, schemeName.c_str()))
-	{
-		g_Context.m_frame->SetStatusText(_T("Failed to run tagger."));
-	}
+        try
+        {
+            IFilePtr file(Win32FileSource().OpenWrite(tfn->t_str()));
+            pChildFrame->GetTextView()->SaveFile(file, false);
+        }
+        catch (FileSourceException&)
+        {
+        }
+    }
+    else
+    {
+        fnstr = CT2CW(pChildFrame->GetFileName().c_str());
+    }
+    
+    if(!pSource->FindTags(pNotifySink, fnstr.c_str(), static_cast<void*>(pChildFrame), tagMaskAll, schemeName.c_str()))
+    {
+        g_Context.m_frame->SetStatusText(_T("Failed to run tagger."));
+    }
 
-	if(tfn != NULL)
-	{
-		tfn->erase();
-		delete tfn;
-	}
+    if(tfn != NULL)
+    {
+        tfn->erase();
+        delete tfn;
+    }
 }

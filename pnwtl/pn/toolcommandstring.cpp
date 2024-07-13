@@ -22,270 +22,270 @@
 
 void ToolCommandString::OnFormatChar(TCHAR thechar)
 {
-	switch (thechar)
-	{
-		case _T('f'):
+    switch (thechar)
+    {
+        case _T('f'):
 
-			if (pChild)
-				m_string += pChild->GetFileName(FN_FILE);
+            if (pChild)
+                m_string += pChild->GetFileName(FN_FILE);
 
-			break;
+            break;
 
-		case _T('d'):
-		{
-			if (pChild)
-			{
-				CPathName pn(pChild->GetFileName(FN_PATH));
+        case _T('d'):
+        {
+            if (pChild)
+            {
+                CPathName pn(pChild->GetFileName(FN_PATH));
 
-				if (reversePathSeps)
-					pn.SetForwardSlashes();
+                if (reversePathSeps)
+                    pn.SetForwardSlashes();
 
-				m_string += pn;
-			}
-		}
-		break;
+                m_string += pn;
+            }
+        }
+        break;
 
-		case _T('n'):
+        case _T('n'):
 
-			if (pChild)
-				m_string += pChild->GetFileName(FN_FILEPART);
+            if (pChild)
+                m_string += pChild->GetFileName(FN_FILEPART);
 
-			break;
+            break;
 
-		case _T('l'):
+        case _T('l'):
 
-			if (pChild)
-			{
-				_itot(pChild->GetPosition(EP_LINE), itosbuf, 10);
-				m_string += itosbuf;
-			}
+            if (pChild)
+            {
+                _itot(pChild->GetPosition(EP_LINE), itosbuf, 10);
+                m_string += itosbuf;
+            }
 
-			break;
+            break;
 
-		case _T('c'):
+        case _T('c'):
 
-			if (pChild)
-			{
-				_itot(pChild->GetPosition(EP_COL), itosbuf, 10);
-				m_string += itosbuf;
-			}
+            if (pChild)
+            {
+                _itot(pChild->GetPosition(EP_COL), itosbuf, 10);
+                m_string += itosbuf;
+            }
 
-			break;
+            break;
 
-		case _T('w'):
+        case _T('w'):
 
-			if (pChild)
-			{
-				CA2CT word(pChild->GetTextView()->GetCurrentWord().c_str());
-				m_string += word;
-			}
+            if (pChild)
+            {
+                CA2CT word(pChild->GetTextView()->GetCurrentWord().c_str());
+                m_string += word;
+            }
 
-			break;
+            break;
 
-			// current project file.
-		case _T('p'):
-		{
-			Projects::Workspace* pWorkspace = g_Context.m_frame->GetActiveWorkspace();
+            // current project file.
+        case _T('p'):
+        {
+            Projects::Workspace* pWorkspace = g_Context.m_frame->GetActiveWorkspace();
 
-			if (pWorkspace != NULL)
-			{
-				Projects::Project* pProject = pWorkspace->GetActiveProject();
+            if (pWorkspace != NULL)
+            {
+                Projects::Project* pProject = pWorkspace->GetActiveProject();
 
-				if (pProject != NULL && pProject->Exists())
-				{
-					CFileName fn(pProject->GetFileName());
+                if (pProject != NULL && pProject->Exists())
+                {
+                    CFileName fn(pProject->GetFileName());
 
-					if (reversePathSeps)
-						fn.SetForwardSlashes();
+                    if (reversePathSeps)
+                        fn.SetForwardSlashes();
 
-					m_string += fn;
-				}
-			}
-		}
-		break;
+                    m_string += fn;
+                }
+            }
+        }
+        break;
 
-		// current project group (workspace) file.
-		case _T('g'):
-		{
-			Projects::Workspace* pWorkspace = GetWorkspace();
+        // current project group (workspace) file.
+        case _T('g'):
+        {
+            Projects::Workspace* pWorkspace = GetWorkspace();
 
-			if (pWorkspace != NULL && pWorkspace->CanSave())
-			{
-				CFileName fn(pWorkspace->GetFileName());
+            if (pWorkspace != NULL && pWorkspace->CanSave())
+            {
+                CFileName fn(pWorkspace->GetFileName());
 
-				if (reversePathSeps)
-					fn.SetForwardSlashes();
+                if (reversePathSeps)
+                    fn.SetForwardSlashes();
 
-				m_string += fn;
-			}
-		}
-		break;
+                m_string += fn;
+            }
+        }
+        break;
 
-		case _T('?'):
-		{
-			CInputDialog dlg(_T("Tool Parameters"), _T("Parameters:"));
+        case _T('?'):
+        {
+            CInputDialog dlg(_T("Tool Parameters"), _T("Parameters:"));
 
-			if ( dlg.DoModal() == IDOK )
-			{
-				m_string += dlg.GetInput();
-			}
-			else
-			{
-				throw FormatStringBuilderException();
-			}
-		}
-		break;
-	}
+            if ( dlg.DoModal() == IDOK )
+            {
+                m_string += dlg.GetInput();
+            }
+            else
+            {
+                throw FormatStringBuilderException();
+            }
+        }
+        break;
+    }
 }
 
 #define MATCH(s) \
-	(_tcscmp(key, s) == 0)
+    (_tcscmp(key, s) == 0)
 
 #define MATCH_START(s) \
-	((_tcslen(key) > _tcslen(s)) && (_tcsnicmp(s, key, _tcslen(s)) == 0))
+    ((_tcslen(key) > _tcslen(s)) && (_tcsnicmp(s, key, _tcslen(s)) == 0))
 
 void ToolCommandString::OnFormatKey(LPCTSTR key)
 {
-	if (MATCH(_T("ProjectPath")))
-	{
-		Projects::Project* pP = GetActiveProject();
+    if (MATCH(_T("ProjectPath")))
+    {
+        Projects::Project* pP = GetActiveProject();
 
-		if (pP)
-		{
-			CFileName fn(pP->GetFileName());
+        if (pP)
+        {
+            CFileName fn(pP->GetFileName());
 
-			if (reversePathSeps)
-				fn.SetForwardSlashes();
+            if (reversePathSeps)
+                fn.SetForwardSlashes();
 
-			m_string += fn.GetPath();
-		}
-	}
-	else if (MATCH(_T("ProjectGroupPath")))
-	{
-		Projects::Workspace* pWorkspace = GetWorkspace();
+            m_string += fn.GetPath();
+        }
+    }
+    else if (MATCH(_T("ProjectGroupPath")))
+    {
+        Projects::Workspace* pWorkspace = GetWorkspace();
 
-		if (pWorkspace != NULL && pWorkspace->CanSave())
-		{
-			CFileName fn(pWorkspace->GetFileName());
+        if (pWorkspace != NULL && pWorkspace->CanSave())
+        {
+            CFileName fn(pWorkspace->GetFileName());
 
-			if (reversePathSeps)
-				fn.SetForwardSlashes();
+            if (reversePathSeps)
+                fn.SetForwardSlashes();
 
-			m_string += fn.GetPath();
-		}
-	}
-	else if (MATCH_START(_T("ProjectProp:")))
-	{
-		Projects::Project* pP = GetActiveProject();
+            m_string += fn.GetPath();
+        }
+    }
+    else if (MATCH_START(_T("ProjectProp:")))
+    {
+        Projects::Project* pP = GetActiveProject();
 
-		if (!pP)
-			return;
+        if (!pP)
+            return;
 
-		Projects::ProjectTemplate* pTemplate = pP->GetTemplate();
+        Projects::ProjectTemplate* pTemplate = pP->GetTemplate();
 
-		if (!pTemplate)
-			return;
+        if (!pTemplate)
+            return;
 
-		boost::xpressive::tsregex re = boost::xpressive::tsregex::compile(L"ProjectProp:(?P<group>[-_a-zA-Z0-9]+)\\.(?P<cat>[-_a-zA-Z0-9]+)\\.(?P<val>[-_a-zA-Z0-9]+)");
-		boost::xpressive::tsmatch match;
-		
-		tstring prop(key);
+        boost::xpressive::tsregex re = boost::xpressive::tsregex::compile(L"ProjectProp:(?P<group>[-_a-zA-Z0-9]+)\\.(?P<cat>[-_a-zA-Z0-9]+)\\.(?P<val>[-_a-zA-Z0-9]+)");
+        boost::xpressive::tsmatch match;
+        
+        tstring prop(key);
 
-		if (boost::xpressive::regex_match(prop, match, re))
-		{
-			// Extract the named matches from the RE, noting if there was a line or column.
-			tstring group(match[_T("group")]);
-			tstring cat(match[_T("cat")]);
-			tstring val(match[_T("val")]);
+        if (boost::xpressive::regex_match(prop, match, re))
+        {
+            // Extract the named matches from the RE, noting if there was a line or column.
+            tstring group(match[_T("group")]);
+            tstring cat(match[_T("cat")]);
+            tstring val(match[_T("val")]);
 
-			if (group.empty() || cat.empty() || val.empty())
-			{
-				return;
-			}
+            if (group.empty() || cat.empty() || val.empty())
+            {
+                return;
+            }
 
-			LPCTSTR retval = pP->GetUserData().Lookup(pTemplate->GetNamespace(), group.c_str(), cat.c_str(), val.c_str(), _T(""));
+            LPCTSTR retval = pP->GetUserData().Lookup(pTemplate->GetNamespace(), group.c_str(), cat.c_str(), val.c_str(), _T(""));
 
-			if (retval != NULL)
-			{
-				m_string += retval;
-			}
-		}
-	}
-	else if (MATCH_START(_T("FileProp:")))
-	{
-		Projects::Project* pP = GetActiveProject();
+            if (retval != NULL)
+            {
+                m_string += retval;
+            }
+        }
+    }
+    else if (MATCH_START(_T("FileProp:")))
+    {
+        Projects::Project* pP = GetActiveProject();
 
-		if (!pP)
-			return;
+        if (!pP)
+            return;
 
-		Projects::ProjectTemplate* pTemplate = pP->GetTemplate();
+        Projects::ProjectTemplate* pTemplate = pP->GetTemplate();
 
-		if (!pTemplate)
-			return;
+        if (!pTemplate)
+            return;
 
-		if (!pChild)
-			return;
+        if (!pChild)
+            return;
 
-		Projects::File* pFileObj = pP->FindFile(pChild->GetFileName().c_str());
+        Projects::File* pFileObj = pP->FindFile(pChild->GetFileName().c_str());
 
-		if (!pFileObj)
-			return;
+        if (!pFileObj)
+            return;
 
-		boost::xpressive::tsregex re = boost::xpressive::tsregex::compile(_T("FileProp:(?P<group>[-_a-zA-Z0-9]+)\\.(?P<cat>[-_a-zA-Z0-9]+)\\.(?P<val>[-_a-zA-Z0-9]+)"));
-		boost::xpressive::tsmatch match;
-		tstring prop(key);
+        boost::xpressive::tsregex re = boost::xpressive::tsregex::compile(_T("FileProp:(?P<group>[-_a-zA-Z0-9]+)\\.(?P<cat>[-_a-zA-Z0-9]+)\\.(?P<val>[-_a-zA-Z0-9]+)"));
+        boost::xpressive::tsmatch match;
+        tstring prop(key);
 
-		if (boost::xpressive::regex_match(prop, match, re))
-		{
-			// Extract the named matches from the RE, noting if there was a line or column.
-			tstring group(match[_T("group")]);
-			tstring cat(match[_T("cat")]);
-			tstring val(match[_T("val")]);
+        if (boost::xpressive::regex_match(prop, match, re))
+        {
+            // Extract the named matches from the RE, noting if there was a line or column.
+            tstring group(match[_T("group")]);
+            tstring cat(match[_T("cat")]);
+            tstring val(match[_T("val")]);
 
-			if (group.empty() || cat.empty() || val.empty())
-			{
-				return;
-			}
+            if (group.empty() || cat.empty() || val.empty())
+            {
+                return;
+            }
 
-			LPCTSTR retval = pFileObj->GetUserData().Lookup(pTemplate->GetNamespace(), group.c_str(), cat.c_str(), val.c_str(), _T(""));
+            LPCTSTR retval = pFileObj->GetUserData().Lookup(pTemplate->GetNamespace(), group.c_str(), cat.c_str(), val.c_str(), _T(""));
 
-			if (retval != NULL)
-			{
-				m_string += retval;
-			}
-		}
-	}
-	else if (MATCH(_T("ProjectName")))
-	{
-		Projects::Project *pP = GetActiveProject();
+            if (retval != NULL)
+            {
+                m_string += retval;
+            }
+        }
+    }
+    else if (MATCH(_T("ProjectName")))
+    {
+        Projects::Project *pP = GetActiveProject();
 
-		if (pP)
-		{
-			m_string += pP->GetName();
-		}
-	}
-	else if (MATCH(_T("ProjectGroupName")))
-	{
-		Projects::Workspace *pW = GetWorkspace();
+        if (pP)
+        {
+            m_string += pP->GetName();
+        }
+    }
+    else if (MATCH(_T("ProjectGroupName")))
+    {
+        Projects::Workspace *pW = GetWorkspace();
 
-		if (pW != NULL)
-		{
-			m_string += pW->GetName();
-		}
-	}
-	else if (MATCH(_T("PNPath")))
-	{
-		tstring pn;
-		OPTIONS->GetPNPath(pn);
-		m_string += pn;
-	}
-	else
-	{
-		tstring s = _T("Unknown constant: $(");
-		s += key;
-		s += _T(").");
-		g_Context.m_frame->SetStatusText(s.c_str());
-	}
+        if (pW != NULL)
+        {
+            m_string += pW->GetName();
+        }
+    }
+    else if (MATCH(_T("PNPath")))
+    {
+        tstring pn;
+        OPTIONS->GetPNPath(pn);
+        m_string += pn;
+    }
+    else
+    {
+        tstring s = _T("Unknown constant: $(");
+        s += key;
+        s += _T(").");
+        g_Context.m_frame->SetStatusText(s.c_str());
+    }
 }
 
 /**
@@ -293,14 +293,14 @@ void ToolCommandString::OnFormatKey(LPCTSTR key)
  */
 void ToolCommandString::OnFormatPercentKey(LPCTSTR key)
 {
-	TCHAR value[32767]; // Max size for an environment variable
+    TCHAR value[32767]; // Max size for an environment variable
 
-	if (GetEnvironmentVariable(key, &value[0], 32767) == 0)
-	{
-		value[0] = 0; // Make sure it's an empty string even on error
-	}
+    if (GetEnvironmentVariable(key, &value[0], 32767) == 0)
+    {
+        value[0] = 0; // Make sure it's an empty string even on error
+    }
 
-	m_string += value;
+    m_string += value;
 }
 
 /**
@@ -308,32 +308,32 @@ void ToolCommandString::OnFormatPercentKey(LPCTSTR key)
  */
 void ToolCommandString::OnFormatScriptRef(LPCTSTR key)
 {
-	// We're going to evaluate tool parameters within our script call:
-	ToolCommandString cmdstr;
-	tstring script = cmdstr.Build(key);
+    // We're going to evaluate tool parameters within our script call:
+    ToolCommandString cmdstr;
+    tstring script = cmdstr.Build(key);
 
-	CT2CA scriptconv(script.c_str());
-	
-	std::string thescript(scriptconv);
-	int index = thescript.find(_T(':'));
-	
-	std::string engine = thescript.substr(0, index);
-	thescript = thescript.substr(index + 1);
+    CT2CA scriptconv(script.c_str());
+    
+    std::string thescript(scriptconv);
+    int index = thescript.find(_T(':'));
+    
+    std::string engine = thescript.substr(0, index);
+    thescript = thescript.substr(index + 1);
 
-	extensions::IScriptRunner* runner = ScriptRegistry::GetInstanceRef().GetRunner(engine.c_str());
-	if (runner == NULL)
-	{
-		return;
-	}
+    extensions::IScriptRunner* runner = ScriptRegistry::GetInstanceRef().GetRunner(engine.c_str());
+    if (runner == NULL)
+    {
+        return;
+    }
 
-	PN::AString output;
-	runner->Eval(thescript.c_str(), output);
-	
-	if (output.GetLength())
-	{
-		CA2CT outputconv(output.Get());
-		m_string += outputconv;
-	}
+    PN::AString output;
+    runner->Eval(thescript.c_str(), output);
+    
+    if (output.GetLength())
+    {
+        CA2CT outputconv(output.Get());
+        m_string += outputconv;
+    }
 }
 
 #undef MATCH
@@ -341,21 +341,21 @@ void ToolCommandString::OnFormatScriptRef(LPCTSTR key)
 
 Projects::Workspace* ToolCommandString::GetWorkspace()
 {
-	Projects::Workspace* pWorkspace = g_Context.m_frame->GetActiveWorkspace();
-	return pWorkspace;
+    Projects::Workspace* pWorkspace = g_Context.m_frame->GetActiveWorkspace();
+    return pWorkspace;
 }
 
 Projects::Project* ToolCommandString::GetActiveProject()
 {
-	Projects::Workspace* pWorkspace = GetWorkspace();
+    Projects::Workspace* pWorkspace = GetWorkspace();
 
-	if (pWorkspace != NULL)
-	{
-		Projects::Project* pProject = pWorkspace->GetActiveProject();
+    if (pWorkspace != NULL)
+    {
+        Projects::Project* pProject = pWorkspace->GetActiveProject();
 
-		if (pProject != NULL && pProject->Exists())
-			return pProject;
-	}
+        if (pProject != NULL && pProject->Exists())
+            return pProject;
+    }
 
-	return NULL;
+    return NULL;
 }

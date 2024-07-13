@@ -24,19 +24,19 @@ typedef boost::shared_ptr<IFile> IFilePtr;
 class FileSourceException : public std::exception
 {
 public:
-	FileSourceException(int error) : m_error(error)
-	{
-	}
+    FileSourceException(int error) : m_error(error)
+    {
+    }
 
-	virtual ~FileSourceException() {}
+    virtual ~FileSourceException() {}
 
-	/**
-	 * Get the error code indicating the error performing I/O.
-	 */
-	int GetError() const { return m_error; }
+    /**
+     * Get the error code indicating the error performing I/O.
+     */
+    int GetError() const { return m_error; }
 
 private:
-	int m_error;
+    int m_error;
 };
 
 /**
@@ -45,10 +45,10 @@ private:
 class IFileSource
 {
 public:
-	virtual ~IFileSource() {}
+    virtual ~IFileSource() {}
 
-	virtual IFilePtr OpenWrite(const wchar_t* filename) = 0;
-	virtual IFilePtr OpenRead(const wchar_t* filename) = 0;
+    virtual IFilePtr OpenWrite(const wchar_t* filename) = 0;
+    virtual IFilePtr OpenRead(const wchar_t* filename) = 0;
 };
 
 /**
@@ -57,12 +57,12 @@ public:
 class IFile
 {
 public:
-	virtual ~IFile() {}
-	virtual size_t Write(const void* buffer, int count) = 0;
-	virtual size_t Read(void* buffer, int count) = 0;
-	virtual void Close() = 0;
+    virtual ~IFile() {}
+    virtual size_t Write(const void* buffer, int count) = 0;
+    virtual size_t Read(void* buffer, int count) = 0;
+    virtual void Close() = 0;
 
-	virtual std::wstring GetFilename() const = 0;
+    virtual std::wstring GetFilename() const = 0;
 };
 
 #endif // #ifndef IFILESOURCE_H__INCLUDED

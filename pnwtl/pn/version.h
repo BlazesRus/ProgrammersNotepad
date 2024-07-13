@@ -2,7 +2,7 @@
 #define PN_MINOR			4
 #define PN_REVISION			2
 #ifndef PN_BUILD
-	#define PN_BUILD		0
+    #define PN_BUILD		0
 #endif
 
 #define PN_VERSION_STRINGIZE_(s) #s
@@ -12,7 +12,7 @@
 #define PN_VERSTRING_T		_T(PN_VERSION_STRINGIZE(PN_MAJOR)) _T(".") _T(PN_VERSION_STRINGIZE(PN_MINOR)) _T(".") _T(PN_VERSION_STRINGIZE(PN_REVISION)) _T(".") _T(PN_VERSION_STRINGIZE(PN_BUILD))
 
 #ifndef PN_VERNAME
-	#define PN_VERNAME			"-duke"
+    #define PN_VERNAME			"-duke"
 #endif
 
 #define PN_VIVERSION		PN_MAJOR,PN_MINOR,0,0

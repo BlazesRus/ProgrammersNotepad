@@ -4,7 +4,7 @@
  * @author Simon Steele
  * @note Copyright (c) 2002-2009 Simon Steele - http://untidy.net/
  *
- * Programmer's Notepad 2 : The license file (license.[txt|html]) describes 
+ * Programmer's Notepad 2 : The license file (license.[txt|html]) describes
  * the conditions under which this source may be modified / distributed.
  *
  * Thanks to the author of kPad for the g_Context here!
@@ -51,38 +51,38 @@
 #define PNID_DONTASKUSER	253
 
 #ifdef _UNICODE
-	#define WIDEN2(x) L ## x
-	#define WIDEN(x) WIDEN2(x)
-	#define __WFILE__ WIDEN(__FILE__)
-	#define __TFILE__ __WFILE__
+    #define WIDEN2(x) L ## x
+    #define WIDEN(x) WIDEN2(x)
+    #define __WFILE__ WIDEN(__FILE__)
+    #define __TFILE__ __WFILE__
 #else
-	#define __TFILE__ __FILE__
+    #define __TFILE__ __FILE__
 #endif
 
 
 //#if defined(DEBUG_)
-	#define UNEXPECTED(message) \
-	{ \
-		pn__Unexpected(__TFILE__, __LINE__, message); \
-	}
+    #define UNEXPECTED(message) \
+    { \
+        pn__Unexpected(__TFILE__, __LINE__, message); \
+    }
 
-	#define RETURN_UNEXPECTED(message, ret) \
-	{ \
-		pn__Unexpected(__TFILE__, __LINE__, message); \
-		return ret; \
-	}
+    #define RETURN_UNEXPECTED(message, ret) \
+    { \
+        pn__Unexpected(__TFILE__, __LINE__, message); \
+        return ret; \
+    }
 /*#else
-	#define UNEXPECTED(message) ;
-	#define RETURN_UNEXPECTED(message, ret) return ret;
+    #define UNEXPECTED(message) ;
+    #define RETURN_UNEXPECTED(message, ret) return ret;
 #endif*/
 
 #define LOG(message) \
-	::OutputDebugString(message)
+    ::OutputDebugString(message)
 
 #include "allocator.h"
 #include "pnextstring.h"
 #include "extiface.h"
-#include "third_party/scintilla/include/Platform.h"
+//#include "third_party/scintilla/include/Platform.h"
 #include "pntypes.h"
 
 // Pre-declarations...
@@ -91,15 +91,15 @@ class ToolWrapper;
 class Options;
 class MultipleInstanceManager;
 namespace Projects {
-	class Workspace;
+    class Workspace;
 }
 
 typedef enum {
-	PNDW_OUTPUT = 0,
-	PNDW_PROJECTS = 1,
-	PNDW_TEXTCLIPS = 2,
-	PNDW_CTAGS = 3,
-	PNDW_FINDRESULTS = 4,
+    PNDW_OUTPUT = 0,
+    PNDW_PROJECTS = 1,
+    PNDW_TEXTCLIPS = 2,
+    PNDW_CTAGS = 3,
+    PNDW_FINDRESULTS = 4,
 } EDockingWindow;
 
 #include "pnutils.h"
@@ -113,50 +113,50 @@ typedef std::list< DocumentPtr > DocumentList;
 
 struct IMainFrame
 {
-	// Window Accessors
-	virtual CWindow* GetWindow() = 0;
-	
-	// Global UI
-	virtual void AddMRUEntry(LPCTSTR lpszFile) = 0;
-	virtual void SetStatusText(LPCTSTR text, bool bLongLife = true) = 0;
-	virtual BOOL TrackPopupMenu(HMENU hMenu, UINT uFlags, int x, int y, LPTPMPARAMS lpParams = NULL, HWND hWndCaller = NULL) = 0;
-	virtual void ToggleDockingWindow(EDockingWindow window, bool bSetValue = false, bool bShowing = true) = 0;
-	
-	// Document Operations
-	virtual bool CloseAll() = 0;
-	virtual bool SaveAll(bool ask = false) = 0;
-	virtual bool Open(LPCTSTR lpszFilename, bool bAddMRU = false) = 0;
-	virtual void OpenProject(LPCTSTR lpszFilename, bool intoExistingGroup = false) = 0;
-	virtual void OpenProjectGroup(LPCTSTR lpszFilename) = 0;
-	virtual bool CheckAlreadyOpen(LPCTSTR lpszFilename, EAlreadyOpenAction action) = 0;
-	virtual void SetActiveScheme(HWND notifier, LPVOID pScheme) = 0;
+    // Window Accessors
+    virtual CWindow* GetWindow() = 0;
 
-	// Document Management Operations
-	virtual void GetOpenDocuments(DocumentList& list) = 0;
-	virtual void GetOpenWorkspaceDocuments(DocumentList& list) = 0;
+    // Global UI
+    virtual void AddMRUEntry(LPCTSTR lpszFile) = 0;
+    virtual void SetStatusText(LPCTSTR text, bool bLongLife = true) = 0;
+    virtual BOOL TrackPopupMenu(HMENU hMenu, UINT uFlags, int x, int y, LPTPMPARAMS lpParams = NULL, HWND hWndCaller = NULL) = 0;
+    virtual void ToggleDockingWindow(EDockingWindow window, bool bSetValue = false, bool bShowing = true) = 0;
 
-	// Projects
-	virtual Projects::Workspace* GetActiveWorkspace() = 0;
-	virtual HWND GetJumpViewHandle() = 0;
-	
-	// Tools/Output
-	virtual extensions::ITextOutput* GetGlobalOutputWindow() = 0;
-	virtual ToolWrapper* MakeGlobalOutputWrapper(ToolDefinition* pDefinition) = 0;
-	
-	// Search
-	virtual void FindInFiles(SearchOptions* options) = 0;
+    // Document Operations
+    virtual bool CloseAll() = 0;
+    virtual bool SaveAll(bool ask = false) = 0;
+    virtual bool Open(LPCTSTR lpszFilename, bool bAddMRU = false) = 0;
+    virtual void OpenProject(LPCTSTR lpszFilename, bool intoExistingGroup = false) = 0;
+    virtual void OpenProjectGroup(LPCTSTR lpszFilename) = 0;
+    virtual bool CheckAlreadyOpen(LPCTSTR lpszFilename, EAlreadyOpenAction action) = 0;
+    virtual void SetActiveScheme(HWND notifier, LPVOID pScheme) = 0;
 
-	// Scripts
-	virtual void RecordingStopped() = 0;
+    // Document Management Operations
+    virtual void GetOpenDocuments(DocumentList& list) = 0;
+    virtual void GetOpenWorkspaceDocuments(DocumentList& list) = 0;
+
+    // Projects
+    virtual Projects::Workspace* GetActiveWorkspace() = 0;
+    virtual HWND GetJumpViewHandle() = 0;
+
+    // Tools/Output
+    virtual extensions::ITextOutput* GetGlobalOutputWindow() = 0;
+    virtual ToolWrapper* MakeGlobalOutputWrapper(ToolDefinition* pDefinition) = 0;
+
+    // Search
+    virtual void FindInFiles(SearchOptions* options) = 0;
+
+    // Scripts
+    virtual void RecordingStopped() = 0;
 };
 
-struct _Context 
+struct _Context
 {
-	IMainFrame				*m_frame;
-	MultipleInstanceManager *m_miManager;
-	Options					*options;
-	OSVERSIONINFO			OSVersion;
-	App						*ExtApp;
+    IMainFrame				*m_frame;
+    MultipleInstanceManager *m_miManager;
+    Options					*options;
+    OSVERSIONINFO			OSVersion;
+    App						*ExtApp;
 };
 
 /// This is the global application context.

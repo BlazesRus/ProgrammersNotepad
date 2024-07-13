@@ -12,24 +12,25 @@
     <PythonFolder>C:\PLanguages\Python$(PythonVer)</PythonFolder>
     <PythonInclude>$(PythonFolder)\include</PythonInclude>
     <VcpkgPythonInclude>include/python$(BoostPythonTag)</VcpkgPythonInclude>
-    <ThirdPartyLibs>$(SolutionDir)..\..\..\Github</ThirdPartyLibs>
-    <WTLFolder>$(ThirdPartyLibs)\wtl</WTLFolder>
-    <WTLSvnFolder>$(ThirdPartyLibs)\wtl</WTLSvnFolder>
-    <BoostFolder>$(ThirdPartyLibs)\boost\boost-$(BoostVer)</BoostFolder>
+    <ThirdPartyLibs>$(SolutionDir)..\..\Github</ThirdPartyLibs>
+    <ThirdPartyAsAbs>C:\UserFiles\Github</ThirdPartyAsAbs>
+    <WTLFolder>$(ThirdPartyAsAbs)\wtl</WTLFolder>
+    <BoostFolder>$(ThirdPartyAsAbs)\boost\boost_$(BoostVer)</BoostFolder>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>BlazesRus</_ProjectFileVersion>
+<!--     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(WTLFolder)\include;$(BoostFolder);</IncludePath> -->
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(WTLFolder)\include;$(BoostFolder);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_BIND_TO_CURRENT_CRT_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WTLFolder)\include;$(BoostFolder)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);_BIND_TO_CURRENT_CRT_VERSION;WTLFolder = $(WTLFolder)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(WTLFolder)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WTLFolder)\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WTLFolder)\include;$(BoostFolder)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

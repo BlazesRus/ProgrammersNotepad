@@ -4,11 +4,11 @@
  * @author Simon Steele
  * @note Copyright (c) 2004-2008 Simon Steele - http://untidy.net/
  *
- * Programmers Notepad 2 : The license file (license.[txt|html]) describes 
+ * Programmers Notepad 2 : The license file (license.[txt|html]) describes
  * the conditions under which this source may be modified / distributed.
- * 
- * Notes: 
- * Include file for standard system include files, or project specific 
+ *
+ * Notes:
+ * Include file for standard system include files, or project specific
  * include files that are used frequently, but are changed infrequently.
  */
 
@@ -16,7 +16,7 @@
 #define pn2_stdafx_h__included
 
 #ifdef _MSC_VER
-	#pragma once
+    #pragma once
 #endif
 
 // Change these values to use different versions
@@ -36,10 +36,10 @@
 
 // Implement debug mode memory allocation checking.
 #ifdef _DEBUG
-	#define CRTDBG_MAP_ALLOC
-	#include <stdlib.h>
-	#include <crtdbg.h>
-	#define DEBUG_NEW  new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
+    #define CRTDBG_MAP_ALLOC
+    #include <stdlib.h>
+    #include <crtdbg.h>
+    #define DEBUG_NEW  new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
 #endif // #ifdef _DEBUG
 
 #define _ATL_FREE_THREADED
@@ -47,22 +47,23 @@
 #include <atlbase.h>
 
 #if (_ATL_VER >= 0x0700)
-	#include <atlstr.h>
-	#include <atltypes.h>
-	#define _WTL_NO_CSTRING
-	#define _WTL_NO_WTYPES
-	#define _WTL_NO_UNION_CLASSES
-	//extern "C" const int _fltused = 0;
+    #include <atlstr.h>
+    #include <atltypes.h>
+    #define _WTL_NO_CSTRING
+    #define _WTL_NO_WTYPES
+    #define _WTL_NO_UNION_CLASSES
+    //extern "C" const int _fltused = 0;
 #endif
 
 #include <atlwin.h>
+//#include $(WTLFolder)+"/atlapp.h" //Fix for relative path later
 #include <atlapp.h>
 #include "include/atlshellextbase.h"
 
 class CPNAppModule : public CAppModule
 {
 public:
-	CShellMalloc	m_ShellAllocator;
+    CShellMalloc	m_ShellAllocator;
 };
 
 extern CPNAppModule _Module;
@@ -101,33 +102,33 @@ typedef std::basic_string<TCHAR> tstring;
 template <typename match_type>
 bool safe_get_submatch(match_type& match, typename match_type::string_type& expr, typename match_type::char_type const *name)
 {
-	try
-	{
-		expr = match[name].str();
-		return true;
-	}
-	catch (boost::xpressive::regex_error&)
-	{
-		return false;
-	}
+    try
+    {
+        expr = match[name].str();
+        return true;
+    }
+    catch (boost::xpressive::regex_error&)
+    {
+        return false;
+    }
 }
 
 namespace boost { namespace xpressive {
 #ifdef _UNICODE
-	typedef wsregex tsregex;
-	typedef wsmatch tsmatch;
+    typedef wsregex tsregex;
+    typedef wsmatch tsmatch;
 #else
-	typedef sregex tsregex;
-	typedef smatch tsmatch;
+    typedef sregex tsregex;
+    typedef smatch tsmatch;
 #endif
 }} // namespace boost::xpressive
 
 #define PNASSERT ATLASSERT
 
 #ifdef _DEBUG
-	#define _NO_COPY(x) private: x(x&){;} x& operator = (x& copy){;}
+    #define _NO_COPY(x) private: x(x&){;} x& operator = (x& copy){;}
 #else
-	#define _NO_COPY(x) /##/
+    #define _NO_COPY(x) /##/
 #endif
 
 // Lots of good stuff in here...

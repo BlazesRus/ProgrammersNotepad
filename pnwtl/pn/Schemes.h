@@ -14,7 +14,7 @@
 class CommandDispatch;
 
 #ifdef _MSC_VER
-	#pragma once
+    #pragma once
 #endif
 
 #include "Scintillaif.h"
@@ -42,8 +42,8 @@ static const int DEFAULT_INDIC_ALPHA_LEVEL = 70;
 
 typedef struct tagCompiledSchemeHdr
 {
-	char Magic[16];
-	int	Version;
+    char Magic[16];
+    int	Version;
 } CompiledHdrRec;
 
 #define SC_HDR_NAMESIZE 11
@@ -56,20 +56,20 @@ typedef struct tagCompiledSchemeHdr
  */
 typedef struct tagSchemeHdr
 {
-	char Name[SC_HDR_NAMESIZE];
-	char Title[SC_HDR_TITLESIZE];
-	UINT Flags;
-	short TabWidth;
+    char Name[SC_HDR_NAMESIZE];
+    char Title[SC_HDR_TITLESIZE];
+    UINT Flags;
+    short TabWidth;
 } SchemeHdrRec;
 
 typedef struct tagCommentSpecRec
 {
-	char CommentLineText[SC_HDR_COMMENTTEXTSIZE];
-	char CommentStreamStart[SC_HDR_COMMENTTEXTSIZE];
-	char CommentStreamEnd[SC_HDR_COMMENTTEXTSIZE];
-	char CommentBlockStart[SC_HDR_COMMENTBLOCKTEXTSIZE];
-	char CommentBlockEnd[SC_HDR_COMMENTBLOCKTEXTSIZE];
-	char CommentBlockLine[SC_HDR_COMMENTTEXTSIZE];
+    char CommentLineText[SC_HDR_COMMENTTEXTSIZE];
+    char CommentStreamStart[SC_HDR_COMMENTTEXTSIZE];
+    char CommentStreamEnd[SC_HDR_COMMENTTEXTSIZE];
+    char CommentBlockStart[SC_HDR_COMMENTBLOCKTEXTSIZE];
+    char CommentBlockEnd[SC_HDR_COMMENTBLOCKTEXTSIZE];
+    char CommentBlockLine[SC_HDR_COMMENTTEXTSIZE];
 } CommentSpecRec;
 
 /**
@@ -78,11 +78,11 @@ typedef struct tagCommentSpecRec
  */
 typedef struct tagSchemeTextRec
 {
-	unsigned long	TextLength;
-	long			MsgNum;
-	long			lParam;
-	long			wParam;
-	char			TextType;
+    unsigned long	TextLength;
+    long			MsgNum;
+    long			lParam;
+    long			wParam;
+    char			TextType;
 } TextRec;
 
 /**
@@ -90,9 +90,9 @@ typedef struct tagSchemeTextRec
  */
 typedef struct tagSchemeMsg
 {
-	int MsgNum;
-	long lParam;
-	long wParam;
+    int MsgNum;
+    long lParam;
+    long wParam;
 } MsgRec;
 
 /**
@@ -102,8 +102,8 @@ typedef struct tagSchemeMsg
  */
 typedef struct tagSchemeProp
 {
-	unsigned long NameLength;
-	unsigned long ValueLength;
+    unsigned long NameLength;
+    unsigned long ValueLength;
 } PropRec;
 
 /// Text types used in the TextRec struct
@@ -128,54 +128,54 @@ class CFile;
 ///@todo Add a m_CompiledFile member to save repeatedly changing the file extension and path.
 class Scheme
 {
-	public:
-		explicit Scheme();
-		explicit Scheme(SchemeManager* pManager);
-		explicit Scheme(SchemeManager* pManager, const wchar_t* filename);
-		
-		explicit Scheme(const Scheme& copy);
+    public:
+        explicit Scheme();
+        explicit Scheme(SchemeManager* pManager);
+        explicit Scheme(SchemeManager* pManager, const wchar_t* filename);
+        
+        explicit Scheme(const Scheme& copy);
 
-		virtual ~Scheme();
+        virtual ~Scheme();
 
-		virtual void Load(CScintilla& sc, bool allSettings = true, const wchar_t* filename = NULL);
-		
-		virtual StylesList* CreateStylesList();
+        virtual void Load(CScintilla& sc, bool allSettings = true, const wchar_t* filename = NULL);
+        
+        virtual StylesList* CreateStylesList();
 
-		virtual void SetName(const char* name);
-		virtual void SetTitle(const TCHAR* title);
-		
-		void SetFileName(const wchar_t* filename);
+        virtual void SetName(const char* name);
+        virtual void SetTitle(const TCHAR* title);
+        
+        void SetFileName(const wchar_t* filename);
 
-		virtual bool CheckName();
+        virtual bool CheckName();
 
-		virtual const char* GetName() const;
-		virtual const TCHAR* GetTitle() const;
-		virtual const wchar_t* GetFileName() const;
-		virtual const char* GetLexer() const;
+        virtual const char* GetName() const;
+        virtual const TCHAR* GetTitle() const;
+        virtual const wchar_t* GetFileName() const;
+        virtual const char* GetLexer() const;
 
-		const CommentSpecRec& GetCommentSpec() const;
+        const CommentSpecRec& GetCommentSpec() const;
 
-		bool IsInternal() const;
+        bool IsInternal() const;
 
-		void SetSchemeManager(SchemeManager* pManager);
+        void SetSchemeManager(SchemeManager* pManager);
 
-		bool operator < (const Scheme& compare) const;
-		bool operator > (const Scheme& compare) const;
-		const Scheme& operator = (const Scheme& copy);
+        bool operator < (const Scheme& compare) const;
+        bool operator > (const Scheme& compare) const;
+        const Scheme& operator = (const Scheme& copy);
 
-	protected:
-		wchar_t*		m_SchemeFile;
-		char*			m_Name;
-		TCHAR*			m_Title;
-		bool			m_bInternal;
-		SchemeManager*	m_pManager;
-		CommentSpecRec	m_CommentSpec;
-		std::string		m_Lexer;
+    protected:
+        wchar_t*		m_SchemeFile;
+        char*			m_Name;
+        TCHAR*			m_Title;
+        bool			m_bInternal;
+        SchemeManager*	m_pManager;
+        CommentSpecRec	m_CommentSpec;
+        std::string		m_Lexer;
 
-		bool InitialLoad(CFile& file, SchemeHdrRec& hdr);
+        bool InitialLoad(CFile& file, SchemeHdrRec& hdr);
 
-		void SetupScintilla(CScintilla& sc, bool allSettings = true);
-		void Init();
+        void SetupScintilla(CScintilla& sc, bool allSettings = true);
+        void Init();
 };
 
 /**
@@ -185,18 +185,18 @@ class Scheme
  */
 class DefaultScheme : public Scheme
 {
-	public:
-		DefaultScheme();		
-		virtual ~DefaultScheme(){}
+    public:
+        DefaultScheme();		
+        virtual ~DefaultScheme(){}
 
-		virtual void Load(CScintilla& sc, LPCTSTR filename = NULL);
+        virtual void Load(CScintilla& sc, LPCTSTR filename = NULL);
 
-		// Can't set name, it's always whatever's set in the constructor from the resource.
-		virtual void SetName(const char* name){}
+        // Can't set name, it's always whatever's set in the constructor from the resource.
+        virtual void SetName(const char* name){}
 
-		virtual void CheckName(const wchar_t* filename = NULL){}
+        virtual void CheckName(const wchar_t* filename = NULL){}
 
-		virtual const char* GetName() const { return "default"; }
+        virtual const char* GetName() const { return "default"; }
 };
 
 typedef std::list<Scheme>				SCHEME_LIST;
@@ -208,29 +208,29 @@ typedef SCHEME_MAP::value_type			SCMITEM;
 
 typedef struct 
 {
-	Scheme* pScheme;
-	int iCommand;
+    Scheme* pScheme;
+    int iCommand;
 } menuid_scheme_pair;
 
 typedef std::list<menuid_scheme_pair> MISCHEMELIST;
 
 class CSchemeSwitcher
 {
-	public:
-		CSchemeSwitcher();
-		~CSchemeSwitcher();
+    public:
+        CSchemeSwitcher();
+        ~CSchemeSwitcher();
 
-		void Reset(CommandDispatch* pDispatch, int iCommand = SCHEMEMANAGER_SELECTSCHEME);
+        void Reset(CommandDispatch* pDispatch, int iCommand = SCHEMEMANAGER_SELECTSCHEME);
 
-		void SetActiveScheme(Scheme* pCurrent);
+        void SetActiveScheme(Scheme* pCurrent);
 
-		operator HMENU ();
+        operator HMENU ();
 
-	protected:
-		void BuildMenu(int iCommand, CommandDispatch* dispatch);
+    protected:
+        void BuildMenu(int iCommand, CommandDispatch* dispatch);
 
-		MISCHEMELIST	m_list;
-		CSPopupMenu		m_menu;
+        MISCHEMELIST	m_list;
+        CSPopupMenu		m_menu;
 };
 
 #endif //#ifndef schemes_h__included

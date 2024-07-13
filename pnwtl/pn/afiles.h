@@ -17,26 +17,26 @@
 class AlternateFileSet
 {
 public:
-	explicit AlternateFileSet(LPCTSTR set1, LPCTSTR set2);
-	explicit AlternateFileSet(const AlternateFileSet& copy);
-	~AlternateFileSet();
+    explicit AlternateFileSet(LPCTSTR set1, LPCTSTR set2);
+    explicit AlternateFileSet(const AlternateFileSet& copy);
+    ~AlternateFileSet();
 
-	void Set(LPCTSTR set1, LPCTSTR set2);
+    void Set(LPCTSTR set1, LPCTSTR set2);
 
-	LPCTSTR Set1() const;
-	LPCTSTR Set2() const;
+    LPCTSTR Set1() const;
+    LPCTSTR Set2() const;
 
-	void GetSet1String(tstring& str) const;
-	void GetSet2String(tstring& str) const;
+    void GetSet1String(tstring& str) const;
+    void GetSet2String(tstring& str) const;
 
 private:
-	void set(TCHAR*&, LPCTSTR);
-	void get(LPCTSTR, tstring&) const;
+    void set(TCHAR*&, LPCTSTR);
+    void get(LPCTSTR, tstring&) const;
 
-	void clear();
+    void clear();
 
-	TCHAR* set1;
-	TCHAR* set2;
+    TCHAR* set1;
+    TCHAR* set2;
 };
 
 typedef std::list<AlternateFileSet*>	AFILES_LIST;
@@ -46,36 +46,36 @@ typedef AFILES_LIST::const_iterator		AFILES_CIT;
 class AlternateFiles : public Singleton<AlternateFiles, SINGLETON_AUTO_DELETE>, XMLParseState
 {
 public:
-	friend class Singleton<AlternateFiles, SINGLETON_AUTO_DELETE>;
+    friend class Singleton<AlternateFiles, SINGLETON_AUTO_DELETE>;
 
-	virtual ~AlternateFiles();
+    virtual ~AlternateFiles();
 
-	void Add(AlternateFileSet* pSet);
-	void Remove(AlternateFileSet* pSet);
-	void Clear();
+    void Add(AlternateFileSet* pSet);
+    void Remove(AlternateFileSet* pSet);
+    void Clear();
 
-	bool GetAlternate(LPCTSTR filename, tstring& afile) const;
+    bool GetAlternate(LPCTSTR filename, tstring& afile) const;
 
-	const AFILES_LIST& GetSets() const;
-	void SetSets(const AFILES_LIST&);
+    const AFILES_LIST& GetSets() const;
+    void SetSets(const AFILES_LIST&);
 
-	void Save() const;
+    void Save() const;
 
 //XMLParseState
 public:
-	virtual void startElement(XML_CSTR name, const XMLAttributes& atts);
-	virtual void endElement(XML_CSTR name){}
-	virtual void characterData(XML_CSTR data, int len){}
+    virtual void startElement(XML_CSTR name, const XMLAttributes& atts);
+    virtual void endElement(XML_CSTR name){}
+    virtual void characterData(XML_CSTR data, int len){}
 
 protected:
-	AlternateFiles();
+    AlternateFiles();
 
-	bool extMatches(LPCTSTR pSet, LPCTSTR ext) const;
-	LPCTSTR getMatchingSet(LPCTSTR pSet1, LPCTSTR pSet2, LPCTSTR ext) const;
+    bool extMatches(LPCTSTR pSet, LPCTSTR ext) const;
+    LPCTSTR getMatchingSet(LPCTSTR pSet1, LPCTSTR pSet2, LPCTSTR ext) const;
 
 protected:
-	AFILES_LIST	sets;
-	int			state;
+    AFILES_LIST	sets;
+    int			state;
 };
 
 #endif

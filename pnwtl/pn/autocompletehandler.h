@@ -16,8 +16,8 @@
 class BaseAutoCompleteHandler
 {
 public:
-	virtual ~BaseAutoCompleteHandler(){}
-	virtual bool AutoCSelection(Scintilla::SCNotification* notification) = 0;
+    virtual ~BaseAutoCompleteHandler(){}
+    virtual bool AutoCSelection(Scintilla::SCNotification* notification) = 0;
 };
 
 typedef boost::shared_ptr<BaseAutoCompleteHandler> AutoCompleteHandlerPtr;
@@ -26,17 +26,17 @@ template <class T>
 class AutoCompleteAdaptor : public BaseAutoCompleteHandler
 {
 public:
-	typedef bool (T::*TCallback)(Scintilla::SCNotification* notification);
-	AutoCompleteAdaptor(T* pT, TCallback callback) : m_t(pT), m_cb(callback){}
-	virtual ~AutoCompleteAdaptor(){}
+    typedef bool (T::*TCallback)(Scintilla::SCNotification* notification);
+    AutoCompleteAdaptor(T* pT, TCallback callback) : m_t(pT), m_cb(callback){}
+    virtual ~AutoCompleteAdaptor(){}
 
-	virtual bool AutoCSelection(Scintilla::SCNotification* notification)
-	{
-		return (m_t->*m_cb)(notification);
-	}
+    virtual bool AutoCSelection(Scintilla::SCNotification* notification)
+    {
+        return (m_t->*m_cb)(notification);
+    }
 private:
-	TCallback m_cb;
-	T* m_t;
+    TCallback m_cb;
+    T* m_t;
 };
 
 #endif // autocompletehandler_h__included

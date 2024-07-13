@@ -15,35 +15,35 @@ class IniKeyMap;
 
 class IniOptions : public Options
 {
-	friend class OptionsFactory;
+    friend class OptionsFactory;
 
 public:
-	virtual ~IniOptions();
+    virtual ~IniOptions();
 
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, bool bVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, int iVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, uint64_t iVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, LPCTSTR szVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, bool bVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, int iVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, uint64_t iVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, LPCTSTR szVal);
 
-	virtual bool Get(LPCTSTR subkey, LPCTSTR value, bool bDefault);
-	virtual int Get(LPCTSTR subkey, LPCTSTR value, int iDefault);
-	virtual uint64_t Get(LPCTSTR subkey, LPCTSTR value, uint64_t iDefault);
-	virtual tstring Get(LPCTSTR subkey, LPCTSTR value, LPCTSTR szDefault);
+    virtual bool Get(LPCTSTR subkey, LPCTSTR value, bool bDefault);
+    virtual int Get(LPCTSTR subkey, LPCTSTR value, int iDefault);
+    virtual uint64_t Get(LPCTSTR subkey, LPCTSTR value, uint64_t iDefault);
+    virtual tstring Get(LPCTSTR subkey, LPCTSTR value, LPCTSTR szDefault);
 
-	virtual void Clear(LPCTSTR subkey);
+    virtual void Clear(LPCTSTR subkey);
 
-	virtual void SetUserSettingsPath(LPCTSTR path);
+    virtual void SetUserSettingsPath(LPCTSTR path);
 
 protected:
-	IniOptions();
+    IniOptions();
 
-	virtual void group(LPCTSTR location);
-	virtual void ungroup();
+    virtual void group(LPCTSTR location);
+    virtual void ungroup();
 
-	bool groupLocked;
-	IniKeyMap* keyMap;
-	TCHAR*	_filename;
-	LPCTSTR _group;
+    bool groupLocked;
+    IniKeyMap* keyMap;
+    TCHAR*	_filename;
+    LPCTSTR _group;
 };
 
 #endif

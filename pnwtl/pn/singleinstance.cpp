@@ -21,228 +21,228 @@
  */
 MultipleInstanceManager::MultipleInstanceManager(LPCTSTR pszKey)
 {
-	// Create the mutex and request initial ownership
-	m_hMutex = ::CreateMutex(NULL, TRUE, pszKey);
+    // Create the mutex and request initial ownership
+    m_hMutex = ::CreateMutex(NULL, TRUE, pszKey);
 
-	// If ERROR_ALREADY_EXISTS then another PN instance has the mutex and we didn't get ownership.
-	m_bAlreadyActive = (::GetLastError() == ERROR_ALREADY_EXISTS);
-	
+    // If ERROR_ALREADY_EXISTS then another PN instance has the mutex and we didn't get ownership.
+    m_bAlreadyActive = (::GetLastError() == ERROR_ALREADY_EXISTS);
+    
 #ifdef _DEBUG
-	LOG( m_bAlreadyActive ? _T("PN2 is already running") : _T("First PN2 Instance") );
+    LOG( m_bAlreadyActive ? _T("PN2 is already running") : _T("First PN2 Instance") );
 #endif
-	
-	PNASSERT(m_hMutex != NULL);
+    
+    PNASSERT(m_hMutex != NULL);
 
-	m_sKey = pszKey;
+    m_sKey = pszKey;
 
-	m_uiMessage = ::RegisterWindowMessage(pszKey);
+    m_uiMessage = ::RegisterWindowMessage(pszKey);
 
-	bool bWin95 = (g_Context.OSVersion.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) &&
-		( (g_Context.OSVersion.dwMajorVersion == 4) && (g_Context.OSVersion.dwMinorVersion == 0) );
+    bool bWin95 = (g_Context.OSVersion.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) &&
+        ( (g_Context.OSVersion.dwMajorVersion == 4) && (g_Context.OSVersion.dwMinorVersion == 0) );
 
-	m_hUser32 = ::LoadLibrary(_T("User32.dll"));
+    m_hUser32 = ::LoadLibrary(_T("User32.dll"));
 
-	if(m_hUser32 != NULL)
-	{
+    if(m_hUser32 != NULL)
+    {
 
-		if(bWin95)
-		{
+        if(bWin95)
+        {
 #ifdef _DEBUG
-			LOG( _T("PN2 believes it is running on Windows 95") );
+            LOG( _T("PN2 believes it is running on Windows 95") );
 #endif
-			m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessage");
-		}
-		else
-		{
+            m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessage");
+        }
+        else
+        {
 #ifdef _UNICODE
-			m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessageW");
+            m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessageW");
 #else
-			m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessageA");
+            m_pfnBSM = (PFNBroadcastSystemMessage)::GetProcAddress(m_hUser32, "BroadcastSystemMessageA");
 #endif
-		}
-	}
-	else
-	{
+        }
+    }
+    else
+    {
 #ifdef _DEBUG
-		LOG( _T("PN2 was unable to locate the BroadcastSystemMessage* function in User32.dll") );
+        LOG( _T("PN2 was unable to locate the BroadcastSystemMessage* function in User32.dll") );
 #endif
-		m_hUser32 = NULL;
-		m_pfnBSM = NULL;
-	}
+        m_hUser32 = NULL;
+        m_pfnBSM = NULL;
+    }
 }
 
 MultipleInstanceManager::~MultipleInstanceManager()
 {
-	::CloseHandle(m_hMutex);
+    ::CloseHandle(m_hMutex);
 
-	if(m_hUser32)
-	{
-		::FreeLibrary(m_hUser32);
-		m_hUser32 = NULL;
-	}
+    if(m_hUser32)
+    {
+        ::FreeLibrary(m_hUser32);
+        m_hUser32 = NULL;
+    }
 }
 
 void MultipleInstanceManager::ActivateOther()
 {
-	if(m_pfnBSM == NULL)
-		return;
+    if(m_pfnBSM == NULL)
+        return;
 
-	DWORD dwRecipients = BSM_APPLICATIONS;
-	
-	//long res = 
-	m_pfnBSM(
-		BSF_ALLOWSFW | BSF_FORCEIFHUNG | BSF_IGNORECURRENTTASK,
-		&dwRecipients, 
-		m_uiMessage,
-		MIM_ACTIVATE,
-		0);
+    DWORD dwRecipients = BSM_APPLICATIONS;
+    
+    //long res = 
+    m_pfnBSM(
+        BSF_ALLOWSFW | BSF_FORCEIFHUNG | BSF_IGNORECURRENTTASK,
+        &dwRecipients, 
+        m_uiMessage,
+        MIM_ACTIVATE,
+        0);
 }
 
 bool MultipleInstanceManager::AlreadyActive()
 {
-	return m_bAlreadyActive;
+    return m_bAlreadyActive;
 }
 
 bool MultipleInstanceManager::CreateSharedData(BYTE** buffer, HANDLE* hMappedFile, size_t size)
 {
-	tstring strName = _T("PN.");
-	strName += m_sKey;
+    tstring strName = _T("PN.");
+    strName += m_sKey;
 
-	HANDLE hMapping = ::CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, size, strName.c_str());
-	if(hMapping == NULL)
-		return false;
+    HANDLE hMapping = ::CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, size, strName.c_str());
+    if(hMapping == NULL)
+        return false;
 
-	BYTE *buf = (BYTE*)::MapViewOfFile(hMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
-	if (buf == NULL)
-	{
-		CloseHandle(hMapping);
-		return false;
-	}
-	
-	*hMappedFile = hMapping;
-	*buffer = buf;
+    BYTE *buf = (BYTE*)::MapViewOfFile(hMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+    if (buf == NULL)
+    {
+        CloseHandle(hMapping);
+        return false;
+    }
+    
+    *hMappedFile = hMapping;
+    *buffer = buf;
 
-	return true;
+    return true;
 }
 
 void MultipleInstanceManager::ReleaseSharedData(BYTE* buffer, HANDLE hMappedFile)
 {
-	if(buffer)
-	{
-		::UnmapViewOfFile(buffer);
-	}
+    if(buffer)
+    {
+        ::UnmapViewOfFile(buffer);
+    }
 
-	if(hMappedFile)
-	{
-		::CloseHandle(hMappedFile);
-	}
+    if(hMappedFile)
+    {
+        ::CloseHandle(hMappedFile);
+    }
 }
 
 void MultipleInstanceManager::SendParameters()
 {
-	if(m_pfnBSM == NULL)
-		return;
+    if(m_pfnBSM == NULL)
+        return;
 
-	if(__argc < 2)
-	{
-		// If there are no arguments to send, then
-		// we simply activate the other instance.
-		ActivateOther();
-		return;
-	}
+    if(__argc < 2)
+    {
+        // If there are no arguments to send, then
+        // we simply activate the other instance.
+        ActivateOther();
+        return;
+    }
 
-	std::list<tstring> args = GetCommandLineArgs();
-	SendParameters(args);
+    std::list<tstring> args = GetCommandLineArgs();
+    SendParameters(args);
 }
 
 void MultipleInstanceManager::SendParameters(const std::list<tstring>& args)
 {
-	GArray<TCHAR> parmarray;
-	int size = 0;
-	int paSize = 0;
-	
-	for(std::list<tstring>::const_iterator i = args.begin(); i != args.end(); ++i)
-	{
-		paSize = (*i).size();
-		
-		parmarray.grow( size + paSize + 1);
+    GArray<TCHAR> parmarray;
+    int size = 0;
+    int paSize = 0;
+    
+    for(std::list<tstring>::const_iterator i = args.begin(); i != args.end(); ++i)
+    {
+        paSize = (*i).size();
+        
+        parmarray.grow( size + paSize + 1);
 
-		_tcscpy(&parmarray[size], (*i).c_str());
+        _tcscpy(&parmarray[size], (*i).c_str());
 
-		size += (paSize + 1);
-	}
+        size += (paSize + 1);
+    }
 
-	// Append another NULL.
-	parmarray.grow(size + 1);
-	parmarray[size] = _T('\0');
+    // Append another NULL.
+    parmarray.grow(size + 1);
+    parmarray[size] = _T('\0');
 
-	HANDLE	hMappedFile;
-	BYTE*	buffer;
+    HANDLE	hMappedFile;
+    BYTE*	buffer;
 
-	if(RequestPermission())
-	{
-		if( !CreateSharedData(&buffer, &hMappedFile, parmarray.size() * sizeof(TCHAR)) )
-			return;
+    if(RequestPermission())
+    {
+        if( !CreateSharedData(&buffer, &hMappedFile, parmarray.size() * sizeof(TCHAR)) )
+            return;
 
-		// Copy the big buffer into the other big buffer :)
-		memcpy(buffer, &parmarray[0], parmarray.size() * sizeof(TCHAR));
+        // Copy the big buffer into the other big buffer :)
+        memcpy(buffer, &parmarray[0], parmarray.size() * sizeof(TCHAR));
 
-		DWORD dwRecipients = BSM_APPLICATIONS;
-		long res = m_pfnBSM(
-			BSF_ALLOWSFW | BSF_FORCEIFHUNG | BSF_IGNORECURRENTTASK,
-			&dwRecipients, 
-			m_uiMessage,
-			MIM_PARAMETER_ARRAY,
-			parmarray.size() * sizeof(TCHAR));
+        DWORD dwRecipients = BSM_APPLICATIONS;
+        long res = m_pfnBSM(
+            BSF_ALLOWSFW | BSF_FORCEIFHUNG | BSF_IGNORECURRENTTASK,
+            &dwRecipients, 
+            m_uiMessage,
+            MIM_PARAMETER_ARRAY,
+            parmarray.size() * sizeof(TCHAR));
 
-		PNASSERT(res != -1);
+        PNASSERT(res != -1);
 
-		ReleaseSharedData(buffer, hMappedFile);
-		Release();
-	}
-	else
-	{
-		LOG(_T("PN failed to enter mutex to send parameters"));
-	}
+        ReleaseSharedData(buffer, hMappedFile);
+        Release();
+    }
+    else
+    {
+        LOG(_T("PN failed to enter mutex to send parameters"));
+    }
 }
 
 void MultipleInstanceManager::AllowParameters()
 {
-	Release();
+    Release();
 }
 
 bool MultipleInstanceManager::GetParameters(std::list<tstring>& params, DWORD size)
 {
-	HANDLE hMappedFile;
-	BYTE* buffer;
+    HANDLE hMappedFile;
+    BYTE* buffer;
 
-	if( !CreateSharedData(&buffer, &hMappedFile, size) )
-		return false;
+    if( !CreateSharedData(&buffer, &hMappedFile, size) )
+        return false;
 
-	TCHAR* pParam = reinterpret_cast<TCHAR*>( buffer );
-	while( *pParam )
-	{
-		params.push_back( tstring(pParam) );
+    TCHAR* pParam = reinterpret_cast<TCHAR*>( buffer );
+    while( *pParam )
+    {
+        params.push_back( tstring(pParam) );
 
-		pParam += (_tcslen(pParam) + 1);
-	}
+        pParam += (_tcslen(pParam) + 1);
+    }
 
-	ReleaseSharedData(buffer, hMappedFile);
+    ReleaseSharedData(buffer, hMappedFile);
 
-	return true;
+    return true;
 }
 
 UINT MultipleInstanceManager::GetMessageID()
 {
-	return m_uiMessage;
+    return m_uiMessage;
 }
 
 bool MultipleInstanceManager::RequestPermission()
 {
-	return ::WaitForSingleObject(m_hMutex, 30000) == WAIT_OBJECT_0;
+    return ::WaitForSingleObject(m_hMutex, 30000) == WAIT_OBJECT_0;
 }
 
 void MultipleInstanceManager::Release()
 {
-	::ReleaseMutex(m_hMutex);
+    ::ReleaseMutex(m_hMutex);
 }

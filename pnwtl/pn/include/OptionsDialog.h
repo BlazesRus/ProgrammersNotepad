@@ -31,308 +31,308 @@ class COptionsDialog;
 
 class COptionsPage
 {
-	friend class COptionsDialog;
+    friend class COptionsDialog;
 
 public:
-	COptionsPage() : m_bCreated(false)
-	{
-	}
+    COptionsPage() : m_bCreated(false)
+    {
+    }
 
-	// Methods called by COptionsDialog when dealing with COptionsPage.
-	virtual void OnOK(){};
-	virtual void OnCancel(){};
-	virtual void OnInitialise(){};
+    // Methods called by COptionsDialog when dealing with COptionsPage.
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
+    virtual void OnInitialise(){};
 
-	// Return a tree position like "Schemes\AddOn Options"
-	virtual tstring GetTreePosition() = 0;
+    // Return a tree position like "Schemes\AddOn Options"
+    virtual tstring GetTreePosition() = 0;
 
-	virtual HWND CreatePage(HWND hOwner, LPRECT rcPos, HWND hInsertAfter = NULL) = 0;
-	virtual void ClosePage() = 0;
-	virtual void ShowPage(int showCmd) = 0;
-	virtual LRESULT ForwardMessage(UINT message, WPARAM wParam, LPARAM lParam) = 0;
+    virtual HWND CreatePage(HWND hOwner, LPRECT rcPos, HWND hInsertAfter = NULL) = 0;
+    virtual void ClosePage() = 0;
+    virtual void ShowPage(int showCmd) = 0;
+    virtual LRESULT ForwardMessage(UINT message, WPARAM wParam, LPARAM lParam) = 0;
 
 protected:
-	bool m_bCreated;
+    bool m_bCreated;
 };
 
 template <class T>
 class COptionsPageImpl : public CDialogImpl<T>, public COptionsPage, CThemeImpl< COptionsPageImpl<T> >
 {
-	public:
-		virtual ~COptionsPageImpl(){}
+    public:
+        virtual ~COptionsPageImpl(){}
 
-		virtual HWND CreatePage(HWND hParent, LPRECT rcPos, HWND hInsertAfter = NULL)
-		{
-			Create(hParent);
-			SetWindowPos(hInsertAfter, rcPos, SWP_NOACTIVATE);
-			MoveWindow(rcPos);
+        virtual HWND CreatePage(HWND hParent, LPRECT rcPos, HWND hInsertAfter = NULL)
+        {
+            Create(hParent);
+            SetWindowPos(hInsertAfter, rcPos, SWP_NOACTIVATE);
+            MoveWindow(rcPos);
 
-			return m_hWnd;
-		}
+            return m_hWnd;
+        }
 
-		virtual void ClosePage()
-		{
-			DestroyWindow();
-		}
+        virtual void ClosePage()
+        {
+            DestroyWindow();
+        }
 
-		virtual void ShowPage(int showCmd)
-		{
-			ShowWindow(showCmd);
-		}
+        virtual void ShowPage(int showCmd)
+        {
+            ShowWindow(showCmd);
+        }
 
-		virtual LRESULT ForwardMessage(UINT message, WPARAM wParam, LPARAM lParam)
-		{
-			return SendMessage(message, wParam, lParam);
-		}
+        virtual LRESULT ForwardMessage(UINT message, WPARAM wParam, LPARAM lParam)
+        {
+            return SendMessage(message, wParam, lParam);
+        }
 };
 
 class COptionsDialog : public CDialogImpl<COptionsDialog>, CThemeImpl<COptionsDialog>
 {
-	typedef std::list<COptionsPage*> PAGEPTRLIST;
-	typedef CDialogImpl<COptionsDialog> baseClass;
+    typedef std::list<COptionsPage*> PAGEPTRLIST;
+    typedef CDialogImpl<COptionsDialog> baseClass;
 
-	public:
+    public:
 
-		COptionsDialog() : m_pCurrentPage(NULL), m_pInitialPage(NULL), m_hInitialItem(NULL)
-		{
-		}
+        COptionsDialog() : m_pCurrentPage(NULL), m_pInitialPage(NULL), m_hInitialItem(NULL)
+        {
+        }
 
-		enum { IDD = IDD_OPTIONS };
+        enum { IDD = IDD_OPTIONS };
 
-		BEGIN_MSG_MAP(COptionsDialog)
-			MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-			MESSAGE_HANDLER(PN_NOTIFY, OnNotifyPages)
-			COMMAND_ID_HANDLER(IDOK, OnOK)
-			COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
-			NOTIFY_ID_HANDLER(IDC_TREE, OnTreeNotify)
-		END_MSG_MAP()
+        BEGIN_MSG_MAP(COptionsDialog)
+            MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+            MESSAGE_HANDLER(PN_NOTIFY, OnNotifyPages)
+            COMMAND_ID_HANDLER(IDOK, OnOK)
+            COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
+            NOTIFY_ID_HANDLER(IDC_TREE, OnTreeNotify)
+        END_MSG_MAP()
 
-		BOOL EndDialog(int nRetCode)
-		{
-			ClosePages();
-			return baseClass::EndDialog(nRetCode);
-		}
+        BOOL EndDialog(int nRetCode)
+        {
+            ClosePages();
+            return baseClass::EndDialog(nRetCode);
+        }
 
-		void AddPage(COptionsPage* pPage)
-		{
-			m_Pages.push_back(pPage);
-		}
-	
-		void SetInitialPage(COptionsPage* pPage)
-		{
-			m_pInitialPage = pPage;
-		}
+        void AddPage(COptionsPage* pPage)
+        {
+            m_Pages.push_back(pPage);
+        }
+    
+        void SetInitialPage(COptionsPage* pPage)
+        {
+            m_pInitialPage = pPage;
+        }
 
-	protected:
+    protected:
 
-		LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-		{
-			PAGEPTRLIST::const_iterator i;
+        LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+        {
+            PAGEPTRLIST::const_iterator i;
 
-			for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
-			{
-				(*i)->OnOK();
-			}
+            for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
+            {
+                (*i)->OnOK();
+            }
 
-			EndDialog(wID);
+            EndDialog(wID);
 
-			return TRUE;
-		}
+            return TRUE;
+        }
 
-		LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-		{
-			PAGEPTRLIST::const_iterator i;
+        LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+        {
+            PAGEPTRLIST::const_iterator i;
 
-			for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
-			{
-				(*i)->OnCancel();
-			}
+            for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
+            {
+                (*i)->OnCancel();
+            }
 
-			EndDialog(wID);
-			
-			return TRUE;
-		}
+            EndDialog(wID);
+            
+            return TRUE;
+        }
 
-		/**
-		 * Dialog is being initialised
-		 */
-		LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-		{
-			m_tree.Attach(GetDlgItem(IDC_TREE));
+        /**
+         * Dialog is being initialised
+         */
+        LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+        {
+            m_tree.Attach(GetDlgItem(IDC_TREE));
 
-			if (WTL::RunTimeHelper::IsVista() && IsThemingSupported()) 
-			{
-				::SetWindowTheme(m_tree.m_hWnd, L"explorer", NULL);
-			}
+            if (WTL::RunTimeHelper::IsVista() && IsThemingSupported()) 
+            {
+                ::SetWindowTheme(m_tree.m_hWnd, L"explorer", NULL);
+            }
 
-			InitialisePages();
-				
-			CenterWindow(GetParent());
+            InitialisePages();
+                
+            CenterWindow(GetParent());
 
-			if(m_pInitialPage)
-			{
-				m_tree.SelectItem(m_hInitialItem);
-			}
-			
-			return TRUE;
-		}
+            if(m_pInitialPage)
+            {
+                m_tree.SelectItem(m_hInitialItem);
+            }
+            
+            return TRUE;
+        }
 
-		LRESULT OnNotifyPages(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)
-		{
-			for(PAGEPTRLIST::iterator i = m_Pages.begin();
-				i != m_Pages.end();
-				++i)
-			{
-				if( (*i)->m_bCreated )
-				{
-					(*i)->ForwardMessage(PN_NOTIFY, wParam, lParam);
-				}
-			}
+        LRESULT OnNotifyPages(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)
+        {
+            for(PAGEPTRLIST::iterator i = m_Pages.begin();
+                i != m_Pages.end();
+                ++i)
+            {
+                if( (*i)->m_bCreated )
+                {
+                    (*i)->ForwardMessage(PN_NOTIFY, wParam, lParam);
+                }
+            }
 
-			return TRUE;
-		}
+            return TRUE;
+        }
 
-		void InitialisePages()
-		{
-			TCHAR buf[200];
-			PAGEPTRLIST::iterator i;
+        void InitialisePages()
+        {
+            TCHAR buf[200];
+            PAGEPTRLIST::iterator i;
 
-			for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
-			{
-				tstring treeloc = (*i)->GetTreePosition();
-				PNASSERT(treeloc.length() < 200);
-				_tcscpy(buf, treeloc.c_str());
+            for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
+            {
+                tstring treeloc = (*i)->GetTreePosition();
+                PNASSERT(treeloc.length() < 200);
+                _tcscpy(buf, treeloc.c_str());
 
-				HTREEITEM ti = NULL;
-				TCHAR* pSlash = NULL;
-				TCHAR* pNext = buf;
+                HTREEITEM ti = NULL;
+                TCHAR* pSlash = NULL;
+                TCHAR* pNext = buf;
 
-				while((pSlash = _tcschr(pNext, _T('\\'))) != NULL)
-				{
-					*pSlash = NULL;
-					ti = AddTreeEntry(pNext, ti);
-					*pSlash = '\\';
-					pNext = pSlash + 1;
-				}
+                while((pSlash = _tcschr(pNext, _T('\\'))) != NULL)
+                {
+                    *pSlash = NULL;
+                    ti = AddTreeEntry(pNext, ti);
+                    *pSlash = '\\';
+                    pNext = pSlash + 1;
+                }
 
-				// Add Tree Item
-				HTREEITEM item = AddTreeEntry(pNext, ti);
-				m_tree.SetItemData(item, reinterpret_cast<DWORD_PTR>(*i));
+                // Add Tree Item
+                HTREEITEM item = AddTreeEntry(pNext, ti);
+                m_tree.SetItemData(item, reinterpret_cast<DWORD_PTR>(*i));
 
-				if((*i) == m_pInitialPage)
-					m_hInitialItem = item;
-			}
-		}
+                if((*i) == m_pInitialPage)
+                    m_hInitialItem = item;
+            }
+        }
 
-		void ClosePages()
-		{
-			PAGEPTRLIST::iterator i;
-			for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
-			{
-				if((*i)->m_bCreated)
-				{
-					(*i)->ClosePage();
-				}
-			}
-		}
+        void ClosePages()
+        {
+            PAGEPTRLIST::iterator i;
+            for(i = m_Pages.begin(); i != m_Pages.end(); ++i)
+            {
+                if((*i)->m_bCreated)
+                {
+                    (*i)->ClosePage();
+                }
+            }
+        }
 
-		void SelectPage(COptionsPage* pPage)
-		{
-			CRect rcPage;
-			::GetWindowRect(GetDlgItem(IDC_PLACEHOLDER), rcPage);
-			ScreenToClient(rcPage);
+        void SelectPage(COptionsPage* pPage)
+        {
+            CRect rcPage;
+            ::GetWindowRect(GetDlgItem(IDC_PLACEHOLDER), rcPage);
+            ScreenToClient(rcPage);
 
-			if(m_pCurrentPage)
-			{
-				m_pCurrentPage->ShowPage(SW_HIDE);
-			}
+            if(m_pCurrentPage)
+            {
+                m_pCurrentPage->ShowPage(SW_HIDE);
+            }
 
-			if(!pPage->m_bCreated)
-			{
-				pPage->CreatePage(m_hWnd, rcPage, m_tree);
-				pPage->OnInitialise();
-				pPage->m_bCreated = true;
-			}
-			
-			pPage->ShowPage(SW_SHOW);
-			m_pCurrentPage = pPage;
-		}
+            if(!pPage->m_bCreated)
+            {
+                pPage->CreatePage(m_hWnd, rcPage, m_tree);
+                pPage->OnInitialise();
+                pPage->m_bCreated = true;
+            }
+            
+            pPage->ShowPage(SW_SHOW);
+            m_pCurrentPage = pPage;
+        }
 
-		HTREEITEM FindAtThisLevel(LPCTSTR title, HTREEITEM context)
-		{
-			HTREEITEM i = (context ? m_tree.GetChildItem(context) : m_tree.GetRootItem());
+        HTREEITEM FindAtThisLevel(LPCTSTR title, HTREEITEM context)
+        {
+            HTREEITEM i = (context ? m_tree.GetChildItem(context) : m_tree.GetRootItem());
 
-			TCHAR buf[32];
-			TVITEM tvi;
-			tvi.mask = TVIF_TEXT;
-			tvi.pszText = buf;
-			tvi.cchTextMax = 30;
-			
-			while(i)
-			{
-				tvi.hItem = i;
-				m_tree.GetItem(&tvi);
+            TCHAR buf[32];
+            TVITEM tvi;
+            tvi.mask = TVIF_TEXT;
+            tvi.pszText = buf;
+            tvi.cchTextMax = 30;
+            
+            while(i)
+            {
+                tvi.hItem = i;
+                m_tree.GetItem(&tvi);
 
-				if(_tcscmp(buf, title) == 0)
-					break;
+                if(_tcscmp(buf, title) == 0)
+                    break;
 
-				i = m_tree.GetNextSiblingItem(i);
-			}
+                i = m_tree.GetNextSiblingItem(i);
+            }
 
-			return i;
-		}
+            return i;
+        }
 
-		HTREEITEM AddTreeEntry(LPCTSTR title, HTREEITEM context)
-		{
-			HTREEITEM i = FindAtThisLevel(title, context);
+        HTREEITEM AddTreeEntry(LPCTSTR title, HTREEITEM context)
+        {
+            HTREEITEM i = FindAtThisLevel(title, context);
 
-			if(!i)
-			{
-				i = m_tree.InsertItem(title, context, NULL);
-				if(context)
-					m_tree.Expand(context, TVE_EXPAND);
-				m_tree.SetItemData(i, NULL);
-			}
+            if(!i)
+            {
+                i = m_tree.InsertItem(title, context, NULL);
+                if(context)
+                    m_tree.Expand(context, TVE_EXPAND);
+                m_tree.SetItemData(i, NULL);
+            }
 
-			return i;
-		}
+            return i;
+        }
 
 
-		LRESULT OnTreeNotify(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
-		{
-			LPNMTREEVIEW pN = reinterpret_cast<LPNMTREEVIEW>(pnmh);
-			if(pnmh->code == TVN_SELCHANGED)
-			{
-				COptionsPage* pPage = reinterpret_cast<COptionsPage*>(m_tree.GetItemData(pN->itemNew.hItem));
-				if(pPage)
-				{
-					SelectPage(pPage);
-				}
-				else
-				{
-					// If we're a parent with a child and we don't have a page show the child page
-					HTREEITEM child = m_tree.GetChildItem(pN->itemNew.hItem);
-					if(child != NULL)
-					{
-						pPage = reinterpret_cast<COptionsPage*>(m_tree.GetItemData(child));
-						if(pPage)
-						{
-							SelectPage(pPage);
-						}
-					}
-				}
+        LRESULT OnTreeNotify(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
+        {
+            LPNMTREEVIEW pN = reinterpret_cast<LPNMTREEVIEW>(pnmh);
+            if(pnmh->code == TVN_SELCHANGED)
+            {
+                COptionsPage* pPage = reinterpret_cast<COptionsPage*>(m_tree.GetItemData(pN->itemNew.hItem));
+                if(pPage)
+                {
+                    SelectPage(pPage);
+                }
+                else
+                {
+                    // If we're a parent with a child and we don't have a page show the child page
+                    HTREEITEM child = m_tree.GetChildItem(pN->itemNew.hItem);
+                    if(child != NULL)
+                    {
+                        pPage = reinterpret_cast<COptionsPage*>(m_tree.GetItemData(child));
+                        if(pPage)
+                        {
+                            SelectPage(pPage);
+                        }
+                    }
+                }
 
-			}
+            }
 
-			return 0;
-		}
+            return 0;
+        }
 
-	protected:
-		PAGEPTRLIST		m_Pages;
-		COptionsPage*	m_pCurrentPage;
-		COptionsPage*	m_pInitialPage;
-		HTREEITEM		m_hInitialItem;
-		CTreeViewCtrl	m_tree;
+    protected:
+        PAGEPTRLIST		m_Pages;
+        COptionsPage*	m_pCurrentPage;
+        COptionsPage*	m_pInitialPage;
+        HTREEITEM		m_hInitialItem;
+        CTreeViewCtrl	m_tree;
 };
 
 #endif

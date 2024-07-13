@@ -22,29 +22,29 @@ namespace TextClips {
  */
 class TextClipsManager
 {
-	public:
-		TextClipsManager();
-		TextClipsManager(const TextClipsManager& copy);
-		~TextClipsManager();
+    public:
+        TextClipsManager();
+        TextClipsManager(const TextClipsManager& copy);
+        ~TextClipsManager();
 
-		const LIST_CLIPSETS& GetClips(LPCSTR schemeName);
+        const LIST_CLIPSETS& GetClips(LPCSTR schemeName);
 
-		std::string BuildSortedClipList(LPCSTR schemeName) const;
+        std::string BuildSortedClipList(LPCSTR schemeName) const;
 
-		void Add(TextClipSet* clips);
-		void Delete(TextClipSet* clips);
+        void Add(TextClipSet* clips);
+        void Delete(TextClipSet* clips);
 
-		void Reset(const TextClipsManager& copy);
+        void Reset(const TextClipsManager& copy);
 
-	private:
-		void clear();
-		void copy(const TextClipsManager& copy);
-		void loadClips(LPCTSTR path, std::list<tstring>& files);
-		void parse(LPCTSTR filename);
-		void getAllKnownSetFilenames(const char* scheme, std::vector<tstring>& clipFiles);
+    private:
+        void clear();
+        void copy(const TextClipsManager& copy);
+        void loadClips(LPCTSTR path, std::list<tstring>& files);
+        void parse(LPCTSTR filename);
+        void getAllKnownSetFilenames(const char* scheme, std::vector<tstring>& clipFiles);
 
-		MAP_CLIPSETS	m_schemeClipSets;
-		LIST_CLIPSETS*	m_loadingClips;
+        MAP_CLIPSETS	m_schemeClipSets;
+        LIST_CLIPSETS*	m_loadingClips;
 };
 
 }

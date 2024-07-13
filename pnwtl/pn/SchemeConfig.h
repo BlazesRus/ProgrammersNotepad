@@ -22,56 +22,56 @@ namespace Schemes {	class Writer; }
  */
 class SchemeConfigParser : public SchemeParser
 {
-	public:
-		SchemeConfigParser(LPCSTR currentScheme = NULL);
-		~SchemeConfigParser();
+    public:
+        SchemeConfigParser(LPCSTR currentScheme = NULL);
+        ~SchemeConfigParser();
 
-		void LoadConfig(LPCTSTR path, LPCTSTR compiledpath);
-		void SaveConfig(LPCTSTR userSettingsPath);
+        void LoadConfig(LPCTSTR path, LPCTSTR compiledpath);
+        void SaveConfig(LPCTSTR userSettingsPath);
 
-		void LoadPresets(LPCTSTR path);
+        void LoadPresets(LPCTSTR path);
 
-		LPCSTR GetCurrentScheme();
+        LPCSTR GetCurrentScheme();
 
-		void ResetClasses();
+        void ResetClasses();
 
-		SchemeDetailsList&	GetSchemes();
-		StyleDetails*		GetDefaultStyle();
-		EditorColours*		GetDefaultColours();
+        SchemeDetailsList&	GetSchemes();
+        StyleDetails*		GetDefaultStyle();
+        EditorColours*		GetDefaultColours();
 
-		SchemeDetails*		GetPlainTextScheme();
+        SchemeDetails*		GetPlainTextScheme();
 
-		StylePtr			GetClass(LPCTSTR name);
+        StylePtr			GetClass(LPCTSTR name);
 
-		StylePtrMap&		GetClasses();
+        StylePtrMap&		GetClasses();
 
-	protected:
-		void Sort();
-		void Save(LPCTSTR filename);
-		bool validateFont(LPCTSTR fontName);
+    protected:
+        void Sort();
+        void Save(LPCTSTR filename);
+        bool validateFont(LPCTSTR fontName);
 
-		SchemeDetailsList	m_Schemes;
-		SchemeDetails*		m_pCurrent;
-		tstring				m_Path;
-		std::string			m_CurrentScheme;
-		SchemeDetails		m_DefaultScheme;
+        SchemeDetailsList	m_Schemes;
+        SchemeDetails*		m_pCurrent;
+        tstring				m_Path;
+        std::string			m_CurrentScheme;
+        SchemeDetails		m_DefaultScheme;
 
-	// SchemeParser
-	protected:
-		virtual void onLexer(LPCTSTR name, int styleBits);
-		virtual void onLanguage(LPCSTR name, LPCTSTR title, int foldflags, int ncfoldflags);
-		virtual void onLanguageEnd();
-		virtual void onStyleGroup(const XMLAttributes& att, const StylePtr& pClass);
-		virtual void onStyle(const StylePtr& style, bool isBaseStyle);
-		virtual void onStyleGroupEnd();
-		virtual void onStyleClass(const StylePtr& style);
-		virtual void onProperty(LPCTSTR name, LPCTSTR value){}
-		virtual void onKeywords(int key, LPCSTR keywords, LPCTSTR name, LPCSTR custom);
-		virtual void onFile(LPCTSTR filename);
-		virtual void onColours(const EditorColours* defCols, const EditorColours* colours);
-		virtual void onError(XMLParserException& ex){}
-		virtual void onCommentSpec(const char *,const char *,const char *,const char *,const char *,const char *){}
-		virtual void onWordChars(const char* charset){}
+    // SchemeParser
+    protected:
+        virtual void onLexer(LPCTSTR name, int styleBits);
+        virtual void onLanguage(LPCSTR name, LPCTSTR title, int foldflags, int ncfoldflags);
+        virtual void onLanguageEnd();
+        virtual void onStyleGroup(const XMLAttributes& att, const StylePtr& pClass);
+        virtual void onStyle(const StylePtr& style, bool isBaseStyle);
+        virtual void onStyleGroupEnd();
+        virtual void onStyleClass(const StylePtr& style);
+        virtual void onProperty(LPCTSTR name, LPCTSTR value){}
+        virtual void onKeywords(int key, LPCSTR keywords, LPCTSTR name, LPCSTR custom);
+        virtual void onFile(LPCTSTR filename);
+        virtual void onColours(const EditorColours* defCols, const EditorColours* colours);
+        virtual void onError(XMLParserException& ex){}
+        virtual void onCommentSpec(const char *,const char *,const char *,const char *,const char *,const char *){}
+        virtual void onWordChars(const char* charset){}
 };
 
 

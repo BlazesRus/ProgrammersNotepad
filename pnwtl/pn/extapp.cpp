@@ -32,28 +32,28 @@
  */
 App::App() : m_dispatch(NULL), m_bCanLoadExtensions(true)
 {
-	// Now we initialise any l10n stuff...
-	// Note that some error checking stuff in AppSettings will make use of StringLoader 
-	// so there is a cyclic	dependancy to cope with - this is why we initialise once here
-	// and then again in setAppLanguage if necessary.
-	L10N::StringLoader::InitResourceLoader();
+    // Now we initialise any l10n stuff...
+    // Note that some error checking stuff in AppSettings will make use of StringLoader 
+    // so there is a cyclic	dependancy to cope with - this is why we initialise once here
+    // and then again in setAppLanguage if necessary.
+    L10N::StringLoader::InitResourceLoader();
 
-	// This loads some global app settings, including what to
-	// use as the options store and where user settings files are
-	// to be stored.
-	m_settings = new AppSettings();
+    // This loads some global app settings, including what to
+    // use as the options store and where user settings files are
+    // to be stored.
+    m_settings = new AppSettings();
 
-	// Now we have the most important settings, we can make the options object...
-	g_Context.options = m_settings->MakeOptions();
+    // Now we have the most important settings, we can make the options object...
+    g_Context.options = m_settings->MakeOptions();
 
-	// Switch languages if necessary.
-	setAppLanguage();
+    // Switch languages if necessary.
+    setAppLanguage();
 
-	// Now ensure the user settings directory is available!
-	ensureUserSettingsDir();
+    // Now ensure the user settings directory is available!
+    ensureUserSettingsDir();
 
-	// Finally load the cached or default cached options
-	OPTIONS->LoadCache();
+    // Finally load the cached or default cached options
+    OPTIONS->LoadCache();
 }
 
 /**
@@ -61,7 +61,7 @@ App::App() : m_dispatch(NULL), m_bCanLoadExtensions(true)
  */
 App::~App()
 {
-	deinit();
+    deinit();
 }
 
 /**
@@ -69,33 +69,33 @@ App::~App()
  */
 void App::Init()
 {
-	// Where are the Schemes stored?
-	tstring path;
-	tstring cpath;
-	tstring keypath;
-	OPTIONS->GetPNPath(path, PNPATH_SCHEMES);
-	OPTIONS->GetPNPath(cpath, PNPATH_COMPILEDSCHEMES);
-	OPTIONS->GetPNPath(keypath, PNPATH_USERSETTINGS);
-	keypath += _T("keymap.dat");
+    // Where are the Schemes stored?
+    tstring path;
+    tstring cpath;
+    tstring keypath;
+    OPTIONS->GetPNPath(path, PNPATH_SCHEMES);
+    OPTIONS->GetPNPath(cpath, PNPATH_COMPILEDSCHEMES);
+    OPTIONS->GetPNPath(keypath, PNPATH_USERSETTINGS);
+    keypath += _T("keymap.dat");
 
-	// Sort out the schemes...
-	SchemeManager& SM = SchemeManager::GetInstanceRef();
-	SM.SetPath(path.c_str());
-	SM.SetCompiledPath(cpath.c_str());
-	SM.Load();
+    // Sort out the schemes...
+    SchemeManager& SM = SchemeManager::GetInstanceRef();
+    SM.SetPath(path.c_str());
+    SM.SetCompiledPath(cpath.c_str());
+    SM.Load();
 
-	// Create the command dispatcher
-	m_dispatch = new CommandDispatch(keypath.c_str());
+    // Create the command dispatcher
+    m_dispatch = new CommandDispatch(keypath.c_str());
 }
 
 CommandDispatch& App::GetCommandDispatch()
 {
-	return *m_dispatch;
+    return *m_dispatch;
 }
 
 const AppSettings& App::GetSettings()
 {
-	return *m_settings;
+    return *m_settings;
 }
 
 /**
@@ -103,27 +103,27 @@ const AppSettings& App::GetSettings()
  */
 void App::deinit()
 {
-	// Remove all plugin menu items
-	BOOST_FOREACH(ExtensionMenuItem* item, m_pluginMenuItems)
-	{
-		delete item;
-	}
+    // Remove all plugin menu items
+    BOOST_FOREACH(ExtensionMenuItem* item, m_pluginMenuItems)
+    {
+        delete item;
+    }
 
-	// Remove any registered recorder instance
-	m_recorder.reset();
+    // Remove any registered recorder instance
+    m_recorder.reset();
 
-	// Now it's safe to unload the extensions
-	unloadExtensions();
+    // Now it's safe to unload the extensions
+    unloadExtensions();
 
-	delete m_settings;
-	
-	delete m_dispatch;
+    delete m_settings;
+    
+    delete m_dispatch;
 
-	DeletionManager::DeleteAll();
+    DeletionManager::DeleteAll();
 
-	// Free up the options object, thus storing the options.
-	OptionsFactory::Release(g_Context.options);
-	g_Context.options = NULL;
+    // Free up the options object, thus storing the options.
+    OptionsFactory::Release(g_Context.options);
+    g_Context.options = NULL;
 }
 
 /**
@@ -131,22 +131,22 @@ void App::deinit()
  */
 void App::ensureUserSettingsDir()
 {
-	// Now ensure the user settings directory is available again!
-	tstring usPath;
-	OPTIONS->GetPNPath(usPath, PNPATH_USERSETTINGS);
-	if(!CreateDirectoryRecursive(usPath.c_str()))
-		UNEXPECTED(_T("Could not create user settings folder"));
+    // Now ensure the user settings directory is available again!
+    tstring usPath;
+    OPTIONS->GetPNPath(usPath, PNPATH_USERSETTINGS);
+    if(!CreateDirectoryRecursive(usPath.c_str()))
+        UNEXPECTED(_T("Could not create user settings folder"));
 }
 
 int App::FindExtensions()
 {
-	// Search for extensions:
-	m_settings->FindExtensions();
-	
-	// Store:
-	m_settings->Save();
-	
-	return 0;
+    // Search for extensions:
+    m_settings->FindExtensions();
+    
+    // Store:
+    m_settings->Save();
+    
+    return 0;
 }
 
 /**
@@ -154,33 +154,33 @@ int App::FindExtensions()
  */
 void App::LoadExtensions()
 {
-	// Allow safe-mode override of loading extensions
-	if(!m_bCanLoadExtensions)
-		return;
+    // Allow safe-mode override of loading extensions
+    if(!m_bCanLoadExtensions)
+        return;
 
-	const extlist& extensions = m_settings->GetExtensions();
+    const extlist& extensions = m_settings->GetExtensions();
 
-	for(extlist::const_iterator i = extensions.begin();
-		i != extensions.end();
-		++i)
-	{
-		const ExtDetails& details = (*i);
-		if(!details.Disabled && details.Exists())
-		{
-			extensions::Extension* ext = new extensions::Extension(details.FullPath.c_str(), this);
-			if(ext->Valid())
-			{
-				m_exts.push_back(ext);
-			}
-			else
-			{
-				delete ext;
-				tstring msg(_T("Failed to load extension: "));
-				msg += details.Path;
-				LOG(msg.c_str());
-			}
-		}
-	}
+    for(extlist::const_iterator i = extensions.begin();
+        i != extensions.end();
+        ++i)
+    {
+        const ExtDetails& details = (*i);
+        if(!details.Disabled && details.Exists())
+        {
+            extensions::Extension* ext = new extensions::Extension(details.FullPath.c_str(), this);
+            if(ext->Valid())
+            {
+                m_exts.push_back(ext);
+            }
+            else
+            {
+                delete ext;
+                tstring msg(_T("Failed to load extension: "));
+                msg += details.Path;
+                LOG(msg.c_str());
+            }
+        }
+    }
 }
 
 /**
@@ -195,37 +195,37 @@ void App::LoadExtensions()
  */
 void App::RunExtensionCommand(const char* command)
 {
-	std::string str(command);
-	size_t rindex = str.find(':');
-	if(rindex == -1)
-		return;
+    std::string str(command);
+    size_t rindex = str.find(':');
+    if(rindex == -1)
+        return;
 
-	std::string runner_id = str.substr(0, rindex);
-	if (runner_id == "ext")
-	{
-		UNEXPECTED(_T("Not Yet Implemented"));
-	}
-	else
-	{
-		// Let Script run this!
-		Script s("", command);
-		s.Run();
-	}
+    std::string runner_id = str.substr(0, rindex);
+    if (runner_id == "ext")
+    {
+        UNEXPECTED(_T("Not Yet Implemented"));
+    }
+    else
+    {
+        // Let Script run this!
+        Script s("", command);
+        s.Run();
+    }
 }
 
 void App::SetCanLoadExtensions(bool canLoad)
 {
-	m_bCanLoadExtensions = canLoad;
+    m_bCanLoadExtensions = canLoad;
 }
 
 App::ExtensionList& App::GetExtensions()
 {
-	return m_exts;
+    return m_exts;
 }
 
 ExtensionItemList& App::GetExtensionMenuItems()
 {
-	return m_pluginMenuItems;
+    return m_pluginMenuItems;
 }
 
 /**
@@ -238,22 +238,22 @@ ExtensionItemList& App::GetExtensionMenuItems()
  */
 bool App::ClearUserData()
 {
-	tstring userSettingsDir;
-	OPTIONS->GetPNPath(userSettingsDir, PNPATH_USERSETTINGS);
-	
-	// Go for the hard-core directory deletion approach!
-	if( !DeleteDirectory(userSettingsDir.c_str(), true) )
-	{
-		RETURN_UNEXPECTED(_T("Failed to delete user settings directory!"), false);
-	}
+    tstring userSettingsDir;
+    OPTIONS->GetPNPath(userSettingsDir, PNPATH_USERSETTINGS);
+    
+    // Go for the hard-core directory deletion approach!
+    if( !DeleteDirectory(userSettingsDir.c_str(), true) )
+    {
+        RETURN_UNEXPECTED(_T("Failed to delete user settings directory!"), false);
+    }
 
-	// Now clear out the UI settings
-	OPTIONS->Clear(PNSK_INTERFACE);
+    // Now clear out the UI settings
+    OPTIONS->Clear(PNSK_INTERFACE);
 
-	// Re-create the user settings dir
-	ensureUserSettingsDir();
+    // Re-create the user settings dir
+    ensureUserSettingsDir();
 
-	return true;
+    return true;
 }
 
 /**
@@ -261,14 +261,14 @@ bool App::ClearUserData()
  */
 bool App::CompileSchemes()
 {
-	SchemeManager::GetInstance()->Compile();
-	
-	return true;
+    SchemeManager::GetInstance()->Compile();
+    
+    return true;
 }
 
 extensions::IRecorderPtr App::GetRecorder() const
 {
-	return m_recorder;
+    return m_recorder;
 }
 
 /**
@@ -276,65 +276,65 @@ extensions::IRecorderPtr App::GetRecorder() const
  */
 void App::unloadExtensions()
 {
-	for(EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
-	{
-		(*i)->OnAppClose();
-	}
+    for(EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
+    {
+        (*i)->OnAppClose();
+    }
 
-	m_sinks.clear();
+    m_sinks.clear();
 
-	for(ExtensionList::const_iterator i = m_exts.begin(); i != m_exts.end(); ++i)
-	{
-		(*i)->Unload();
-		delete (*i);
-	}
+    for(ExtensionList::const_iterator i = m_exts.begin(); i != m_exts.end(); ++i)
+    {
+        (*i)->Unload();
+        delete (*i);
+    }
 
-	m_exts.clear();
+    m_exts.clear();
 }
 
 void App::setAppLanguage()
 {
-	tstring language = OPTIONS->Get(PNSK_INTERFACE, _T("Language"), _T(""));
-	if (language.size())
-	{
-		language = _T("pnlang_") + language;
-		language += _T("_") PN_VERSTRING_T _T(".dll");
+    tstring language = OPTIONS->Get(PNSK_INTERFACE, _T("Language"), _T(""));
+    if (language.size())
+    {
+        language = _T("pnlang_") + language;
+        language += _T("_") PN_VERSTRING_T _T(".dll");
 
-		HINSTANCE languageResources = ::LoadLibrary(language.c_str());
-		if (languageResources)
-		{
-			_Module.SetResourceInstance(languageResources);
-		}
+        HINSTANCE languageResources = ::LoadLibrary(language.c_str());
+        if (languageResources)
+        {
+            _Module.SetResourceInstance(languageResources);
+        }
 
-		// Re-initialize resource loader from this point:
-		L10N::StringLoader::InitResourceLoader();
-	}
+        // Re-initialize resource loader from this point:
+        L10N::StringLoader::InitResourceLoader();
+    }
 }
 
 unsigned int App::GetIFaceVersion() const
 {
-	return PN_EXT_IFACE_VERSION;
+    return PN_EXT_IFACE_VERSION;
 }
 
 const char* App::GetVersion() const
 {
-	return PN_VERSTRING;
+    return PN_VERSTRING;
 }
 
 void App::AddEventSink(extensions::IAppEventSinkPtr sink)
 {
-	m_sinks.push_back(sink);
+    m_sinks.push_back(sink);
 }
 
 void App::RemoveEventSink(extensions::IAppEventSinkPtr sink)
 {
-	m_sinks.remove(sink);
+    m_sinks.remove(sink);
 }
 
 /// Add a tag source (e.g. ctagsnavigator)
 void App::AddTagSource(extensions::ITagSource* tagSource)
 {
-	JumpToHandler::GetInstance()->AddSource(tagSource);
+    JumpToHandler::GetInstance()->AddSource(tagSource);
 }
 
 /**
@@ -342,7 +342,7 @@ void App::AddTagSource(extensions::ITagSource* tagSource)
  */
 extensions::IScriptRegistry* App::GetScriptRegistry()
 {
-	return ScriptRegistry::GetInstance();
+    return ScriptRegistry::GetInstance();
 }
 
 /**
@@ -350,7 +350,7 @@ extensions::IScriptRegistry* App::GetScriptRegistry()
  */
 extensions::IOptions* App::GetOptionsManager()
 {
-	return OPTIONS;
+    return OPTIONS;
 }
 
 /**
@@ -358,10 +358,10 @@ extensions::IOptions* App::GetOptionsManager()
  */
 void App::OnNewDocument(extensions::IDocumentPtr doc)
 {
-	for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
-	{
-		(*i)->OnNewDocument(doc);
-	}
+    for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
+    {
+        (*i)->OnNewDocument(doc);
+    }
 }
 
 /**
@@ -369,10 +369,10 @@ void App::OnNewDocument(extensions::IDocumentPtr doc)
  */
 void App::OnSelectDocument(extensions::IDocumentPtr doc)
 {
-	for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
-	{
-		(*i)->OnDocSelected(doc);
-	}
+    for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
+    {
+        (*i)->OnDocSelected(doc);
+    }
 }
 
 /**
@@ -380,10 +380,10 @@ void App::OnSelectDocument(extensions::IDocumentPtr doc)
  */
 void App::OnFirstEditorCreated(HWND hWndEditor)
 {
-	for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
-	{
-		(*i)->OnFirstEditorCreated(hWndEditor);
-	}
+    for (EventSinkList::const_iterator i = m_sinks.begin(); i != m_sinks.end(); ++i)
+    {
+        (*i)->OnFirstEditorCreated(hWndEditor);
+    }
 }
 
 /**
@@ -391,13 +391,13 @@ void App::OnFirstEditorCreated(HWND hWndEditor)
  */
 extensions::IDocumentPtr App::GetCurrentDocument()
 {
-	CChildFrame* pChild = CChildFrame::FromHandle(GetCurrentEditor());
-	if(pChild)
-	{
-		return pChild->GetDocument();
-	}
-	
-	return extensions::IDocumentPtr();
+    CChildFrame* pChild = CChildFrame::FromHandle(GetCurrentEditor());
+    if(pChild)
+    {
+        return pChild->GetDocument();
+    }
+    
+    return extensions::IDocumentPtr();
 }
 
 /**
@@ -405,7 +405,7 @@ extensions::IDocumentPtr App::GetCurrentDocument()
  */
 extensions::ITextOutput* App::GetGlobalOutputWindow()
 {
-	return g_Context.m_frame->GetGlobalOutputWindow();
+    return g_Context.m_frame->GetGlobalOutputWindow();
 }
 
 /**
@@ -413,13 +413,13 @@ extensions::ITextOutput* App::GetGlobalOutputWindow()
  */
 HWND App::GetMainWindow()
 {
-	return static_cast<CMainFrame*>(g_Context.m_frame)->m_hWnd;
+    return static_cast<CMainFrame*>(g_Context.m_frame)->m_hWnd;
 }
 
 /// Get the users search options
 extensions::ISearchOptions* App::GetUserSearchOptions()
 {
-	return OPTIONS->GetSearchOptions();
+    return OPTIONS->GetSearchOptions();
 }
 
 /**
@@ -428,7 +428,7 @@ extensions::ISearchOptions* App::GetUserSearchOptions()
  */
 void App::FindInFiles(extensions::ISearchOptions* options)
 {
-	g_Context.m_frame->FindInFiles(static_cast<SearchOptions*>(options));
+    g_Context.m_frame->FindInFiles(static_cast<SearchOptions*>(options));
 }
 
 /**
@@ -436,20 +436,20 @@ void App::FindInFiles(extensions::ISearchOptions* options)
  */
 wchar_t* App::InputBox(const wchar_t* title, const wchar_t* caption)
 {
-	CW2CT titleconv(title);
-	CW2CT captionconv(caption);
-	CInputDialog ib(titleconv, captionconv);
+    CW2CT titleconv(title);
+    CW2CT captionconv(caption);
+    CInputDialog ib(titleconv, captionconv);
 
-	if(ib.DoModal() == IDOK)
-	{
-		if(ib.GetInput() != NULL)
-		{
-			CT2CW input(ib.GetInput());
-			return wcsnewdup(input);
-		}	
-	}
+    if(ib.DoModal() == IDOK)
+    {
+        if(ib.GetInput() != NULL)
+        {
+            CT2CW input(ib.GetInput());
+            return wcsnewdup(input);
+        }	
+    }
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -458,28 +458,28 @@ wchar_t* App::InputBox(const wchar_t* title, const wchar_t* caption)
  */
 extensions::IDocumentPtr App::OpenDocument(const wchar_t* filepath, const char* scheme)
 {
-	Scheme* pScheme(NULL);
-	if(scheme != NULL)
-	{
-		pScheme = SchemeManager::GetInstance()->SchemeByName(scheme);
-	}
+    Scheme* pScheme(NULL);
+    if(scheme != NULL)
+    {
+        pScheme = SchemeManager::GetInstance()->SchemeByName(scheme);
+    }
 
-	CMainFrame* mainFrame = static_cast<CMainFrame*>(g_Context.m_frame); 
+    CMainFrame* mainFrame = static_cast<CMainFrame*>(g_Context.m_frame); 
 
-	if (mainFrame->CheckAlreadyOpen(filepath, eSwitch))
-	{
-		extensions::IDocumentPtr doc = GetCurrentDocument();
-		return doc;
-	}
+    if (mainFrame->CheckAlreadyOpen(filepath, eSwitch))
+    {
+        extensions::IDocumentPtr doc = GetCurrentDocument();
+        return doc;
+    }
 
-	bool opened = mainFrame->OpenFile(filepath, pScheme);
-	if(opened)
-	{
-		extensions::IDocumentPtr doc = GetCurrentDocument();
-		return doc;
-	}
+    bool opened = mainFrame->OpenFile(filepath, pScheme);
+    if(opened)
+    {
+        extensions::IDocumentPtr doc = GetCurrentDocument();
+        return doc;
+    }
 
-	return extensions::IDocumentPtr();
+    return extensions::IDocumentPtr();
 }
 
 /**
@@ -487,22 +487,22 @@ extensions::IDocumentPtr App::OpenDocument(const wchar_t* filepath, const char* 
  */
 extensions::IDocumentPtr App::NewDocument(const char* scheme)
 {
-	Scheme* pScheme(NULL);
-	if (scheme)
-	{
-		pScheme = SchemeManager::GetInstance()->SchemeByName(scheme);
-	}
-	
-	if (pScheme != NULL)
-	{
-		static_cast<CMainFrame*>(g_Context.m_frame)->GetFactory().WithScheme(pScheme);
-	}
-	else
-	{
-		static_cast<CMainFrame*>(g_Context.m_frame)->GetFactory().Default();
-	}
+    Scheme* pScheme(NULL);
+    if (scheme)
+    {
+        pScheme = SchemeManager::GetInstance()->SchemeByName(scheme);
+    }
+    
+    if (pScheme != NULL)
+    {
+        static_cast<CMainFrame*>(g_Context.m_frame)->GetFactory().WithScheme(pScheme);
+    }
+    else
+    {
+        static_cast<CMainFrame*>(g_Context.m_frame)->GetFactory().Default();
+    }
 
-	return GetCurrentDocument();
+    return GetCurrentDocument();
 }
 
 /**
@@ -510,18 +510,18 @@ extensions::IDocumentPtr App::NewDocument(const char* scheme)
  */
 void App::ReleaseString(const wchar_t* str)
 {
-	delete [] str;
+    delete [] str;
 }
 
 void App::AddPluginMenuItems(extensions::IMenuItems *source)
 {
-	for (int i = 0; i < source->GetItemCount(); ++i)
-	{
-		m_pluginMenuItems.push_back(new ExtensionMenuItem(source->GetItem(i)));
-	}
+    for (int i = 0; i < source->GetItemCount(); ++i)
+    {
+        m_pluginMenuItems.push_back(new ExtensionMenuItem(source->GetItem(i)));
+    }
 }
 
 void App::AddRecorder(extensions::IRecorderPtr recorder)
 {
-	m_recorder = recorder;
+    m_recorder = recorder;
 }

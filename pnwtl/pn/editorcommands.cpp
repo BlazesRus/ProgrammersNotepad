@@ -41,28 +41,28 @@ void EnsureFinalBlankLine(CScintillaImpl& editor);
 
 void GetEditorCommands(std::list<EditorCommand*>& commands)
 {
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_UPPERCASE, TransformUpperCase));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_LOWERCASE, TransformLowerCase));
-	commands.push_back(new Internal::EditorCommandFn(ID_LINE_MOVELINEDOWN, LineMoveDown));
-	commands.push_back(new Internal::EditorCommandFn(ID_LINE_MOVELINEUP, LineMoveUp));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_TRANSPOSELINES, LineTranspose));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_COPYLINE, LineCopy));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_CUTLINE, LineCut));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_DELETELINE, LineDelete));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_DUPLICATELINE, LineDuplicate));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_CLIPBOARDSWAP, ClipboardSwap));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_STRIPTRAILING, StripAllTrailing));
-	commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_COMPRESSWHITESPACE, CompressWhitespace));
-	commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_DUPLICATE, DuplicateSelection));
-	commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_STRIPTRAILING, StripTrailingBlanks));
-	commands.push_back(new Internal::EditorCommandFn(ID_TOOLS_CONVERTSPACESTOTABS, SpacesToTabs));
-	commands.push_back(new Internal::EditorCommandFn(ID_TOOLS_CONVERTTABSTOSPACES, TabsToSpaces));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_REMOVEBLANKLINES, RemoveBlankLines));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_JOINLINES, JoinLines));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_SPLITLINES, SplitLines));
-	commands.push_back(new Internal::EditorCommandFn(ID_VIEW_ZOOM_IN, ZoomIn));
-	commands.push_back(new Internal::EditorCommandFn(ID_VIEW_ZOOM_OUT, ZoomOut));
-	commands.push_back(new Internal::EditorCommandFn(ID_EDIT_ENSUREFINALBLANKLINE, EnsureFinalBlankLine));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_UPPERCASE, TransformUpperCase));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_LOWERCASE, TransformLowerCase));
+    commands.push_back(new Internal::EditorCommandFn(ID_LINE_MOVELINEDOWN, LineMoveDown));
+    commands.push_back(new Internal::EditorCommandFn(ID_LINE_MOVELINEUP, LineMoveUp));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_TRANSPOSELINES, LineTranspose));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_COPYLINE, LineCopy));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_CUTLINE, LineCut));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_DELETELINE, LineDelete));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_DUPLICATELINE, LineDuplicate));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_CLIPBOARDSWAP, ClipboardSwap));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_STRIPTRAILING, StripAllTrailing));
+    commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_COMPRESSWHITESPACE, CompressWhitespace));
+    commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_DUPLICATE, DuplicateSelection));
+    commands.push_back(new Internal::EditorCommandFn(ID_SELECTION_STRIPTRAILING, StripTrailingBlanks));
+    commands.push_back(new Internal::EditorCommandFn(ID_TOOLS_CONVERTSPACESTOTABS, SpacesToTabs));
+    commands.push_back(new Internal::EditorCommandFn(ID_TOOLS_CONVERTTABSTOSPACES, TabsToSpaces));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_REMOVEBLANKLINES, RemoveBlankLines));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_JOINLINES, JoinLines));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_SPLITLINES, SplitLines));
+    commands.push_back(new Internal::EditorCommandFn(ID_VIEW_ZOOM_IN, ZoomIn));
+    commands.push_back(new Internal::EditorCommandFn(ID_VIEW_ZOOM_OUT, ZoomOut));
+    commands.push_back(new Internal::EditorCommandFn(ID_EDIT_ENSUREFINALBLANKLINE, EnsureFinalBlankLine));
 }
 
 /**
@@ -70,18 +70,18 @@ void GetEditorCommands(std::list<EditorCommand*>& commands)
  */
 void DuplicateSelection(CScintillaImpl& editor)
 {
-	int selLength(editor.GetSelLength());
-	if (selLength == 0)
-	{
-		editor.LineDuplicate();
-		return;
-	}
+    int selLength(editor.GetSelLength());
+    if (selLength == 0)
+    {
+        editor.LineDuplicate();
+        return;
+    }
 
-	std::string sel;
-	sel.resize(selLength + 1);
-	editor.GetSelText(&sel[0]);
-	sel.resize(selLength);
-	editor.InsertText(editor.GetSelectionEnd(), sel.c_str());
+    std::string sel;
+    sel.resize(selLength + 1);
+    editor.GetSelText(&sel[0]);
+    sel.resize(selLength);
+    editor.InsertText(editor.GetSelectionEnd(), sel.c_str());
 }
 
 
@@ -90,17 +90,17 @@ void DuplicateSelection(CScintillaImpl& editor)
  */
 void stripTrailing(CScintillaImpl& editor, bool inSelection)
 {
-	SearchOptions opt;
-	opt.SetFindText(_T("[ \t]+$"));
-	opt.SetReplaceText(_T(""));
-	opt.SetUseRegExp(true);
-	opt.SetNoCursorMove(true);
-	if (editor.GetSelLength() > 0)
-	{
-		opt.SetReplaceInSelection(inSelection);
-	}
+    SearchOptions opt;
+    opt.SetFindText(_T("[ \t]+$"));
+    opt.SetReplaceText(_T(""));
+    opt.SetUseRegExp(true);
+    opt.SetNoCursorMove(true);
+    if (editor.GetSelLength() > 0)
+    {
+        opt.SetReplaceInSelection(inSelection);
+    }
 
-	editor.ReplaceAll(&opt);
+    editor.ReplaceAll(&opt);
 }
 
 /**
@@ -108,7 +108,7 @@ void stripTrailing(CScintillaImpl& editor, bool inSelection)
  */
 void StripTrailingBlanks(CScintillaImpl& editor)
 {
-	stripTrailing(editor, true);
+    stripTrailing(editor, true);
 }
 
 /**
@@ -116,7 +116,7 @@ void StripTrailingBlanks(CScintillaImpl& editor)
  */
 void StripAllTrailing(CScintillaImpl& editor)
 {
-	stripTrailing(editor, false);
+    stripTrailing(editor, false);
 }
 
 /**
@@ -124,16 +124,16 @@ void StripAllTrailing(CScintillaImpl& editor)
  */
 void CompressWhitespace(CScintillaImpl& editor)
 {
-	SearchOptions opt;
-	opt.SetFindText(_T("[ \t][ \t]+"));
-	opt.SetReplaceText(_T(" "));
-	opt.SetUseRegExp(true);
-	opt.SetNoCursorMove(true);
-	opt.SetReplaceInSelection(editor.GetSelLength() != 0);
-	
-	editor.BeginUndoAction();
-	editor.ReplaceAll(&opt);
-	editor.EndUndoAction();
+    SearchOptions opt;
+    opt.SetFindText(_T("[ \t][ \t]+"));
+    opt.SetReplaceText(_T(" "));
+    opt.SetUseRegExp(true);
+    opt.SetNoCursorMove(true);
+    opt.SetReplaceInSelection(editor.GetSelLength() != 0);
+    
+    editor.BeginUndoAction();
+    editor.ReplaceAll(&opt);
+    editor.EndUndoAction();
 }
 
 /**
@@ -141,30 +141,30 @@ void CompressWhitespace(CScintillaImpl& editor)
  */
 void SpacesToTabs(CScintillaImpl& editor)
 {
-	if (editor.GetTabWidth() < 1)
-	{
-		UNEXPECTED(_T("Tab width must be greater than 0"));
-		return;
-	}
+    if (editor.GetTabWidth() < 1)
+    {
+        UNEXPECTED(_T("Tab width must be greater than 0"));
+        return;
+    }
 
-	TCHAR buf[100];
-	buf[99] = NULL;
-	_sntprintf(buf, 99, _T("^(\\t*)[ ]{%d}"), editor.GetTabWidth());
+    TCHAR buf[100];
+    buf[99] = NULL;
+    _sntprintf(buf, 99, _T("^(\\t*)[ ]{%d}"), editor.GetTabWidth());
 
-	// Find all leading groups of spaces, convert to tabs
-	SearchOptions options;
-	options.SetFindText(buf);
-	options.SetReplaceText(_T("\\1\\t"));
-	options.SetReplaceInSelection(editor.GetSelLength() != 0);
-	options.SetUseRegExp(true);
-	options.SetNoCursorMove(true);
-	
-	editor.BeginUndoAction();
-	
-	// Repeat until we've replaced all occurances
-	while (editor.ReplaceAll(&options) != 0);
-	
-	editor.EndUndoAction();
+    // Find all leading groups of spaces, convert to tabs
+    SearchOptions options;
+    options.SetFindText(buf);
+    options.SetReplaceText(_T("\\1\\t"));
+    options.SetReplaceInSelection(editor.GetSelLength() != 0);
+    options.SetUseRegExp(true);
+    options.SetNoCursorMove(true);
+    
+    editor.BeginUndoAction();
+    
+    // Repeat until we've replaced all occurances
+    while (editor.ReplaceAll(&options) != 0);
+    
+    editor.EndUndoAction();
 }
 
 /**
@@ -172,92 +172,92 @@ void SpacesToTabs(CScintillaImpl& editor)
  */
 void TabsToSpaces(CScintillaImpl& editor)
 {
-	if (editor.GetTabWidth() < 1)
-	{
-		UNEXPECTED(_T("Tab width must be greater than 0"));
-		return;
-	}
+    if (editor.GetTabWidth() < 1)
+    {
+        UNEXPECTED(_T("Tab width must be greater than 0"));
+        return;
+    }
 
-	TCHAR buf[100];
-	buf[99] = NULL;
-	_sntprintf(buf, 99, _T("^(([ ]{%d})*)\\t"), editor.GetTabWidth());
+    TCHAR buf[100];
+    buf[99] = NULL;
+    _sntprintf(buf, 99, _T("^(([ ]{%d})*)\\t"), editor.GetTabWidth());
 
-	// Set the replace text to tab width * space:
-	tstring replaceText(editor.GetTabWidth(), ' ');
-	replaceText = _T("\\1") + replaceText;
+    // Set the replace text to tab width * space:
+    tstring replaceText(editor.GetTabWidth(), ' ');
+    replaceText = _T("\\1") + replaceText;
 
-	SearchOptions options;
-	options.SetFindText(buf);
-	options.SetReplaceText(replaceText.c_str());
-	options.SetReplaceInSelection(editor.GetSelLength() != 0);
-	options.SetSearchBackwards(false);
-	options.SetUseRegExp(true);
-	options.SetNoCursorMove(true);
-	
-	editor.BeginUndoAction();
+    SearchOptions options;
+    options.SetFindText(buf);
+    options.SetReplaceText(replaceText.c_str());
+    options.SetReplaceInSelection(editor.GetSelLength() != 0);
+    options.SetSearchBackwards(false);
+    options.SetUseRegExp(true);
+    options.SetNoCursorMove(true);
+    
+    editor.BeginUndoAction();
 
-	// Repeat until we've replaced all occurances
-	while (editor.ReplaceAll(&options) != 0);
+    // Repeat until we've replaced all occurances
+    while (editor.ReplaceAll(&options) != 0);
 
-	editor.EndUndoAction();
+    editor.EndUndoAction();
 }
 
 void ClipboardSwap(CScintillaImpl& editor)
 {
-	Scintilla::TextRange tr;
+    Scintilla::TextRange tr;
 
-	tr.chrg.cpMin = editor.GetSelectionStart();
-	tr.chrg.cpMax = editor.GetSelectionEnd();
-	if( tr.chrg.cpMax < tr.chrg.cpMin )
-		tr.chrg.cpMax = editor.GetLength();
-	int length = tr.chrg.cpMax - tr.chrg.cpMin;
-	
-	std::vector<char> buffer(length + 1);
-	buffer[length] = '\0';
-	tr.lpstrText = &buffer[0];
-	
-	editor.GetTextRange(&tr);
+    tr.chrg.cpMin = editor.GetSelectionStart();
+    tr.chrg.cpMax = editor.GetSelectionEnd();
+    if( tr.chrg.cpMax < tr.chrg.cpMin )
+        tr.chrg.cpMax = editor.GetLength();
+    int length = tr.chrg.cpMax - tr.chrg.cpMin;
+    
+    std::vector<char> buffer(length + 1);
+    buffer[length] = '\0';
+    tr.lpstrText = &buffer[0];
+    
+    editor.GetTextRange(&tr);
 
-	editor.Paste();
+    editor.Paste();
 
-	HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, length+1);
-	if( hData )
-	{
-		if( OpenClipboard(GetCurrentEditor()) )
-		{
-			EmptyClipboard();
-			char* pBuf = static_cast<char*>(::GlobalLock(hData));
-			memcpy(pBuf, &buffer[0], length + 1);
-			::GlobalUnlock(hData);
-			::SetClipboardData(CF_TEXT, hData);
-			CloseClipboard();
-		}
-	}
+    HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, length+1);
+    if( hData )
+    {
+        if( OpenClipboard(GetCurrentEditor()) )
+        {
+            EmptyClipboard();
+            char* pBuf = static_cast<char*>(::GlobalLock(hData));
+            memcpy(pBuf, &buffer[0], length + 1);
+            ::GlobalUnlock(hData);
+            ::SetClipboardData(CF_TEXT, hData);
+            CloseClipboard();
+        }
+    }
 }
 
 void LineDuplicate(CScintillaImpl& editor)
 {
-	editor.LineDuplicate();
+    editor.LineDuplicate();
 }
 
 void LineDelete(CScintillaImpl& editor)
 {
-	editor.LineDelete();
+    editor.LineDelete();
 }
 
 void LineCut(CScintillaImpl& editor)
 {
-	editor.LineCut();
+    editor.LineCut();
 }
 
 void LineCopy(CScintillaImpl& editor)
 {
-	editor.LineCopy();
+    editor.LineCopy();
 }
 
 void LineTranspose(CScintillaImpl& editor)
 {
-	editor.LineTranspose();
+    editor.LineTranspose();
 }
 
 /**
@@ -265,13 +265,13 @@ void LineTranspose(CScintillaImpl& editor)
  */
 void LineMoveUp(CScintillaImpl& editor)
 {
-	if (editor.LineFromPosition(editor.GetCurrentPos()) == 0)
-		return;
-	
-	editor.BeginUndoAction();
-	editor.LineTranspose();
-	editor.LineUp();
-	editor.EndUndoAction();
+    if (editor.LineFromPosition(editor.GetCurrentPos()) == 0)
+        return;
+    
+    editor.BeginUndoAction();
+    editor.LineTranspose();
+    editor.LineUp();
+    editor.EndUndoAction();
 }
 
 /**
@@ -279,13 +279,13 @@ void LineMoveUp(CScintillaImpl& editor)
  */
 void LineMoveDown(CScintillaImpl& editor)
 {
-	if (editor.LineFromPosition(editor.GetCurrentPos()) == (editor.GetLineCount() - 1))
-		return;
-	
-	editor.BeginUndoAction();
-	editor.LineDown();
-	editor.LineTranspose();
-	editor.EndUndoAction();
+    if (editor.LineFromPosition(editor.GetCurrentPos()) == (editor.GetLineCount() - 1))
+        return;
+    
+    editor.BeginUndoAction();
+    editor.LineDown();
+    editor.LineTranspose();
+    editor.EndUndoAction();
 }
 
 /**
@@ -293,7 +293,7 @@ void LineMoveDown(CScintillaImpl& editor)
  */
 void TransformLowerCase(CScintillaImpl& editor)
 {
-	editor.LowerCase();
+    editor.LowerCase();
 }
 
 /**
@@ -301,7 +301,7 @@ void TransformLowerCase(CScintillaImpl& editor)
  */
 void TransformUpperCase(CScintillaImpl& editor)
 {
-	editor.UpperCase();
+    editor.UpperCase();
 }
 
 /**
@@ -309,30 +309,30 @@ void TransformUpperCase(CScintillaImpl& editor)
  */
 void RemoveBlankLines(CScintillaImpl& editor)
 {
-	int lineStart = editor.LineFromPosition(editor.GetSelectionStart());
-	int lineEnd = editor.LineFromPosition(editor.GetSelectionEnd());
-	if (lineStart == lineEnd)
-	{
-		if (editor.LineLength(lineStart) == 0)
-		{
-			editor.LineDelete();
-		}
+    int lineStart = editor.LineFromPosition(editor.GetSelectionStart());
+    int lineEnd = editor.LineFromPosition(editor.GetSelectionEnd());
+    if (lineStart == lineEnd)
+    {
+        if (editor.LineLength(lineStart) == 0)
+        {
+            editor.LineDelete();
+        }
 
-		return;
-	}
+        return;
+    }
 
-	for (int line = lineStart; line <= lineEnd; ++line)
-	{
-		int start = editor.PositionFromLine(line);
-		char startChar = editor.GetCharAt(start);
-		if (startChar == '\n' || startChar == '\r')
-		{
-			editor.SetTarget(start, start + editor.LineLength(line));
-			editor.ReplaceTarget(0, "");
-			lineEnd--;
-			--line;
-		}
-	}
+    for (int line = lineStart; line <= lineEnd; ++line)
+    {
+        int start = editor.PositionFromLine(line);
+        char startChar = editor.GetCharAt(start);
+        if (startChar == '\n' || startChar == '\r')
+        {
+            editor.SetTarget(start, start + editor.LineLength(line));
+            editor.ReplaceTarget(0, "");
+            lineEnd--;
+            --line;
+        }
+    }
 }
 
 /**
@@ -340,7 +340,7 @@ void RemoveBlankLines(CScintillaImpl& editor)
  */
 void JoinLines(CScintillaImpl& editor)
 {
-	editor.LinesJoin();
+    editor.LinesJoin();
 }
 
 /**
@@ -348,7 +348,7 @@ void JoinLines(CScintillaImpl& editor)
  */
 void SplitLines(CScintillaImpl& editor)
 {
-	editor.LinesSplit(0);
+    editor.LinesSplit(0);
 }
 
 /**
@@ -356,7 +356,7 @@ void SplitLines(CScintillaImpl& editor)
  */
 void ZoomIn(CScintillaImpl& editor)
 {
-	editor.ZoomIn();
+    editor.ZoomIn();
 }
 
 /**
@@ -364,38 +364,38 @@ void ZoomIn(CScintillaImpl& editor)
  */
 void ZoomOut(CScintillaImpl& editor)
 {
-	editor.ZoomOut();
+    editor.ZoomOut();
 }
 
 void EnsureFinalBlankLine(CScintillaImpl& editor)
 {
-	int finalPosition = editor.GetLength();
-	int finalLine = editor.LineFromPosition(finalPosition);
-	int finalLineLength = editor.LineLength(finalLine);
+    int finalPosition = editor.GetLength();
+    int finalLine = editor.LineFromPosition(finalPosition);
+    int finalLineLength = editor.LineLength(finalLine);
 
-	if (finalLineLength > 0)
-	{
-		int oldTargetStart = editor.GetTargetStart();
-		int oldTargetEnd = editor.GetTargetEnd();
-		editor.SetTarget(finalPosition, finalPosition);
-		
-		switch (editor.GetEOLMode())
-		{
-		case SC_EOL_CR:
-			editor.ReplaceTarget(1, "\r");
-			break;
+    if (finalLineLength > 0)
+    {
+        int oldTargetStart = editor.GetTargetStart();
+        int oldTargetEnd = editor.GetTargetEnd();
+        editor.SetTarget(finalPosition, finalPosition);
+        
+        switch (editor.GetEOLMode())
+        {
+        case SC_EOL_CR:
+            editor.ReplaceTarget(1, "\r");
+            break;
 
-		case SC_EOL_LF:
-			editor.ReplaceTarget(1, "\n");
-			break;
+        case SC_EOL_LF:
+            editor.ReplaceTarget(1, "\n");
+            break;
 
-		case SC_EOL_CRLF:
-			editor.ReplaceTarget(2, "\r\n");
-			break;
-		}
+        case SC_EOL_CRLF:
+            editor.ReplaceTarget(2, "\r\n");
+            break;
+        }
 
-		editor.SetTarget(oldTargetStart, oldTargetEnd);
-	}
+        editor.SetTarget(oldTargetStart, oldTargetEnd);
+    }
 }
 
 } // namespace Commands

@@ -15,66 +15,66 @@
 #include "autocompletemanager.h"
 
 EditorFactory::EditorFactory(CommandDispatch* pCommandDispatch, TextClips::TextClipsManager* pClipManager, HWND hWndMDIClient) :
-	m_hWndMDIClient(hWndMDIClient),
-	m_pClipManager(pClipManager),
-	m_pCommandDispatch(pCommandDispatch),
-	m_AutoComplete(new AutoCompleteManager())
+    m_hWndMDIClient(hWndMDIClient),
+    m_pClipManager(pClipManager),
+    m_pCommandDispatch(pCommandDispatch),
+    m_AutoComplete(new AutoCompleteManager())
 {
 }
 
 CChildFrame* EditorFactory::Default()
 {
-	DocumentPtr pD;
-	CChildFrame* pChild = createChild(pD);
-	notifyChild(pD);
-	return pChild;
+    DocumentPtr pD;
+    CChildFrame* pChild = createChild(pD);
+    notifyChild(pD);
+    return pChild;
 }
 
 CChildFrame* EditorFactory::FromFile(LPCTSTR pathname, Scheme* pScheme, EPNEncoding encoding, bool& bOpened)
 {
-	bOpened = false;
+    bOpened = false;
 
-	DocumentPtr pD;
-	CChildFrame* pChild = createChild(pD);
-	if (pathname)
-	{
-		notifyChild(pD);
+    DocumentPtr pD;
+    CChildFrame* pChild = createChild(pD);
+    if (pathname)
+    {
+        notifyChild(pD);
 
-		bOpened = pChild->PNOpenFile(pathname, pScheme, encoding);
-	}
+        bOpened = pChild->PNOpenFile(pathname, pScheme, encoding);
+    }
 
-	return pChild;
+    return pChild;
 }
 
 CChildFrame* EditorFactory::WithScheme(Scheme* pScheme)
 {
-	DocumentPtr pD;
-	CChildFrame* pChild = createChild(pD);
-	pChild->SetScheme(pScheme);
-	notifyChild(pD);
+    DocumentPtr pD;
+    CChildFrame* pChild = createChild(pD);
+    pChild->SetScheme(pScheme);
+    notifyChild(pD);
  	return pChild;
 }
 
 void EditorFactory::SetMdiClient(HWND mdiClient)
 {
-	m_hWndMDIClient = mdiClient;
+    m_hWndMDIClient = mdiClient;
 }
 
 CChildFrame* EditorFactory::createChild(DocumentPtr& pD)
 {
-	pD.reset(new Document());
-	CChildFrame* pChild = new CChildFrame(pD, m_pCommandDispatch, m_pClipManager, m_AutoComplete.get());
-	PNASSERT(pChild != NULL);
-	pD->AddChildFrame(pChild);
+    pD.reset(new Document());
+    CChildFrame* pChild = new CChildFrame(pD, m_pCommandDispatch, m_pClipManager, m_AutoComplete.get());
+    PNASSERT(pChild != NULL);
+    pD->AddChildFrame(pChild);
 
-	// Give the user the option to always maximise new windows.
-	bool bMax = OPTIONS->GetCached(Options::OMaximiseNew) != 0;
-	pChild->CreateEx(m_hWndMDIClient, 0, 0, bMax ? WS_MAXIMIZE : 0);
+    // Give the user the option to always maximise new windows.
+    bool bMax = OPTIONS->GetCached(Options::OMaximiseNew) != 0;
+    pChild->CreateEx(m_hWndMDIClient, 0, 0, bMax ? WS_MAXIMIZE : 0);
 
-	return pChild;
+    return pChild;
 }
 
 void EditorFactory::notifyChild(DocumentPtr& pD)
 {
-	g_Context.ExtApp->OnNewDocument( pD );
+    g_Context.ExtApp->OnNewDocument( pD );
 }

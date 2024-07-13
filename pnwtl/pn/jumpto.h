@@ -24,18 +24,18 @@ typedef std::map<std::string, extensions::ITagSource*> HANDLERS_MAP;
 
 class JumpToHandler : public Singleton<JumpToHandler, true>
 {
-	friend class Singleton<JumpToHandler, true>;
+    friend class Singleton<JumpToHandler, true>;
 
-	public:
-		void FindTags(CChildFrame* pChildFrame, ITagSink* pNotifySink);
-		
-		void AddSource(extensions::ITagSource* source);
+    public:
+        void FindTags(CChildFrame* pChildFrame, ITagSink* pNotifySink);
+        
+        void AddSource(extensions::ITagSource* source);
 
-	protected:
-		JumpToHandler();
-		~JumpToHandler();
+    protected:
+        JumpToHandler();
+        ~JumpToHandler();
 
-		HANDLERS_MAP handlers;
+        HANDLERS_MAP handlers;
 };
 
 #endif

@@ -12,38 +12,38 @@ namespace TextClips {
  */
 class Parser : public XMLParseState
 {
-	public:
-		Parser(LIST_CLIPSETS& clipSets, LPCTSTR filename) : m_parseState(0), decodeNames(false), m_pCurSet(NULL), m_clipSets(clipSets), m_curFileName(filename) {}
-	
-	//XMLParseState
-	public:
-		virtual void startElement(LPCTSTR name, const XMLAttributes& atts);
-		virtual void endElement(LPCTSTR name);
-		virtual void characterData(LPCTSTR data, int len);
+    public:
+        Parser(LIST_CLIPSETS& clipSets, LPCTSTR filename) : m_parseState(0), decodeNames(false), m_pCurSet(NULL), m_clipSets(clipSets), m_curFileName(filename) {}
+    
+    //XMLParseState
+    public:
+        virtual void startElement(LPCTSTR name, const XMLAttributes& atts);
+        virtual void endElement(LPCTSTR name);
+        virtual void characterData(LPCTSTR data, int len);
 
-		void decodeData();
+        void decodeData();
 
-	private:
-		typedef enum tagEncodings
-		{
-			eNone,
-			eWindows1252,
-			eANSI,
-		} EEncoding;
+    private:
+        typedef enum tagEncodings
+        {
+            eNone,
+            eWindows1252,
+            eANSI,
+        } EEncoding;
 
-		// Parse state:
-		bool decodeNames;
-		int	m_parseState;
-		std::string m_cData;
-		tstring m_curName;
-		std::string m_curShortcut;
-		tstring m_curFileName;
-		TextClipSet* m_pCurSet;
-		EEncoding m_curEncoding;
+        // Parse state:
+        bool decodeNames;
+        int	m_parseState;
+        std::string m_cData;
+        tstring m_curName;
+        std::string m_curShortcut;
+        tstring m_curFileName;
+        TextClipSet* m_pCurSet;
+        EEncoding m_curEncoding;
 
-		// Output:
-		LIST_CLIPSETS&	m_clipSets;
-		//MAP_CLIPSETS	m_schemeClipSets;
+        // Output:
+        LIST_CLIPSETS&	m_clipSets;
+        //MAP_CLIPSETS	m_schemeClipSets;
 };
 
 }

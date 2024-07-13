@@ -12,39 +12,39 @@
 class RegAccess;
 namespace ssreg
 {
-	class CSRegistry;
+    class CSRegistry;
 }
 
 class RegistryOptions : public Options
 {
-	friend class RegAccess;
-	friend class OptionsFactory;
+    friend class RegAccess;
+    friend class OptionsFactory;
 
 public:
-	virtual ~RegistryOptions();
+    virtual ~RegistryOptions();
 
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, bool bVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, int iVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, uint64_t iVal);
-	virtual void Set(LPCTSTR subkey, LPCTSTR value, LPCTSTR szVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, bool bVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, int iVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, uint64_t iVal);
+    virtual void Set(LPCTSTR subkey, LPCTSTR value, LPCTSTR szVal);
 
-	virtual bool Get(LPCTSTR subkey, LPCTSTR value, bool bDefault);
-	virtual int Get(LPCTSTR subkey, LPCTSTR value, int iDefault);
-	virtual uint64_t Get(LPCTSTR subkey, LPCTSTR value, uint64_t iDefault);
-	virtual tstring Get(LPCTSTR subkey, LPCTSTR value, LPCTSTR szDefault);
+    virtual bool Get(LPCTSTR subkey, LPCTSTR value, bool bDefault);
+    virtual int Get(LPCTSTR subkey, LPCTSTR value, int iDefault);
+    virtual uint64_t Get(LPCTSTR subkey, LPCTSTR value, uint64_t iDefault);
+    virtual tstring Get(LPCTSTR subkey, LPCTSTR value, LPCTSTR szDefault);
 
-	virtual void Clear(LPCTSTR subkey);
+    virtual void Clear(LPCTSTR subkey);
 
 protected:
-	RegistryOptions();
+    RegistryOptions();
 
-	virtual void group(LPCTSTR location);
-	virtual void ungroup();
-	
-	void open(LPCTSTR location);
-	void close();
-	
-	bool groupLocked;
-	
-	ssreg::CSRegistry* _preg;
+    virtual void group(LPCTSTR location);
+    virtual void ungroup();
+    
+    void open(LPCTSTR location);
+    void close();
+    
+    bool groupLocked;
+    
+    ssreg::CSRegistry* _preg;
 };

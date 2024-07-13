@@ -23,29 +23,29 @@ class ToolWrapper;
 class ToolRunner : public CSSThread
 {
 public:
-	ToolRunner(ToolWrapper* pWrapper);
-	~ToolRunner();
-	
-	int Execute();
+    ToolRunner(ToolWrapper* pWrapper);
+    ~ToolRunner();
+    
+    int Execute();
 
-	bool GetThreadedExecution();
+    bool GetThreadedExecution();
 
-	ToolRunner* m_pNext;
-
-protected:
-	int Run_NoCapture(LPCTSTR command, LPCTSTR params, LPCTSTR dir);
-	int Run_Capture(LPCTSTR command, LPCTSTR params, LPCTSTR dir);
-
-	virtual void Run();
-	virtual void OnException();
-
-	int GetExitCode();
-	void PostRun();
+    ToolRunner* m_pNext;
 
 protected:
-	ToolWrapper*		m_pWrapper;
-	int					m_RetCode;
-	time_t				m_starttime;
+    int Run_NoCapture(LPCTSTR command, LPCTSTR params, LPCTSTR dir);
+    int Run_Capture(LPCTSTR command, LPCTSTR params, LPCTSTR dir);
+
+    virtual void Run();
+    virtual void OnException();
+
+    int GetExitCode();
+    void PostRun();
+
+protected:
+    ToolWrapper*		m_pWrapper;
+    int					m_RetCode;
+    time_t				m_starttime;
 };
 
 #endif //#ifndef toolrunner_h__included

@@ -13,7 +13,7 @@
 #include <string>
 
 #ifndef tstring
-	typedef std::basic_string<TCHAR> tstring;
+    typedef std::basic_string<TCHAR> tstring;
 #endif
 
 #define CFILE_CouldNotSaveError _T("%s could not be saved in the specified location.\nThis could be due to an absent disk, a broken network connection, or a full disk.\nDo you want to save in another location?")
@@ -41,50 +41,50 @@
  */
 class CFile
 {
-	public:
+    public:
 
-		enum OpenFlags {
-			modeRead			= 0x0000,
-			modeBinary			= 0x0000,
-			modeWrite			= 0x0001,
-			modeReadWrite		= 0x0002,
-			modeText			= 0x0008
-		};
+        enum OpenFlags {
+            modeRead			= 0x0000,
+            modeBinary			= 0x0000,
+            modeWrite			= 0x0001,
+            modeReadWrite		= 0x0002,
+            modeText			= 0x0008
+        };
 
-		enum EFrom {
-			current		= SEEK_CUR, // Current position of file pointer. 
-			end			= SEEK_END, // End of file. 
-			begin		= SEEK_SET	// Beginning of file.
-		};
+        enum EFrom {
+            current		= SEEK_CUR, // Current position of file pointer. 
+            end			= SEEK_END, // End of file. 
+            begin		= SEEK_SET	// Beginning of file.
+        };
 
-		CFile();
-		virtual ~CFile();
-		
-		bool Open(LPCTSTR filename, UINT flags = 0);
-		int Read(void* lpBuf, UINT nCount);
-		int Write(void* lpBuf, UINT nCount);
-		void Close();
-		void Seek(UINT offset, EFrom from = begin);
+        CFile();
+        virtual ~CFile();
+        
+        bool Open(LPCTSTR filename, UINT flags = 0);
+        int Read(void* lpBuf, UINT nCount);
+        int Write(void* lpBuf, UINT nCount);
+        void Close();
+        void Seek(UINT offset, EFrom from = begin);
 
-		int ShowError(LPCTSTR filename, LPCTSTR app, bool bOpen = true);
+        int ShowError(LPCTSTR filename, LPCTSTR app, bool bOpen = true);
 
-		long GetPosition() const;
-		long GetLength();
+        long GetPosition() const;
+        long GetLength();
 
-	protected:
-		FILE* m_file;
+    protected:
+        FILE* m_file;
 };
 
 class CTextFile : public CFile
 {
-	public:
-		CTextFile() : CFile() {}
-		virtual ~CTextFile() {}
+    public:
+        CTextFile() : CFile() {}
+        virtual ~CTextFile() {}
 
 #ifndef PN_NO_CSTRING
-		bool ReadLine(CString& line);
+        bool ReadLine(CString& line);
 #endif
-		bool WriteLine(LPCTSTR line);
+        bool WriteLine(LPCTSTR line);
 };
 
 uint64_t FileAge(LPCTSTR FileName);

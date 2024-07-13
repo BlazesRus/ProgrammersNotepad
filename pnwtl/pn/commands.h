@@ -26,9 +26,9 @@ WORD AccelToHKMod(WORD modifiers);
  */
 struct KeyToCommand
 {
-	unsigned char modifiers;
-	unsigned char key;
-	unsigned int msg;
+    unsigned char modifiers;
+    unsigned char key;
+    unsigned int msg;
 };
 
 int CodeToScintilla(const KeyToCommand* cmd);
@@ -38,9 +38,9 @@ int CodeToScintilla(const KeyToCommand* cmd);
  */
 struct StoredExtensionCommand
 {
-	unsigned char modifiers;
-	unsigned char key;
-	char command[150];
+    unsigned char modifiers;
+    unsigned char key;
+    char command[150];
 };
 
 /**
@@ -49,7 +49,7 @@ struct StoredExtensionCommand
 class ExtensionCommand : public KeyToCommand
 {
 public:
-	std::string command;
+    std::string command;
 };
 
 typedef std::map<unsigned short, ExtensionCommand> ExtensionCommands;
@@ -59,15 +59,15 @@ typedef std::map<unsigned short, ExtensionCommand> ExtensionCommands;
  */
 struct KeyboardFileHeader
 {
-	unsigned char magic[7];
-	unsigned int version;
+    unsigned char magic[7];
+    unsigned int version;
 };
 
 struct KeyboardFileHeaderLengths
 {
-	unsigned int commands;
-	unsigned int extensions;
-	unsigned int scintilla;
+    unsigned int commands;
+    unsigned int extensions;
+    unsigned int scintilla;
 };
 
 #define KEYBOARD_FILE_V1				1
@@ -89,38 +89,38 @@ class EditorCommand;
  */
 class KeyMap {
 public:
-	KeyMap(KeyToCommand* commands);
-	KeyMap(const KeyMap& copy);
-	~KeyMap();
+    KeyMap(KeyToCommand* commands);
+    KeyMap(const KeyMap& copy);
+    ~KeyMap();
 
-	void Clear();
-	
-	void AssignCmdKey(int key, int modifiers, unsigned int msg);
-	void RemoveCmdKey(int key, int modifiers, unsigned int msg);
+    void Clear();
+    
+    void AssignCmdKey(int key, int modifiers, unsigned int msg);
+    void RemoveCmdKey(int key, int modifiers, unsigned int msg);
 
-	void AddExtended(const ExtensionCommand& command);
-	void RemoveExtended(unsigned char key, unsigned char modifiers);
-	
-	unsigned int Find(int key, int modifiers);	// 0 returned on failure
-	const ExtensionCommand* FindExtended(unsigned char key, unsigned char modifiers);
-	
-	size_t GetCount() const;
-	size_t GetExtendedCount() const;
-	
-	const KeyToCommand* GetMappings() const;
-	const ExtensionCommands& GetExtendedMappings() const;
-	
-	int MakeAccelerators(ACCEL* buffer, CommandDispatch* dispatcher);
+    void AddExtended(const ExtensionCommand& command);
+    void RemoveExtended(unsigned char key, unsigned char modifiers);
+    
+    unsigned int Find(int key, int modifiers);	// 0 returned on failure
+    const ExtensionCommand* FindExtended(unsigned char key, unsigned char modifiers);
+    
+    size_t GetCount() const;
+    size_t GetExtendedCount() const;
+    
+    const KeyToCommand* GetMappings() const;
+    const ExtensionCommands& GetExtendedMappings() const;
+    
+    int MakeAccelerators(ACCEL* buffer, CommandDispatch* dispatcher);
 
 private:
-	void internalAssign(int key, int modifiers, unsigned int msg);
+    void internalAssign(int key, int modifiers, unsigned int msg);
 
-	KeyToCommand *kmap;
-	CommandDispatch *lastdispatcher;
-	ExtensionCommands extkmap;
-	int len;
-	int alloc;
-	static const KeyToCommand MapDefault[];
+    KeyToCommand *kmap;
+    CommandDispatch *lastdispatcher;
+    ExtensionCommands extkmap;
+    int len;
+    int alloc;
+    static const KeyToCommand MapDefault[];
 };
 
 }
@@ -133,22 +133,22 @@ typedef std::stack<DWORD> IDStack;
  */
 class CommandEventHandler
 {
-	public:
-		virtual bool SHandleDispatchedCommand(int iCommand, LPVOID data) = 0;
+    public:
+        virtual bool SHandleDispatchedCommand(int iCommand, LPVOID data) = 0;
 };
 
 typedef struct
 {
-	int start;
-	int end;
-	int current;
+    int start;
+    int end;
+    int current;
 } CmdIDRange;
 
 typedef struct
 {
-	CommandEventHandler*	pHandler;
-	int					iID;
-	LPVOID				data;
+    CommandEventHandler*	pHandler;
+    int					iID;
+    LPVOID				data;
 } EventRecord;
 
 typedef std::map<int, EventRecord*> MAP_HANDLERS;
@@ -158,94 +158,94 @@ typedef MAP_HANDLERS::const_iterator MH_CI;
 
 class CommandDispatch : public CommandEventHandler
 {
-	public:
-		CommandDispatch();
-		CommandDispatch(LPCTSTR kbfile);
-		~CommandDispatch();
+    public:
+        CommandDispatch();
+        CommandDispatch(LPCTSTR kbfile);
+        ~CommandDispatch();
 
-		HACCEL GetAccelerators();
+        HACCEL GetAccelerators();
 
-		void UpdateMenuShortcuts(HMENU menu);
+        void UpdateMenuShortcuts(HMENU menu);
 
-		tstring GetShortcutText(int wCode, int wModifiers);
-		tstring GetKeyName(UINT vk, bool extended);
+        tstring GetShortcutText(int wCode, int wModifiers);
+        tstring GetKeyName(UINT vk, bool extended);
 
-		int RegisterCallback(CommandEventHandler* pHandler, int iCommand, LPVOID data = NULL);
-		int RegisterCallback(int iRealCommand, CommandEventHandler* pHandler, int iMappedCommand, LPVOID data = NULL);
-		void UnRegisterCallback(int iID);
+        int RegisterCallback(CommandEventHandler* pHandler, int iCommand, LPVOID data = NULL);
+        int RegisterCallback(int iRealCommand, CommandEventHandler* pHandler, int iMappedCommand, LPVOID data = NULL);
+        void UnRegisterCallback(int iID);
 
-		int GetNextID();
-		void ReturnID(int id);
+        int GetNextID();
+        void ReturnID(int id);
 
-		bool HandleCommand(int iID);
-		bool LocalHandleCommand(int iID, int iCommand, CommandEventHandler* pHandler);
+        bool HandleCommand(int iID);
+        bool LocalHandleCommand(int iID, int iCommand, CommandEventHandler* pHandler);
 
-		void SetCurrentKeyMap(const Commands::KeyMap* keyMap);
-		void SetCurrentScintillaMap(const Commands::KeyMap* keyMap);
-		Commands::KeyMap* GetCurrentKeyMap() const;
-		Commands::KeyMap* GetCurrentScintillaMap() const;
-		
-		bool Load(LPCTSTR filename);
-		void Save(LPCTSTR filename) const;
+        void SetCurrentKeyMap(const Commands::KeyMap* keyMap);
+        void SetCurrentScintillaMap(const Commands::KeyMap* keyMap);
+        Commands::KeyMap* GetCurrentKeyMap() const;
+        Commands::KeyMap* GetCurrentScintillaMap() const;
+        
+        bool Load(LPCTSTR filename);
+        void Save(LPCTSTR filename) const;
 
 // CommandEventHandler
-	public:
-		virtual bool SHandleDispatchedCommand(int iCommand, LPVOID data);
+    public:
+        virtual bool SHandleDispatchedCommand(int iCommand, LPVOID data);
 
-	private:
-		void init();
+    private:
+        void init();
 
-		std::list<Commands::EditorCommand*> m_editorCommands;
+        std::list<Commands::EditorCommand*> m_editorCommands;
 
-		static CmdIDRange* s_IDs[];
-		
-		int			m_iRanges;
-		CmdIDRange*	m_pRange;
-		
-		Commands::KeyMap* m_keyMap;
-		Commands::KeyMap* m_ScintillaKeyMap;
-		IDStack		m_freeIds;
+        static CmdIDRange* s_IDs[];
+        
+        int			m_iRanges;
+        CmdIDRange*	m_pRange;
+        
+        Commands::KeyMap* m_keyMap;
+        Commands::KeyMap* m_ScintillaKeyMap;
+        IDStack		m_freeIds;
 
-		MAP_HANDLERS m_Handlers;
+        MAP_HANDLERS m_Handlers;
 
-		tstring		m_keyNameCtrl;
-		tstring		m_keyNameAlt;
-		tstring		m_keyNameShift;
+        tstring		m_keyNameCtrl;
+        tstring		m_keyNameAlt;
+        tstring		m_keyNameShift;
 };
 
 
 #define ROUTE_MENUCOMMANDS() \
-	if(uMsg == WM_COMMAND) \
-	{ \
-		bHandled = TRUE; \
-		if( m_pCmdDispatch->HandleCommand(LOWORD(wParam)) ) \
-			return TRUE; \
-		else \
-			bHandled = FALSE; \
-	}
+    if(uMsg == WM_COMMAND) \
+    { \
+        bHandled = TRUE; \
+        if( m_pCmdDispatch->HandleCommand(LOWORD(wParam)) ) \
+            return TRUE; \
+        else \
+            bHandled = FALSE; \
+    }
 
 #define LOCAL_MENUCOMMAND(id) \
-	if(uMsg == WM_COMMAND /*&& lParam == 0*/) \
-	{ \
-		bHandled = TRUE; \
-		if( m_pCmdDispatch->LocalHandleCommand(LOWORD(wParam), id, this) ) \
-			return TRUE; \
-		else \
-			bHandled = FALSE; \
-	}
+    if(uMsg == WM_COMMAND /*&& lParam == 0*/) \
+    { \
+        bHandled = TRUE; \
+        if( m_pCmdDispatch->LocalHandleCommand(LOWORD(wParam), id, this) ) \
+            return TRUE; \
+        else \
+            bHandled = FALSE; \
+    }
 
 #define BEGIN_MENU_HANDLER_MAP() \
-	bool SHandleDispatchedCommand(int iCommand, LPVOID data) \
-	{ 
+    bool SHandleDispatchedCommand(int iCommand, LPVOID data) \
+    { 
 
 #define HANDLE_MENU_COMMAND(id, handler) \
-	if(id == iCommand) \
-	{ \
-		return handler(data); \
-	}
+    if(id == iCommand) \
+    { \
+        return handler(data); \
+    }
 
 #define END_MENU_HANDLER_MAP() \
-		return false; \
-	}
+        return false; \
+    }
 
 #endif // #ifndef commands_h__included

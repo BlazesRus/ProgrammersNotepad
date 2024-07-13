@@ -22,63 +22,63 @@ namespace Commands
 class EditorCommand
 {
 public:
-	/**
-	 * Apply this command to the editor.
-	 */
-	void Apply(CScintillaImpl& editor)
-	{
-		DoApply(editor);
-	}
+    /**
+     * Apply this command to the editor.
+     */
+    void Apply(CScintillaImpl& editor)
+    {
+        DoApply(editor);
+    }
 
-	/**
-	 * Get an ID for this command.
-	 */
-	int GetCommandID()
-	{
-		return DoGetCommand();
-	}
+    /**
+     * Get an ID for this command.
+     */
+    int GetCommandID()
+    {
+        return DoGetCommand();
+    }
 
 protected:
-	/**
-	 * Do the editor work in this method
-	 */
-	virtual void DoApply(CScintillaImpl& editor) = 0;
+    /**
+     * Do the editor work in this method
+     */
+    virtual void DoApply(CScintillaImpl& editor) = 0;
 
-	/**
-	 * Get the command ID
-	 */
-	virtual int DoGetCommand() = 0;
+    /**
+     * Get the command ID
+     */
+    virtual int DoGetCommand() = 0;
 
-	/**
-	 * Avoid instantiation of base
-	 */
-	EditorCommand() {}
+    /**
+     * Avoid instantiation of base
+     */
+    EditorCommand() {}
 };
 
 namespace Internal
 {
-	class EditorCommandFn : public EditorCommand
-	{
-	public:
-		EditorCommandFn(int commandId, boost::function<void (CScintillaImpl&)> handler) :
-		  m_commandId(commandId),
-		  m_handler(handler)
-		{}
-	protected:
-		virtual void DoApply(CScintillaImpl& editor)
-		{
-			m_handler(editor);
-		}
+    class EditorCommandFn : public EditorCommand
+    {
+    public:
+        EditorCommandFn(int commandId, boost::function<void (CScintillaImpl&)> handler) :
+          m_commandId(commandId),
+          m_handler(handler)
+        {}
+    protected:
+        virtual void DoApply(CScintillaImpl& editor)
+        {
+            m_handler(editor);
+        }
 
-		virtual int DoGetCommand()
-		{
-			return m_commandId;
-		}
+        virtual int DoGetCommand()
+        {
+            return m_commandId;
+        }
 
-	private:
-		int m_commandId;
-		boost::function<void (CScintillaImpl&)> m_handler;
-	};
+    private:
+        int m_commandId;
+        boost::function<void (CScintillaImpl&)> m_handler;
+    };
 } // namespace Internal
 
 extern void GetEditorCommands(std::list<EditorCommand*>& commands);

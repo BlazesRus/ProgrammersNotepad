@@ -27,23 +27,23 @@
 class FIFFinder : public RegExFileFinderImpl<FIFFinder, FIFThread>
 {
 public:
-	typedef RegExFileFinderImpl<FIFFinder, FIFThread> baseClass;
-	friend baseClass;
+    typedef RegExFileFinderImpl<FIFFinder, FIFThread> baseClass;
+    friend baseClass;
 
-	FIFFinder(FIFThread* pOwner, OnFoundFunc func) : baseClass(pOwner, func){}
+    FIFFinder(FIFThread* pOwner, OnFoundFunc func) : baseClass(pOwner, func){}
 
-	bool shouldContinue()
-	{
-		PNASSERT(owner != NULL);
-		/*LOG("CHECK\n");
-		bool canRun = owner->GetCanRun();
-		if(canRun)
-			LOG("CAN\n");
-		else
-			LOG("EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT\n");
-		return canRun;*/
-		return owner->GetCanRun();
-	}
+    bool shouldContinue()
+    {
+        PNASSERT(owner != NULL);
+        /*LOG("CHECK\n");
+        bool canRun = owner->GetCanRun();
+        if(canRun)
+            LOG("CAN\n");
+        else
+            LOG("EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT\n");
+        return canRun;*/
+        return owner->GetCanRun();
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -51,109 +51,109 @@ public:
 ////////////////////////////////////////////////////////////////////////////////////
 
 FIFThread::FIFThread() : 
-	m_pBM(new BoyerMoore())
+    m_pBM(new BoyerMoore())
 {
 }
 
 void FIFThread::Find(LPCTSTR findstr, LPCTSTR path, LPCTSTR fileTypes, bool bRecurse, bool bCaseSensitive, bool bMatchWholeWord, bool bIncludeHidden, FIFSink* pSink)
 {
-	PNASSERT(findstr != NULL);
-	PNASSERT(pSink != NULL);
+    PNASSERT(findstr != NULL);
+    PNASSERT(pSink != NULL);
 
-	Stop();
+    Stop();
 
-	m_it.reset();
+    m_it.reset();
 
-	CT2CA findstrconv(findstr);
+    CT2CA findstrconv(findstr);
 
-	m_pBM->SetSearchString(findstrconv);
-	m_pBM->SetCaseMode(bCaseSensitive);
-	m_pBM->SetMatchWholeWord(bMatchWholeWord);
-	m_pBM->SetIncludeHidden(bIncludeHidden);
-	m_pSink = pSink;
-	m_fileExts = fileTypes;
-	m_path = CPathName(path).c_str();
-	m_bRecurse = bRecurse;
-	m_bIncludeHidden = bIncludeHidden;
-	Start();
+    m_pBM->SetSearchString(findstrconv);
+    m_pBM->SetCaseMode(bCaseSensitive);
+    m_pBM->SetMatchWholeWord(bMatchWholeWord);
+    m_pBM->SetIncludeHidden(bIncludeHidden);
+    m_pSink = pSink;
+    m_fileExts = fileTypes;
+    m_path = CPathName(path).c_str();
+    m_bRecurse = bRecurse;
+    m_bIncludeHidden = bIncludeHidden;
+    Start();
 }
 
 void FIFThread::Find(LPCTSTR findstr, FileItPtr& iterator, bool bCaseSensitive, bool bMatchWholeWord, FIFSink* pSink)
 {
-	PNASSERT(findstr != NULL);
-	PNASSERT(pSink != NULL);
+    PNASSERT(findstr != NULL);
+    PNASSERT(pSink != NULL);
 
-	Stop();
+    Stop();
 
-	m_it = iterator;
+    m_it = iterator;
 
-	CT2CA findstrconv(findstr);
+    CT2CA findstrconv(findstr);
 
-	m_pBM->SetSearchString(findstrconv);
-	m_pBM->SetCaseMode(bCaseSensitive);
-	m_pBM->SetMatchWholeWord(bMatchWholeWord);
-	m_pSink = pSink;
-	Start();
+    m_pBM->SetSearchString(findstrconv);
+    m_pBM->SetCaseMode(bCaseSensitive);
+    m_pBM->SetMatchWholeWord(bMatchWholeWord);
+    m_pSink = pSink;
+    Start();
 }
 
 FIFThread::~FIFThread()
 {
-	delete m_pBM;
+    delete m_pBM;
 }
 
 void FIFThread::Run()
 {
-	// TODO: Change to true if using RegEx...
-	if(m_pSink)
-	{
-		CA2CT findstr(m_pBM->GetSearchString());
-		m_pSink->OnBeginSearch(findstr, false);
-	}
+    // TODO: Change to true if using RegEx...
+    if(m_pSink)
+    {
+        CA2CT findstr(m_pBM->GetSearchString());
+        m_pSink->OnBeginSearch(findstr, false);
+    }
 
-	if (m_it.get())
-	{
-		m_nFiles = 0;
-		m_nLines = 0;
+    if (m_it.get())
+    {
+        m_nFiles = 0;
+        m_nLines = 0;
 
-		tstring file;
-		while(m_it->Next(file) && GetCanRun())
-		{
-			searchFile(file.c_str());
-		}
-	}
-	else
-	{
-		m_nFiles = 0;
-		m_nLines = 0;
-		
-		FIFFinder finder(this, &FIFThread::OnFoundFile);
-		finder.SetFilters(m_fileExts.c_str(), NULL, NULL, NULL);
+        tstring file;
+        while(m_it->Next(file) && GetCanRun())
+        {
+            searchFile(file.c_str());
+        }
+    }
+    else
+    {
+        m_nFiles = 0;
+        m_nLines = 0;
+        
+        FIFFinder finder(this, &FIFThread::OnFoundFile);
+        finder.SetFilters(m_fileExts.c_str(), NULL, NULL, NULL);
 
-		if (m_path.length() > 0)
-		{
-			finder.FindMatching(m_path.c_str(), m_bRecurse, m_bIncludeHidden);
-		}
-	}
+        if (m_path.length() > 0)
+        {
+            finder.FindMatching(m_path.c_str(), m_bRecurse, m_bIncludeHidden);
+        }
+    }
 
-	m_pSink->OnEndSearch(m_nLines, m_nFiles);
+    m_pSink->OnEndSearch(m_nLines, m_nFiles);
 }
 
 void FIFThread::OnException()
 {
-	LOG(_T("PN2: Exception whilst doing a find in files.\n"));
+    LOG(_T("PN2: Exception whilst doing a find in files.\n"));
 }
 
 void FIFThread::OnFoundFile(LPCTSTR path, FileFinderData& findData, bool& /*shouldContinue*/)
 {
-	CFileName fn(findData.GetFilename());
-	fn.Root(path);
+    CFileName fn(findData.GetFilename());
+    fn.Root(path);
 
-	searchFile(fn.c_str());
+    searchFile(fn.c_str());
 }
 
 void FIFThread::ManageStop()
 {
-	Stop();
+    Stop();
 }
 
 #define FIFBUFFERSIZE 8192
@@ -163,63 +163,63 @@ void FIFThread::ManageStop()
  */
 void FIFThread::searchFile(LPCTSTR filename)
 {
-	FILE* file = _tfopen(filename, _T("r"));
-	if(file != NULL)
-	{
-		std::vector<char> buffer(FIFBUFFERSIZE);
-		char* szBuf = &buffer[0];
+    FILE* file = _tfopen(filename, _T("r"));
+    if(file != NULL)
+    {
+        std::vector<char> buffer(FIFBUFFERSIZE);
+        char* szBuf = &buffer[0];
 
-		int nLine = 1;
-		m_nFiles++;
+        int nLine = 1;
+        m_nFiles++;
 
-		while (fgets(szBuf, FIFBUFFERSIZE, file))
-		{
-			int    nIdx;
-			char *ptr(szBuf);
-			size_t buflen(strlen(ptr));
-			size_t remaininglen(buflen);
-			bool haslineend(szBuf[buflen-1] == '\n' || szBuf[buflen-1] == '\r');
-			bool bAnyFound(false);
+        while (fgets(szBuf, FIFBUFFERSIZE, file))
+        {
+            int    nIdx;
+            char *ptr(szBuf);
+            size_t buflen(strlen(ptr));
+            size_t remaininglen(buflen);
+            bool haslineend(szBuf[buflen-1] == '\n' || szBuf[buflen-1] == '\r');
+            bool bAnyFound(false);
 
-			// Find all occurences in this buffer (usually a full line, but we will fail in extremely long lines
-			// TODO: Deal with lines longer than 4096 bytes?
-			while (remaininglen && ((nIdx = m_pBM->FindForward(ptr, static_cast<int>(remaininglen))) >= 0))
-			{
-				// Are we at the first found entry?
-				if (!bAnyFound)
-				{
-					// Strip white spaces from the end of the input buffer.
-					while (isspace(szBuf[buflen - 1]))
-					{
-						szBuf[buflen - 1] = NULL;
-					}
+            // Find all occurences in this buffer (usually a full line, but we will fail in extremely long lines
+            // TODO: Deal with lines longer than 4096 bytes?
+            while (remaininglen && ((nIdx = m_pBM->FindForward(ptr, static_cast<int>(remaininglen))) >= 0))
+            {
+                // Are we at the first found entry?
+                if (!bAnyFound)
+                {
+                    // Strip white spaces from the end of the input buffer.
+                    while (isspace(szBuf[buflen - 1]))
+                    {
+                        szBuf[buflen - 1] = NULL;
+                    }
 
-					// Increase lines-found counter.
-					m_nLines++;
-				}
+                    // Increase lines-found counter.
+                    m_nLines++;
+                }
 
-				// Found a least one.
-				bAnyFound = true;
+                // Found a least one.
+                bAnyFound = true;
 
-				// Convert the line for print and post it to the
-				// main thread for the GUI stuff.
-				foundString(filename, nLine, szBuf);
-				
-				// Increase search pointer so we can search the rest of the line.
-				ptr += nIdx + 1;
-				remaininglen = strlen(ptr);
-			}
+                // Convert the line for print and post it to the
+                // main thread for the GUI stuff.
+                foundString(filename, nLine, szBuf);
+                
+                // Increase search pointer so we can search the rest of the line.
+                ptr += nIdx + 1;
+                remaininglen = strlen(ptr);
+            }
 
-			// Increase line number.
-			if (haslineend)
-			{
-				nLine++;
-			}
-		}
+            // Increase line number.
+            if (haslineend)
+            {
+                nLine++;
+            }
+        }
 
-		fclose(file);
-		Sleep(0);
-	}
+        fclose(file);
+        Sleep(0);
+    }
 }
 
 /**
@@ -227,9 +227,9 @@ void FIFThread::searchFile(LPCTSTR filename)
  */
 void FIFThread::foundString(LPCTSTR szFilename, int line, LPCSTR buf)
 {
-	CA2CT searchconv(m_pBM->GetSearchString());
-	CA2CT bufconv(buf);
-	m_pSink->OnFoundString(searchconv, szFilename, line, bufconv);
+    CA2CT searchconv(m_pBM->GetSearchString());
+    CA2CT bufconv(buf);
+    m_pSink->OnFoundString(searchconv, szFilename, line, bufconv);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -238,33 +238,33 @@ void FIFThread::foundString(LPCTSTR szFilename, int line, LPCSTR buf)
 
 FindInFiles::~FindInFiles()
 {
-	m_thread.Stop();
+    m_thread.Stop();
 }
 
 bool FindInFiles::IsRunning()
 {
-	return !m_thread.GetStopped();
+    return !m_thread.GetStopped();
 }
 
 void FindInFiles::Start(
-						LPCTSTR findstr, 
-						LPCTSTR path, 
-						LPCTSTR fileTypes, 
-						bool bRecurse, 
-						bool bCaseSensitive, 
-						bool bMatchWholeWord,
-						bool bIncludeHidden,
-						FIFSink* pSink)
+                        LPCTSTR findstr, 
+                        LPCTSTR path, 
+                        LPCTSTR fileTypes, 
+                        bool bRecurse, 
+                        bool bCaseSensitive, 
+                        bool bMatchWholeWord,
+                        bool bIncludeHidden,
+                        FIFSink* pSink)
 {
-	m_thread.Find(findstr, path, fileTypes, bRecurse, bCaseSensitive, bMatchWholeWord, bIncludeHidden, pSink);
+    m_thread.Find(findstr, path, fileTypes, bRecurse, bCaseSensitive, bMatchWholeWord, bIncludeHidden, pSink);
 }
 
 void FindInFiles::Start(LPCTSTR findstr, FileItPtr& iterator, bool bCaseSensitive, bool bMatchWholeWord, FIFSink* pSink)
 {
-	m_thread.Find(findstr, iterator, bCaseSensitive, bMatchWholeWord, pSink);
+    m_thread.Find(findstr, iterator, bCaseSensitive, bMatchWholeWord, pSink);
 }
 
 void FindInFiles::Stop()
 {
-	m_thread.ManageStop();
+    m_thread.ManageStop();
 }

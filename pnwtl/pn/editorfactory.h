@@ -21,21 +21,21 @@ namespace TextClips { class TextClipsManager; }
 class EditorFactory
 {
 public:
-	EditorFactory(CommandDispatch* pCommandDispatch, TextClips::TextClipsManager* pClipManager, HWND hWndMDIClient);
-	void SetMdiClient(HWND mdiClient);
+    EditorFactory(CommandDispatch* pCommandDispatch, TextClips::TextClipsManager* pClipManager, HWND hWndMDIClient);
+    void SetMdiClient(HWND mdiClient);
 
-	CChildFrame* FromFile(LPCTSTR pathname, Scheme* pScheme, EPNEncoding encoding, bool& bOpened);
-	CChildFrame* WithScheme(Scheme* pScheme);
-	CChildFrame* Default();
+    CChildFrame* FromFile(LPCTSTR pathname, Scheme* pScheme, EPNEncoding encoding, bool& bOpened);
+    CChildFrame* WithScheme(Scheme* pScheme);
+    CChildFrame* Default();
 
 private:
-	CChildFrame* createChild(DocumentPtr& pD);
-	void notifyChild(DocumentPtr& pD);
-	
-	CommandDispatch*			m_pCommandDispatch;
-	TextClips::TextClipsManager* m_pClipManager;
-	boost::shared_ptr<AutoCompleteManager> m_AutoComplete;
-	HWND						m_hWndMDIClient;
+    CChildFrame* createChild(DocumentPtr& pD);
+    void notifyChild(DocumentPtr& pD);
+    
+    CommandDispatch*			m_pCommandDispatch;
+    TextClips::TextClipsManager* m_pClipManager;
+    boost::shared_ptr<AutoCompleteManager> m_AutoComplete;
+    HWND						m_hWndMDIClient;
 };
 
 #endif //#ifndef editorfactory_h__included

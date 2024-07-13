@@ -18,10 +18,10 @@
 class Win32FileSource : public IFileSource
 {
 public:
-	virtual ~Win32FileSource();
+    virtual ~Win32FileSource();
 
-	IFilePtr OpenWrite(const wchar_t* filename);
-	IFilePtr OpenRead(const wchar_t* filename);
+    IFilePtr OpenWrite(const wchar_t* filename);
+    IFilePtr OpenRead(const wchar_t* filename);
 };
 
 #endif //#ifndef WIN32FILESOURCE_H_INCLUDED
