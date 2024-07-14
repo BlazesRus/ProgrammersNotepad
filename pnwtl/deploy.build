@@ -73,8 +73,8 @@
 	<target name="zip">
 		<zip zipfile="${distdir}\pn${compactver}.zip">
 			<fileset basedir="bin">
-				<include name="libexpatw.dll"/>
-				<include name="scilexer.dll"/>
+				<include name="thirdparty\expat\libexpatw.dll"/>
+				<!--include name="scilexer.dll"/--><!--Replace with lexilla later-->
 				<include name="pnse.dll"/>
 				<include name="dbghelp.dll"/>
 				<include name="customscheme.dll" />
@@ -112,8 +112,8 @@
 		
 		<zip zipfile="${distdir}\portable-pn${compactver}.zip">
 			<fileset basedir="bin">
-				<include name="libexpatw.dll"/>
-				<include name="scilexer.dll"/>
+				<include name="thirdparty\expat\libexpatw.dll"/>
+				<!--include name="scilexer.dll"/--><!--Replace with lexilla later-->
 				<include name="pnse.dll"/>
 				<include name="dbghelp.dll"/>
 				<include name="customscheme.dll" />
